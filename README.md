@@ -10,8 +10,7 @@ The Team:
 	1. Eldar Feldbeine
 	2. Raul Garay
 
-Project Owner and Mentor:
-	1. Gus Monge
+Project Owner and Mentor:	Gus Monge.
 	
 
 [FIU]
