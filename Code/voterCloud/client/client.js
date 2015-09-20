@@ -7,8 +7,8 @@ Router.route('/', function () {
   this.render('MyTemplate');
 });
 
-Template.header.events({
-	'click #toggle-menu': function(evt, inst) {
+Template.layout.events({
+	'click #toggle-menu, click #pagemask': function(evt, inst) {
 		evt.preventDefault();
 
 		var $body = $( 'body' ),
