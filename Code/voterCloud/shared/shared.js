@@ -1,0 +1,1 @@
+Poltic = new Mongo.Collection("poltic");
