@@ -9,28 +9,26 @@
 
 <template name="layout">
   {{> header}}
-  <div id="rest-of-page">
+  <div id="page">
   {{> yield}}
   </div>
 </template>
 
 <template name="header">
-	<div class="menu-b"> <button id="menu-button" class="menu-button">Menu</button> </div>
+	<div id="toggle-menu2"> <a href="#" id="toggle-menu"> <img id="image" src="/options21.png" width="24" height="24"> </a> </div>
 	{{> slide}}
 </template>
 
 <template name="slide">
-	<nav id="c-menu--slide-left" class="c-menu c-menu--slide-left">
-	  <ul class="c-menu__items">
-	    <li class="c-menu__item"><a href="#" class="c-menu__link">Home</a></li>
-	    <li class="c-menu__item"><a href="#" class="c-menu__link">Search</a></li>
-	    <li class="c-menu__item"><a href="#" class="c-menu__link">Survey</a></li>
-	    <li class="c-menu__item"><a href="#" class="c-menu__link">Research</a></li>
-	    <li class="c-menu__item"><a href="#" class="c-menu__link">Contact</a></li>
-	  </ul>
-	</nav>
+  <ul id="menu">
+    <li class="menu__item"><a href="#" class="menu__link">Home</a></li>
+    <li class="menu__item"><a href="#" class="menu__link">Search</a></li>
+    <li class="menu__item"><a href="#" class="menu__link">Survey</a></li>
+    <li class="menu__item"><a href="#" class="menu__link">Research</a></li>
+    <li class="menu__item"><a href="#" class="menu__link">Contact</a></li>
+  </ul>
 </template>
 
 <template name="MyTemplate">
-	<div><h2> the rest of the page</h2></div>
+	<div><h2> BODY OF the rest of the page</h2></div>
 </template>

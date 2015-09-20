@@ -1,4 +1,85 @@
-body {
-   background-color: #ECEFE5; 
-   overflow-x: hidden;
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%; /* For the demo since the page is mostly empty */
+ 	
+	background: #3184a1; /* Same color as your menu */
+
+}
+#page {
+	position: relative; /* Set the position property so z-index will apply */
+	z-index: 20; /* Make sure this is higher than #menu */
+	padding: 15px;
+
+	background: #fff;
+	height: 100%;
+}
+#toggle-menu2 {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	z-index: 30;
+}
+#menu {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	width: 190px;
+	padding: 30px 25px;
+	margin: 0;
+
+	list-style: none;
+	background: #3184a1;
+	z-index: 10; /* Make sure the z-index is lower than the #page */
+}
+#menu a {
+	display: block;
+	color: #E5E9EA;
+	padding: 15px 0;
+	border-bottom: 1px solid rgba( 0, 0, 0, 0.2 );
+}
+/* Show the menu when animating or visible */
+.animating #menu, .menu-visible #menu {
+  display: block;
+}
+/***
+ * If the animating class is present then apply
+ * the CSS transition to #page over 250ms.
+ */
+.animating #page {
+  transition: transform .25s ease-in-out;
+  -webkit-transition: -webkit-transform .25s ease-in-out;
+}
+/***
+ * If the left class is present then transform
+ * the #page element 240px to the left.
+ */	
+.animating.left #page {
+  transform: translate3d( -240px, 0, 0 );
+  -webkit-transform: translate3d( -240px, 0, 0 );
+}
+/***
+ * If the right class is present then transform
+ * the #page element 240px to the right.
+ */
+.animating.right #page {
+  transform: translate3d( 240px, 0, 0 );
+  -webkit-transform: translate3d( 240px, 0, 0 );
+}
+/***
+ * If the menu-visible class is present then
+ * shift the #page 240px from the right edge
+ * via position: absolute to keep it in the 
+ * open position. When .animating, .left and
+ * .right classes are not present the CSS
+ * transform does not apply to #page.
+ */
+.menu-visible #page {
+  left: 240px;
+}
+#page, #menu {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
 }
