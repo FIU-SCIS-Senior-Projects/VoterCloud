@@ -22,14 +22,26 @@
 
 <template name="slide">
   <ul id="menu">
-    <li class="menu__item"><a href="#" class="menu__link">Home</a></li>
-    <li class="menu__item"><a href="#" class="menu__link">Search</a></li>
+    <li class="menu__item"><a href="/" class="menu__link">Home</a></li>
+    <li class="menu__item"><a href="/Search" class="menu__link">Search</a></li>
     <li class="menu__item"><a href="#" class="menu__link">Survey</a></li>
     <li class="menu__item"><a href="#" class="menu__link">Research</a></li>
     <li class="menu__item"><a href="#" class="menu__link">Contact</a></li>
   </ul>
 </template>
 
-<template name="MyTemplate">
-	<div><h2> BODY OF the rest of the page</h2></div>
+<template name="Home">
+	<div><h2> HOME Page (BODY OF the rest of the page)</h2></div>
+</template>
+
+<template name="Search">
+	<div>
+		<h2> Search INFO By Address</h2>
+    <h3>To SEE RESULTS PLEASE CLICK: F12</h3>
+    <h3>And then type Console , the result is in this array.</h3>
+		<form id="Search">
+			Please Type Address: <input type="text" name="address">
+      <input type="submit" value="Submit">
+		</form>
+	</div>
 </template>

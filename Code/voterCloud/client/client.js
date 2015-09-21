@@ -4,7 +4,11 @@ Router.configure({
 });
 
 Router.route('/', function () {
-  this.render('MyTemplate');
+  this.render('Home');
+});
+
+Router.route('/Search', function () {
+  this.render('Search');
 });
 
 Template.layout.events({
@@ -49,5 +53,22 @@ Template.layout.events({
 			$page.off( transitionEnd );
 		} );
 
+	}
+});
+Template.Search.events({
+	'submit #Search': function(event){
+		event.preventDefault();
+		var address = event.target.address.value;
+		console.log(address);
+		
+		Meteor.call('civicAddress', address,  function (error, result) {
+			if(error) {
+				window.alert("Error: " + error.reason);
+				console.log("error occured on receiving data on server. ", error );
+			} else {
+				console.log("result: ", result);
+			}
+			
+		});
 	}
 });
