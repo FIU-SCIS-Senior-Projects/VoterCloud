@@ -65,23 +65,31 @@ Template.Search.events({
 		
 		Meteor.call('civicAddress', address,  function (error, result) {
 			if(error) {
-				window.alert("Error: " + error.reason);
 				console.log("error occured on receiving data on server. ", error );
 			} else {
+
 				var arr = [];
-				for (var i = 0; i<result.offices.length; i++) {
-					var called=null;
-					for (var k = 0; k < result.offices[i].officialIndices.length; k++) {
-						called=result.officials[result.offices[i].officialIndices[k]].name;
-					};
-					var obg = {
-						name: result.offices[i].name,
-						fullname: called
-					};
-					arr.push(obg);
+
+				for ( var i = 0; i < result.offices.length; i++ ) {
+					
+					for ( var k = 0; k < result.offices[ i ].officialIndices.length; k++ ) {
+
+						var called = result.officials[ result.offices[ i ].officialIndices[ k ] ];
+						var obg = {
+							title: result.offices[ i ].name,
+							fullname: called.name,
+							party: ( called.hasOwnProperty( 'party' ) )? called.party : "",
+							phone: ( called.hasOwnProperty( 'phones' ) )? called.phones[ 0 ] : "",
+							hasPhoto: called.hasOwnProperty( 'photoUrl' ),
+							photo: ( called.hasOwnProperty( 'photoUrl' ) )? ""+called.photoUrl : "#"
+
+						};
+						arr.push(obg);
+					}
 				}
 				Session.set('jason',arr);
 				console.log(arr);
+				console.log(result);
 			}
 		});
 	}

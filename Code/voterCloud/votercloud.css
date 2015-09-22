@@ -3,7 +3,7 @@ html, body {
 	padding: 0;
 	height: 100%; /* For the demo since the page is mostly empty */
  	overflow-x: hidden;
-	background: #3184a1; /* Same color as your menu */
+	background: #fff; /* Same color as your menu */
 
 }
 #page {
