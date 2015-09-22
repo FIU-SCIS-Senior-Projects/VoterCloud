@@ -68,23 +68,61 @@ Template.Search.events({
 				console.log("error occured on receiving data on server. ", error );
 			} else {
 
-				var arr = [];
+				var arr = [ ];
 
-				for ( var i = 0; i < result.offices.length; i++ ) {
-					
-					for ( var k = 0; k < result.offices[ i ].officialIndices.length; k++ ) {
+				for( var prop2 in result.divisions )
+				{
+					if( result.divisions.hasOwnProperty( prop2 ) )
+					{
+						var prop = result.divisions[ prop2 ];
+						var division = prop.name;
+						if( prop.hasOwnProperty( 'officeIndices' ) ){
 
-						var called = result.officials[ result.offices[ i ].officialIndices[ k ] ];
-						var obg = {
-							title: result.offices[ i ].name,
-							fullname: called.name,
-							party: ( called.hasOwnProperty( 'party' ) )? called.party : "",
-							phone: ( called.hasOwnProperty( 'phones' ) )? called.phones[ 0 ] : "",
-							hasPhoto: called.hasOwnProperty( 'photoUrl' ),
-							photo: ( called.hasOwnProperty( 'photoUrl' ) )? ""+called.photoUrl : "#"
+							for ( var i = 0; i < prop.officeIndices.length; i++ ) {
 
-						};
-						arr.push(obg);
+								var office = result.offices[ prop.officeIndices[ i ] ];
+								var hasLevel = office.hasOwnProperty( 'levels' );
+								var level = ( hasLevel )? office.levels[ 0 ] : "";
+								var hasOfficeName = office.hasOwnProperty( 'name' );
+								var officeName = ( hasOfficeName )? office.name : "";
+								var hasRole = office.hasOwnProperty( 'roles' );
+								var role = ( hasRole )? office.roles[ 0 ] : "";
+
+								for ( var j = 0; j < office.officialIndices.length; j++ ) {
+
+									var official = result.officials[ office.officialIndices[ j ] ];
+									var officialName = official.name;
+									var hasParty = official.hasOwnProperty( 'party' );
+									var party = ( hasParty )? official.party : "";
+									var hasPhone = official.hasOwnProperty( 'phones' );
+									var phone = ( hasPhone )? official.phones[ 0 ] : "";
+									var hasPhoto = official.hasOwnProperty( 'photoUrl' );
+									var photo = ( hasPhoto )? official.photoUrl : "";
+									/**
+									* ALL THE PROPERTIES OF THE OBJECT DESCRIBED HERE !! FOR EACH OFFICIAL !!
+									*/
+									var obg = {
+										division: division,
+										hasLevel: hasLevel,
+										level: level,
+										hasOfficeName: hasOfficeName,
+										officeName: officeName,
+										hasRole: hasRole,
+										role: role,
+										officialName: officialName,
+										hasParty: hasParty,
+										party: party,
+										hasPhone: hasPhone,
+										phone: phone,
+										hasPhoto: hasPhoto,
+										photo: photo
+									};
+
+									arr.push( obg );
+
+								}
+							}
+						}
 					}
 				}
 				Session.set('jason',arr);
@@ -97,6 +135,6 @@ Template.Search.events({
 
 Template.Search.helpers({
 	officials: function(){
-		return Session.get('jason');
+		return Session.get( 'jason' );
 	}
 });
