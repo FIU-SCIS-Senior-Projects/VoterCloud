@@ -5,7 +5,14 @@ Meteor.startup(function(){
 
 Meteor.methods({
 	civicAddress: function (address) {
-            var url="https://www.googleapis.com/civicinfo/v2/representatives?address="+address+"&key=AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4";
+			/**
+			*	TYPE YOUR GOOGLE KEY HERE =======================================
+			**/
+			var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
+			/**
+			* YOUR GOOGLE API KEY TYPE HERE =====================================
+			**/
+            var url="https://www.googleapis.com/civicinfo/v2/representatives?address="+address+"&key="+key;
             var ret= Meteor.http.call("GET", url);
 			if(ret.statusCode==200) {
 				var respJson = JSON.parse(ret.content);

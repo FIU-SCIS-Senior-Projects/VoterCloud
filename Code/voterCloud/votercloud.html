@@ -22,11 +22,11 @@
 
 <template name="slide">
   <ul id="menu">
-    <li class="menu__item"><a href="/" class="menu__link">Home</a></li>
-    <li class="menu__item"><a href="/Search" class="menu__link">Search</a></li>
-    <li class="menu__item"><a href="#" class="menu__link">Survey</a></li>
-    <li class="menu__item"><a href="#" class="menu__link">Research</a></li>
-    <li class="menu__item"><a href="#" class="menu__link">Contact</a></li>
+    <li class="menuitem"><a href="/" class="menu-link">Home</a></li>
+    <li class="menuitem"><a href="/Search" class="menu-link">Search</a></li>
+    <li class="menuitem"><a href="#" class="menu-link">Survey</a></li>
+    <li class="menuitem"><a href="#" class="menu-link">Research</a></li>
+    <li class="menuitem"><a href="#" class="menu-link">Contact</a></li>
   </ul>
 </template>
 
@@ -36,12 +36,14 @@
 
 <template name="Search">
 	<div>
-		<h2> Search INFO By Address</h2>
-    <h3>To SEE RESULTS PLEASE CLICK: F12</h3>
-    <h3>And then type Console , the result is in this array.</h3>
+		<h2> Search Polticians By Address</h2>
 		<form id="Search">
 			Please Type Address: <input type="text" name="address">
-      <input type="submit" value="Submit">
+    <input type="submit" value="Submit">
+    {{#each officials}}
+    <br>
+      <div><p>{{fullname}} : {{name}} </p></div>
+    {{/each}}
 		</form>
 	</div>
 </template>
