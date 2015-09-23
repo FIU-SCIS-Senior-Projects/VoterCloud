@@ -122,10 +122,19 @@ html, body {
 }
 #liSearch {
   padding: 10px;
-  overflow: auto;
+  overflow: hidden;
 }
 #liSearch:hover {
   background: #eee;
   cursor: pointer;
 }
 
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 0;
+}
+td, tr {
+	border: 0;
+	padding: 0;
+}

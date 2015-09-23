@@ -36,9 +36,9 @@
 
 <template name="Search">
 	<div>
-		<h2> Search Polticians By Address</h2>
+		<h2> Search Representative By Address</h2>
 		<form id="Search">
-			Please Type Address: <input type="text" name="address">
+			Please Type The Address: <input type="text" name="address">
     <input type="submit" value="Submit">
 		</form>
 	</div>
@@ -46,19 +46,27 @@
     <ul id="ulSearch">
       {{#each officials}}
         <li id="liSearch">
-          {{#if hasPhoto}}
-            <img id="imgSearch" src={{photo}} height="150" width="150">
-          {{else}}
-            <img id="imgSearch" src="http://richard.eriophora.com.au/images/jpg/nopic.jpg" height="150" width="150">
-          {{/if}}
-          <h3 id="h3Search">{{officialName}} - {{officeName}}</h3>
-            <p id="pSearch">
-              Division: {{division}}.<br>
-              {{#if hasLevel}} Level: {{level}}.<br>{{/if}}
-              {{#if hasRole}} My role is: {{role}}.<br>{{/if}}
-              {{#if hasParty}} I am {{party}}.<br>{{/if}}
-              {{#if hasPhone}} Please contact me {{phone}}.<br>{{/if}}
-            </p>
+          <table>
+            <tr>
+              <td>
+                {{#if hasPhoto}}
+                  <img id="imgSearch" src={{photo}} height="150" width="150">
+                {{else}}
+                  <img id="imgSearch" src="http://richard.eriophora.com.au/images/jpg/nopic.jpg" height="150" width="150">
+                {{/if}}
+              </td>
+              <td>
+                <h3 id="h3Search">{{officialName}} - {{officeName}}</h3>
+                <p id="pSearch">
+                Division: {{division}}.<br>
+                {{#if hasLevel}} Level: {{level}}.<br>{{/if}}
+                {{#if hasRole}} My role is: {{role}}.<br>{{/if}}
+                {{#if hasParty}} I am {{party}}.<br>{{/if}}
+                {{#if hasPhone}} Please contact me {{phone}}.<br>{{/if}}
+                </p>
+              </td>
+            </tr>
+          </table>
         </li>
       {{/each}}
     </ul>
