@@ -75,6 +75,7 @@ Template.Search.events({
 					if( result.divisions.hasOwnProperty( prop2 ) )
 					{
 						var prop = result.divisions[ prop2 ];
+						var tag = prop2;
 						var division = prop.name;
 						if( prop.hasOwnProperty( 'officeIndices' ) ){
 
@@ -115,7 +116,8 @@ Template.Search.events({
 										hasPhone: hasPhone,
 										phone: phone,
 										hasPhoto: hasPhoto,
-										photo: photo
+										photo: photo,
+										tag: tag
 									};
 
 									arr.push( obg );
@@ -125,9 +127,18 @@ Template.Search.events({
 						}
 					}
 				}
-				Session.set('jason',arr);
-				console.log(arr);
-				console.log(result);
+				function compare(a, b)
+				{
+					if( a.tag.length < b.tag.length )
+						return -1;
+					if( a.tag.length > b.tag.length )
+						return 1;
+					return 0;
+				};
+				arr.sort( compare );
+				Session.set( 'jason',arr );
+				console.log( arr );
+				console.log( result );
 			}
 		});
 	}

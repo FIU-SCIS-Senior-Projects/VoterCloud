@@ -3,16 +3,16 @@ html, body {
 	padding: 0;
 	height: 100%; /* For the demo since the page is mostly empty */
  	overflow-x: hidden;
-	background: #fff; /* Same color as your menu */
+	background: #3184a1; /* Same color as your menu */
 
 }
 #page {
 	position: relative; /* Set the position property so z-index will apply */
 	z-index: 20; /* Make sure this is higher than #menu */
 	padding: 15px;
-
+	min-height: 100vh;
+	/*height: 100%;*/
 	background: #fff;
-	height: 100%;
 }
 #toggle-menu2 {
 	position: absolute;
@@ -102,3 +102,30 @@ html, body {
   overflow: hidden;
   opacity: 0.0;
 }
+
+#divSearch {
+	margin: 20px;
+}
+#ulSearch {
+  list-style-type: none;
+  width: 500px;
+}
+#h3Search {
+  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+}
+#imgSearch {
+  float: left;
+  margin: 0 15px 0 0;
+}
+#pSearch {
+  font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+#liSearch {
+  padding: 10px;
+  overflow: auto;
+}
+#liSearch:hover {
+  background: #eee;
+  cursor: pointer;
+}
+
