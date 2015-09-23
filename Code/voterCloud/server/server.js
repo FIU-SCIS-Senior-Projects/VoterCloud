@@ -16,7 +16,6 @@ Meteor.methods({
             var ret= Meteor.http.call("GET", url);
 			if(ret.statusCode==200) {
 				var respJson = JSON.parse(ret.content);
-				console.log("response received.");
 				return respJson;
 			} else {
 				console.log("Response issue: ", ret.statusCode);

@@ -2,7 +2,9 @@ Session.setDefault('image', 1);
 Session.setDefault('jason', null);
 
 Router.configure({
-  layoutTemplate: "layout"
+  layoutTemplate: "layout",
+  loadingTemplate: 'loading',
+  notFoundTemplate: 'notFound',
 });
 
 Router.route('/', function () {
@@ -61,7 +63,6 @@ Template.Search.events({
 	'submit #Search': function(event){
 		event.preventDefault();
 		var address = event.target.address.value;
-		console.log(address);
 		
 		Meteor.call('civicAddress', address,  function (error, result) {
 			if(error) {
