@@ -1,1 +1,0 @@
-Civic = new Mongo.Collection(null);
