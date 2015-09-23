@@ -2,13 +2,9 @@ Session.setDefault('image', 1);
 Session.setDefault('jason', null);
 
 Router.configure({
-<<<<<<< HEAD
-  layoutTemplate: "layout"
-=======
-  layoutTemplate: "layout",
-  loadingTemplate: 'loading',
-  notFoundTemplate: 'notFound',
->>>>>>> 42e0b2ef70a55dd9fca1380fe21b77543cfe4950
+	layoutTemplate: "layout",
+	loadingTemplate: 'loading',
+	notFoundTemplate: 'notFound'
 });
 
 Router.route('/', function () {
@@ -67,10 +63,7 @@ Template.Search.events({
 	'submit #Search': function(event){
 		event.preventDefault();
 		var address = event.target.address.value;
-<<<<<<< HEAD
 		console.log(address);
-=======
->>>>>>> 42e0b2ef70a55dd9fca1380fe21b77543cfe4950
 		
 		Meteor.call('civicAddress', address,  function (error, result) {
 			if(error) {
