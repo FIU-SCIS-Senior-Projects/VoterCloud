@@ -58,14 +58,14 @@
               </td>
               <td>
                 <h3 id="officialName">
-                  {{officialName}}<br/><span class="officeName">{{officeName}}</span>
+                  {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
                 </h3>
                 <p id="pSearch">
                 Division: {{division}}.<br>
-                {{#if hasLevel}} Level: {{level}}.<br>{{/if}}
-                {{#if hasRole}} My role is: {{role}}.<br>{{/if}}
-                {{#if hasParty}} I am {{party}}.<br>{{/if}}
-                {{#if hasPhone}} Please contact me {{phone}}.<br>{{/if}}
+                {{#if hasPhone}} Contact: {{phone}}.<br>{{/if}}
+                {{#if hasFacebook}}<a href={{facebook}}><img src="/facebook.png" width="32" hight="32"></a>{{/if}}
+                {{#if hasTwitter}}<a href={{twitter}}><img src="/twitter.png" width="32" hight="32"></a>{{/if}}
+                {{#if hasYoutube}}<a href={{youtube}}><img src="/youtube.png" width="32" hight="32"></a>{{/if}}
                 </p>
               </td>
             </tr>

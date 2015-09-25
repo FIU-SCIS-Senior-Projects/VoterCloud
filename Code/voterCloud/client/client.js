@@ -88,10 +88,38 @@ Template.Search.events({
 									var officialName = official.name;
 									var hasParty = official.hasOwnProperty( 'party' );
 									var party = ( hasParty )? official.party : "";
+									var partyImg = ( hasParty && party != "Unknown" )? "/" + party + ".png" : "/blank.gif";
 									var hasPhone = official.hasOwnProperty( 'phones' );
 									var phone = ( hasPhone )? official.phones[ 0 ] : "";
 									var hasPhoto = official.hasOwnProperty( 'photoUrl' );
 									var photo = ( hasPhoto )? official.photoUrl : "";
+									var hasFacebook = false;
+									var facebook;
+									var hasYoutube = false;
+									var youtube;
+									var hasTwitter = false;
+									var twitter;
+
+									if( official.hasOwnProperty( 'channels' ) ) {
+
+										for ( var h = 0; h < official.channels.length; h++ ) {	
+											switch ( official.channels[ h ].type )
+											{
+												case "Twitter":
+													twitter = "https://twitter.com/"+official.channels[ h ].id;
+													hasTwitter = true;
+													break;
+												case "Facebook":
+													facebook = "https://www.facebook.com/"+official.channels[ h ].id;
+													hasFacebook = true;
+													break;
+												case "YouTube":
+													youtube = "https://www.youtube.com/user/"+official.channels[ h ].id;
+													hasYoutube = true;
+													break;
+											}
+										}
+									}
 									/**
 									* ALL THE PROPERTIES OF THE OBJECT DESCRIBED HERE !! FOR EACH OFFICIAL !!
 									*/
@@ -106,11 +134,18 @@ Template.Search.events({
 										officialName: officialName,
 										hasParty: hasParty,
 										party: party,
+										partyImg: partyImg,
 										hasPhone: hasPhone,
 										phone: phone,
 										hasPhoto: hasPhoto,
 										photo: photo,
-										tag: tag
+										tag: tag,
+										hasFacebook: hasFacebook,
+										facebook: facebook,
+										hasYoutube: hasYoutube,
+										youtube: youtube,
+										hasTwitter: hasTwitter,
+										twitter: twitter
 									};
 
 									arr.push( obg );
