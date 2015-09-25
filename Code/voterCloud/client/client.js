@@ -29,11 +29,7 @@ Template.layout.events({
 
 	    $body.addClass( 'animating' );
 
-		/***
-		* Determine the direction of the animation and
-		* add the correct direction class depending
-		* on whether the menu was already visible.
-		*/
+
 		if ( $body.hasClass( 'menu-visible' ) ) {
 			$body.addClass( 'left' );
 		} else {
@@ -45,12 +41,7 @@ Template.layout.events({
 		$image.attr("src","/options21.png");
 		Session.set( 'image', Session.get( 'image' ) * -1 );
 
-		/***
-		* When the animation (technically a CSS transition)
-		* has finished, remove all animating classes and
-		* either add or remove the "menu-visible" class 
-		* depending whether it was visible or not previously.
-		*/
+
 		$page.on( transitionEnd, function() {
 			$body.removeClass( 'animating left right' )
 			$body.toggleClass( 'menu-visible' );

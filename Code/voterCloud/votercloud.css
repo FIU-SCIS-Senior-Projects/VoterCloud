@@ -1,44 +1,44 @@
 html, body {
-	margin: 0;
-	padding: 0;
-	height: 100%; /* For the demo since the page is mostly empty */
- 	overflow-x: hidden;
-	background: #3184a1; /* Same color as your menu */
+  margin: 0;
+  padding: 0;
+  height: 100%; /* For the demo since the page is mostly empty */
+  overflow-x: hidden;
+  background: #3184a1; /* Same color as your menu */
 
 }
 #page {
-	position: relative; /* Set the position property so z-index will apply */
-	z-index: 20; /* Make sure this is higher than #menu */
-	padding: 15px;
-	min-height: 100vh;
-	/*height: 100%;*/
-	background: #fff;
+  position: relative; /* Set the position property so z-index will apply */
+  z-index: 20; /* Make sure this is higher than #menu */
+  padding: 15px;
+  min-height: 100vh;
+  /*height: 100%;*/
+  background: #fff;
 }
 #toggle-menu2 {
-	position: absolute;
-	top: 3px;
-	left: 3px;
-	z-index: 30;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: 30;
 }
 #menu {
-	display: none;
-	position: absolute;
-	top: 0;
-	left: 0;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-	width: 190px;
-	padding: 30px 25px;
-	margin: 0;
+  width: 190px;
+  padding: 30px 25px;
+  margin: 0;
 
-	list-style: none;
-	background: #3184a1;
-	z-index: 10; /* Make sure the z-index is lower than the #page */
+  list-style: none;
+  background: #3184a1;
+  z-index: 10; /* Make sure the z-index is lower than the #page */
 }
 #menu a {
-	display: block;
-	color: #E5E9EA;
-	padding: 15px 0;
-	border-bottom: 1px solid rgba( 0, 0, 0, 0.2 );
+  display: block;
+  color: #E5E9EA;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba( 0, 0, 0, 0.2 );
 }
 /* Show the menu when animating or visible */
 .animating #menu, .menu-visible #menu {
@@ -55,7 +55,7 @@ html, body {
 /***
  * If the left class is present then transform
  * the #page element 240px to the left.
- */	
+ */ 
 .animating.left #page {
   transform: translate3d( -240px, 0, 0 );
   -webkit-transform: translate3d( -240px, 0, 0 );
@@ -104,21 +104,32 @@ html, body {
 }
 
 #divSearch {
-	margin: 20px;
+
 }
+
 #ulSearch {
   list-style-type: none;
-  width: 500px;
+  padding-left: 0;
 }
-#h3Search {
-  font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
+#officialName {
+  font: bold 18px/1.5 Helvetica, Verdana, sans-serif;
+  margin: 0;
+  word-wrap: break-word;
+  line-height: 18px;
+}
+.officeName {
+  font: bold italic 12px/1.5 Helvetica, Verdana, sans-serif;
 }
 #imgSearch {
   float: left;
   margin: 0 15px 0 0;
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
 }
 #pSearch {
   font: 200 12px/1.5 Georgia, Times New Roman, serif;
+  margin-top: 0;
 }
 #liSearch {
   padding: 10px;
@@ -130,11 +141,11 @@ html, body {
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
-	margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
 }
 td, tr {
-	border: 0;
-	padding: 0;
+  border: 0;
+  padding: 0;
 }

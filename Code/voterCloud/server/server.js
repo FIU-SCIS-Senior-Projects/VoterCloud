@@ -26,4 +26,4 @@ Meteor.methods({
 
         }
 });
-/*https://gist.github.com/nachiket-p/2922814#file-app-js-L12*/
+/*https://gist.github.com/nachiket-p/2922814#file-app-js-L12*///For beeter exlantion how to make http calls in meteor
