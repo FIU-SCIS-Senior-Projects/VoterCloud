@@ -88,7 +88,7 @@ html, body {
   position: fixed;
   z-index: 100;
   top: 0;
-  left: 0;
+  left: 240;
   overflow: hidden; 
   width: 0;
   height: 0;

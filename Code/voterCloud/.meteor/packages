@@ -11,3 +11,4 @@ jquery
 iron:router
 http
 sacha:spin
+mdg:geolocation
