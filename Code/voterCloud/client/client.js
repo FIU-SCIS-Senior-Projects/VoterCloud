@@ -4,6 +4,7 @@ Session.setDefault('jason', null);
 Session.setDefault('lat', undefined);
 Session.setDefault('lon', undefined);
 Session.setDefault('ad', undefined);
+Session.setDefault('add', undefined);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -25,8 +26,24 @@ Meteor.startup(function() {
         navigator.geolocation.getCurrentPosition(function(position) {
             Session.set('lat', position.coords.latitude);
             Session.set('lon', position.coords.longitude);
+        	var lat,lon;
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+			var addresss="";
+			Meteor.call('address', lat, lon,  function (error, result) {
+				if(error) {
+					console.log("error occured on receiving data on server. ", error );
+				}
+				else {
+					addresss = result.results[0].formatted_address;
+					Session.set('add', addresss);
+					console.log("Printing");
+					console.log(addresss);
+				}
+			});
         });
     }
+
 });
 
 Template.layout.events({
@@ -65,21 +82,10 @@ Template.layout.events({
 	}
 });
 
-function gtthat()
+function gpscordinates()
 {
-	var addresss="";
-	Meteor.call('address', Session.get( 'lat' ), Session.get( 'lon' ),  function (error, result) {
-		if(error) {
-			console.log("error occured on receiving data on server. ", error );
-		}
-		else {
-			addresss = result.results[0].formatted_address;
-			Session.set('ad', addresss);
-			console.log("Printing");
-			console.log(addresss);
-		}
-	});
 
+	Session.set('ad', Session.get('add'));	
 }
 
 function submiting()
@@ -93,7 +99,6 @@ function submiting()
 	else {
 		address = event.target.address.value;
 	}
-	Session.set('ad', undefined);
 
 	Meteor.call('civicAddress', address,  function (error, result) {
 		if(error) {
@@ -212,11 +217,12 @@ function submiting()
 Template.Search.events({
 	'click #but' : function(event){
 		event.preventDefault();
-		gtthat();
+		gpscordinates();
 		submiting();
 	},
 	'submit #Search': function(event){
 		event.preventDefault();
+		Session.set('ad', undefined);
 		submiting();
 	}
 });
@@ -227,5 +233,3 @@ Template.Search.helpers({
 		return Session.get( 'jason' );
 	}
 });
-
-//Geolocation.latLng();
