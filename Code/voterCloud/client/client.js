@@ -5,6 +5,9 @@ Session.setDefault('lat', undefined);
 Session.setDefault('lon', undefined);
 Session.setDefault('ad', undefined);
 Session.setDefault('add', undefined);
+Session.setDefault('ip', undefined);
+Session.setDefault('elects', undefined);
+Session.setDefault('voteing', undefined);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -18,6 +21,10 @@ Router.route('/', function () {
 
 Router.route('/Search', function () {
   this.render('Search');
+});
+
+Router.route('/Elections', function () {
+  this.render('Elections');
 });
 
 Meteor.startup(function() {
@@ -42,9 +49,11 @@ Meteor.startup(function() {
 				}
 			});
         });
+    	getlocationbyip();
     }
 
 });
+
 
 Template.layout.events({
 	'click #toggle-menu, click #pagemask, click .menuitem' : function(evt, inst) {
@@ -81,11 +90,23 @@ Template.layout.events({
 
 	}
 });
+function getlocationbyip(){
+	$(document).ready(function() {
+		$.getJSON("http://www.telize.com/geoip?callback=?",
+			function(data) {
+				var addresss = data.city+" "+data.region_code+" "+data.postal_code;
+				Session.set('ip', addresss);
+				console.log("Printing ip");
+				console.log(addresss);
+			}
+		);
+	});
+}
 
 function gpscordinates()
 {
 
-	Session.set('ad', Session.get('add'));	
+	Session.set( 'ad', Session.get('add') || Session.get('ip') );	
 }
 
 function submiting()
@@ -233,3 +254,69 @@ Template.Search.helpers({
 		return Session.get( 'jason' );
 	}
 });
+Template.Elections.helpers({
+	elections: function() {
+		elects();
+		return Session.get('elects');
+		}
+	}
+
+);
+Template.Elections.events({
+	'click #voteing' : function(event){
+		event.preventDefault();
+		var t=this.ocdDivisionId;
+		var p=t.indexOf('state:');
+		var add=t.substring(p+6,p+8);
+		console.log(t);
+		Meteor.call('voteinfo', add, this.id, function (error, result) {
+			if(error) {
+				console.log("error occured on receiving data on server. ", error );
+			}
+			else {
+				console.log("print the results");
+				console.log(result);
+				Session.set('voteing',result);
+			}
+		});
+	}
+});
+Template.votes.helpers({
+	voteing: function(event){
+		var tt=Session.get('voteing');
+		console.log(tt);
+		console.log("helper");
+		var obg=undefined;
+		if(tt){
+			if(tt.election.id==this.id) {
+				obg={
+					isthere: true,
+					place: tt.state[0].name,
+					absenteeVotingInfoUrl: tt.state[0].electionAdministrationBody.absenteeVotingInfoUrl,
+					electionInfoUrl: tt.state[0].electionAdministrationBody.electionInfoUrl,
+					electionRegistrationConfirmationUrl: tt.state[0].electionAdministrationBody.electionRegistrationConfirmationUrl,
+					electionRegistrationUrl: tt.state[0].electionAdministrationBody.electionRegistrationUrl,
+					electionRulesUrl: tt.state[0].electionAdministrationBody.electionRulesUrl,
+					forname: tt.state[0].electionAdministrationBody.name,
+					votingLocationFinderUrl: tt.state[0].electionAdministrationBody.votingLocationFinderUrl
+				};
+			}
+		}
+		console.log(obg);
+		return [obg];
+	}
+});
+
+function elects(){
+	Meteor.call('elections', function (error, result) {
+		if(error) {
+			console.log("error occured on receiving data on server. ", error );
+		}
+		else {
+			console.log(result.elections);
+			Session.set('elects', result.elections.slice( 1 ));
+		}
+	});
+}
+
+

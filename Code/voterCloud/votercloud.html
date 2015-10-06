@@ -24,9 +24,9 @@
 <template name="slide">
   <ul id="menu">
     <li class="menuitem"><a href="/" class="menu-link">Home</a></li>
-    <li class="menuitem"><a href="/Search" class="menu-link">Search</a></li>
+    <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
     <li class="menuitem"><a href="#" class="menu-link">Survey</a></li>
-    <li class="menuitem"><a href="#" class="menu-link">Research</a></li>
+    <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
     <li class="menuitem"><a href="#" class="menu-link">Contact</a></li>
   </ul>
 </template>
@@ -75,6 +75,49 @@
       {{/each}}
     </ul>
   </div>
+</template>
+
+<template name="Elections">
+  <div>
+    <h2> Elections comming </h2>
+    <div id ="elects">
+      <ul id="ilElects">
+        {{#each elections}}
+          <li>
+            <span id="voteing"><h3><a href="#">{{name}}</a></h3></span>
+            <h3>{{electionDay}}</h3>
+            {{> votes}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="votes">
+{{#each voteing}}
+  {{#if isthere}}
+    <li id="liSearch">
+      <table>
+        <tr>
+          <td>
+            <h3 id="officialName">
+              {{place}} <br/><span class="officeName">{{forname}}</span>
+            </h3>
+            <p id="pSearch">
+              <a href={{absenteeVotingInfoUrl}}>Absentee voting</a><br>
+              <a href={{electionInfoUrl}}>Info</a><br>
+              <a href={{electionRegistrationConfirmationUrl}}>registration confirmation</a><br>
+              <a href={{electionRegistrationUrl}}>Registration</a><br>
+              <a href={{electionRulesUrl}}>Rules</a><br>
+              <a href={{votingLocationFinderUrl}}>Locations</a><br>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </li>
+  {{/if}}
+{{/each}}
 </template>
 
 <template name="loading">
