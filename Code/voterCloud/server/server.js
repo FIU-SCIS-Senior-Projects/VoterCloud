@@ -1,8 +1,3 @@
-/*
-Meteor.startup(function(){
-    
-});
-*/
 Meteor.methods({
 	civicAddress: function (address) {
 			/**
@@ -44,6 +39,46 @@ Meteor.methods({
 				var errorJson = JSON.parse(ret.content);
 				throw new Meteor.Error(ret.statusCode, errorJson.error);
 			}
-    }
+    	},
+    elections: function() {
+			/**
+			*	TYPE YOUR GOOGLE KEY HERE =======================================
+			**/
+			var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
+			/**
+			* YOUR GOOGLE API KEY TYPE HERE =====================================
+			**/
+			var url="https://www.googleapis.com/civicinfo/v2/elections?key="+key;
+			var ret= Meteor.http.call("GET", url);
+			if(ret.statusCode==200) {
+				var respJson = JSON.parse(ret.content);
+				console.log("response received.");
+				return respJson;
+			} else {
+				console.log("Response issue: ", ret.statusCode);
+				var errorJson = JSON.parse(ret.content);
+				throw new Meteor.Error(ret.statusCode, errorJson.error);
+			}
+		},
+    voteinfo: function(address,electionId) {
+			/**
+			*	TYPE YOUR GOOGLE KEY HERE =======================================
+			**/
+			var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
+			/**
+			* YOUR GOOGLE API KEY TYPE HERE =====================================
+			**/
+			var url="https://www.googleapis.com/civicinfo/v2/voterinfo?address="+address+"&electionId="+electionId+"&key="+key;
+			var ret= Meteor.http.call("GET", url);
+			if(ret.statusCode==200) {
+				var respJson = JSON.parse(ret.content);
+				console.log("response received.");
+				return respJson;
+			} else {
+				console.log("Response issue: ", ret.statusCode);
+				var errorJson = JSON.parse(ret.content);
+				throw new Meteor.Error(ret.statusCode, errorJson.error);
+			}
+		}
 });
 
