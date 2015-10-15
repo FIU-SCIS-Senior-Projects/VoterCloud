@@ -1,3 +1,9 @@
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3
+  DESCRIPTION: Here is the HTML code that describe the content of the page and
+  it's layout. based on the meteorJs kind of way.
+-->
 <head>
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
   <title>VoterCloud</title>
@@ -27,12 +33,12 @@
     <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
     <li class="menuitem"><a href="#" class="menu-link">Survey</a></li>
     <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
-    <li class="menuitem"><a href="#" class="menu-link">Contact</a></li>
+    <li class="menuitem"><a href="/About" class="menu-link">About</a></li>
   </ul>
 </template>
 
 <template name="Home">
-  <div id="check"><h2> HOME Page (BODY OF the rest of the page)</h2></div>
+  <div id="check"><h2> HOME Page (Present here login system)</h2></div>
 </template>
 
 <template name="Search">
@@ -54,7 +60,11 @@
                 {{#if hasPhoto}}
                   <img id="imgSearch" src={{photo}} height="150" width="150">
                 {{else}}
-                  <img id="imgSearch" src="http://richard.eriophora.com.au/images/jpg/nopic.jpg" height="150" width="150">
+                  {{#if hasface}}
+                    {{> facebookImage}}
+                  {{else}}
+                    <img id="imgSearch" src="http://richard.eriophora.com.au/images/jpg/nopic.jpg" height="150" width="150">
+                  {{/if}} 
                 {{/if}}
               </td>
               <td>
@@ -77,15 +87,19 @@
   </div>
 </template>
 
+<template name="facebookImage">
+  <img id="imgSearch" src={{fcimage}} height="150" width="150">
+</template>
+
 <template name="Elections">
   <div>
-    <h2> Elections comming </h2>
+    <h2> Upcoming Elections </h2>
     <div id ="elects">
       <ul id="ilElects">
         {{#each elections}}
           <li>
-            <span id="voteing"><h3><a href="#">{{name}}</a></h3></span>
-            <h3>{{electionDay}}</h3>
+            <span id="voting"><h3><a href="#">{{name}}</a></h3>
+            <h5>{{electionDay}}</h5></span>
             {{> votes}}
           </li>
         {{/each}}
@@ -95,7 +109,7 @@
 </template>
 
 <template name="votes">
-{{#each voteing}}
+{{#each voting}}
   {{#if isthere}}
     <li id="liSearch">
       <table>
@@ -129,4 +143,16 @@
     <h2>404</h2>
     <p>Page Not Found !!!</p>
   </div>
+</template>
+
+<template name="About">
+  <h1>VoterCloud</h1>
+  <br>
+  <br>
+  <h3> Main Programmer and documenter: Eldar Feldbeine.</h3>
+  <h3> Main Coordinator and documenter: Raul Garay.</h3>
+  <h3> Mentor and product owner: Gus Monge.</h3>
+  <br>
+  <h5> <a href="https://github.com/FIU-SCIS-Senior-Projects/VoterCloud">https://github.com/FIU-SCIS-Senior-Projects/VoterCloud</a></h5>
+  <h5> FIU-Senior Project</h5>
 </template>

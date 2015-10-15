@@ -1,3 +1,9 @@
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 1
+	DESCRIPTION: I set out the Sessions and router configuration to do routing and
+	transitions. It's done during sprint 1.
+*/
 Session.setDefault('image', 1);
 Session.setDefault('jason', null);
 
@@ -7,7 +13,8 @@ Session.setDefault('ad', undefined);
 Session.setDefault('add', undefined);
 Session.setDefault('ip', undefined);
 Session.setDefault('elects', undefined);
-Session.setDefault('voteing', undefined);
+Session.setDefault('voting', undefined);
+Session.setDefault('fcimage', []);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -26,7 +33,16 @@ Router.route('/Search', function () {
 Router.route('/Elections', function () {
   this.render('Elections');
 });
+Router.route('/About', function () {
+  this.render('About');
+});
 
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 2
+	DESCRIPTION: The meteor startup is the initialize functions, that are run before any
+	other functions. I wrote here mainly the gps call to get the device coordinates.
+*/
 Meteor.startup(function() {
     if (Session.get('lat') == undefined 
              || Session.get('lon') == undefined) {
@@ -54,7 +70,12 @@ Meteor.startup(function() {
 
 });
 
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 2
+	DESCRIPTION: Here i put the menu transitions, so it match perfectly with the css, Take notice it's
+	using JQuery.
+*/
 Template.layout.events({
 	'click #toggle-menu, click #pagemask, click .menuitem' : function(evt, inst) {
 		//evt.preventDefault();
@@ -90,6 +111,12 @@ Template.layout.events({
 
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: Here I get the location address by IP Locations. Calling here a diffrent api
+	that give me the address from the IP.
+*/
 function getlocationbyip(){
 	$(document).ready(function() {
 		$.getJSON("http://www.telize.com/geoip?callback=?",
@@ -102,13 +129,23 @@ function getlocationbyip(){
 		);
 	});
 }
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: I set the session so that i can move the data between templates.
+*/
 function gpscordinates()
 {
 
 	Session.set( 'ad', Session.get('add') || Session.get('ip') );	
 }
 
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 2
+	DESCRIPTION: Here i worte the code that implemented the main logic of the Representives,
+	It using 2 diffrent api's calls and three level loop parsing to convert the data to more readble format.
+*/
 function submiting()
 {
 	console.log( "calling submit" );
@@ -164,6 +201,8 @@ function submiting()
 								var youtube;
 								var hasTwitter = false;
 								var twitter;
+								var hasface = false;
+								var faceId;
 
 								if( official.hasOwnProperty( 'channels' ) ) {
 
@@ -177,6 +216,23 @@ function submiting()
 											case "Facebook":
 												facebook = "https://www.facebook.com/"+official.channels[ h ].id;
 												hasFacebook = true;
+												faceId = official.channels[ h ].id;
+												if(!hasPhoto){
+													hasface = true;
+													Meteor.call('facebookImage', official.channels[ h ].id,  function (error, result) {
+														if(error) {
+															console.log("error occured on receiving data on server. ", error );
+														}
+														else {
+															console.log("printing image");
+															console.log(result);
+															var ppp=Session.get('fcimage');
+															ppp.push(result);
+															Session.set('fcimage',ppp);
+															console.log(Session.get('fcimage'));
+														}
+													});
+												}
 												break;
 											case "YouTube":
 												youtube = "https://www.youtube.com/user/"+official.channels[ h ].id;
@@ -186,7 +242,7 @@ function submiting()
 									}
 								}
 								/**
-								* ALL THE PROPERTIES OF THE OBJECT DESCRIBED HERE !! FOR EACH OFFICIAL !!
+								* I PUTTED HERE ALL THE PROPERTIES OF THE OBJECT DESCRIBED HERE !! FOR EACH OFFICIAL !!
 								*/
 								var obg = {
 									division: division,
@@ -210,9 +266,10 @@ function submiting()
 									hasYoutube: hasYoutube,
 									youtube: youtube,
 									hasTwitter: hasTwitter,
-									twitter: twitter
+									twitter: twitter,
+									hasface: hasface,
+									faceId: faceId
 								};
-
 								arr.push( obg );
 
 							}
@@ -234,7 +291,11 @@ function submiting()
 		}
 	});
 };
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: event click template, for the gps cordinates.
+*/
 Template.Search.events({
 	'click #but' : function(event){
 		event.preventDefault();
@@ -247,13 +308,46 @@ Template.Search.events({
 		submiting();
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 4
+	DESCRIPTION: I wrote this function so that i can get the facebook image,
+	for the profile of the representives.
+*/
+Template.facebookImage.helpers({
+	fcimage: function(){
+		//console.log("INSIDE the LOG");
+		var t=Session.get('fcimage');
+		if(t) {
+			var f=this;
+			for (var i = 0; i < t.length; i++) {
+				console.log("before if with "+this.faceId+" and "+t[i][1]);
+				if(this.faceId==t[i][1]){
+					console.log("In the loop "+t[i][1]);
+					return t[i][0];
+				}
+			}
 
-
+		}
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 2
+	DESCRIPTION: this function i wrote mainly because it's provide better scopeing and
+	template organization.
+*/
 Template.Search.helpers({
 	officials: function(){
 		return Session.get( 'jason' );
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: I wrote this function mainly to get the elections from the google api's
+	it's using two diffrent api's.
+*/
 Template.Elections.helpers({
 	elections: function() {
 		elects();
@@ -262,8 +356,15 @@ Template.Elections.helpers({
 	}
 
 );
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: This function i wrote so it gives you more detail information of each election,
+	here is the second google api, the way i did it so because based on the term and condition of google apis' it
+	has to be user invoked.
+*/
 Template.Elections.events({
-	'click #voteing' : function(event){
+	'click #voting' : function(event){
 		event.preventDefault();
 		var t=this.ocdDivisionId;
 		var p=t.indexOf('state:');
@@ -276,14 +377,20 @@ Template.Elections.events({
 			else {
 				console.log("print the results");
 				console.log(result);
-				Session.set('voteing',result);
+				Session.set('voting',result);
 			}
 		});
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: The function that parse the api result of the voting information,
+	So that i can get more clear details of the elections.
+*/
 Template.votes.helpers({
-	voteing: function(event){
-		var tt=Session.get('voteing');
+	voting: function(event){
+		var tt=Session.get('voting');
 		console.log(tt);
 		console.log("helper");
 		var obg=undefined;
@@ -306,7 +413,12 @@ Template.votes.helpers({
 		return [obg];
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: This function is mostly written for the api call of elections,
+	look at the server file for more details.
+*/
 function elects(){
 	Meteor.call('elections', function (error, result) {
 		if(error) {
