@@ -15,6 +15,8 @@ Session.setDefault('ip', undefined);
 Session.setDefault('elects', undefined);
 Session.setDefault('voting', undefined);
 Session.setDefault('fcimage', []);
+Session.setDefault('twimage', []);
+Session.setDefault('images', []);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -40,7 +42,7 @@ Router.route('/About', function () {
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
-	DESCRIPTION: The meteor startup is the initialize functions, that are run before any
+	DESCRIPTION: The meteor startup is the initialize functions that are run before any
 	other functions. I wrote here mainly the gps call to get the device coordinates.
 */
 Meteor.startup(function() {
@@ -73,7 +75,7 @@ Meteor.startup(function() {
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
-	DESCRIPTION: Here i put the menu transitions, so it match perfectly with the css, Take notice it's
+	DESCRIPTION: Here i put the menu transitions, so it match perfectly with the css, Take notice its
 	using JQuery.
 */
 Template.layout.events({
@@ -114,7 +116,7 @@ Template.layout.events({
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 3
-	DESCRIPTION: Here I get the location address by IP Locations. Calling here a diffrent api
+	DESCRIPTION: Here I get the location address by IP Locations. Calling here a different api
 	that give me the address from the IP.
 */
 function getlocationbyip(){
@@ -143,8 +145,8 @@ function gpscordinates()
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
-	DESCRIPTION: Here i worte the code that implemented the main logic of the Representives,
-	It using 2 diffrent api's calls and three level loop parsing to convert the data to more readble format.
+	DESCRIPTION: Here i wrote the code that implemented the main logic of the Representatives,
+	It using 2 different api's calls and three level loop parsing to convert the data to more readble format.
 */
 function submiting()
 {
@@ -203,6 +205,8 @@ function submiting()
 								var twitter;
 								var hasface = false;
 								var faceId;
+								var hastwit = false;
+								var twittId;
 
 								if( official.hasOwnProperty( 'channels' ) ) {
 
@@ -212,27 +216,12 @@ function submiting()
 											case "Twitter":
 												twitter = "https://twitter.com/"+official.channels[ h ].id;
 												hasTwitter = true;
+												twittId = official.channels[ h ].id;
 												break;
 											case "Facebook":
 												facebook = "https://www.facebook.com/"+official.channels[ h ].id;
 												hasFacebook = true;
 												faceId = official.channels[ h ].id;
-												if(!hasPhoto){
-													hasface = true;
-													Meteor.call('facebookImage', official.channels[ h ].id,  function (error, result) {
-														if(error) {
-															console.log("error occured on receiving data on server. ", error );
-														}
-														else {
-															console.log("printing image");
-															console.log(result);
-															var ppp=Session.get('fcimage');
-															ppp.push(result);
-															Session.set('fcimage',ppp);
-															console.log(Session.get('fcimage'));
-														}
-													});
-												}
 												break;
 											case "YouTube":
 												youtube = "https://www.youtube.com/user/"+official.channels[ h ].id;
@@ -240,6 +229,49 @@ function submiting()
 												break;
 										}
 									}
+								}
+
+								switch( true )
+								{
+									case ( !hasPhoto && hasTwitter ):
+										hastwit = true;
+										Meteor.call('twitterImage', twittId,  function (error, result2) {
+											if(error) {
+												console.log("error occured on receiving data on server. ", error );
+											}
+											else {
+												var ppp=Session.get('twimage');
+												ppp.push(result2);
+												Session.set('twimage',ppp);
+											}
+										});
+										break;
+									case ( !hasPhoto && hasFacebook ):
+										hasface = true;
+										Meteor.call('facebookImage', faceId,  function (error, result) {
+											if(error) {
+												console.log("error occured on receiving data on server. ", error );
+											}
+											else {
+												var ppp=Session.get('fcimage');
+												ppp.push(result);
+												Session.set('fcimage',ppp);
+											}
+										});
+										break;
+									case ( !hasPhoto ):
+										//I did two options calls functions wikiImages, imageSearch
+										Meteor.call('wikiImages', officialName,  function (error, result) {
+											if(error) {
+												console.log("error occured on receiving data on server of wikiimages. ", error );
+											}
+											else {
+												var ppp = Session.get('images');
+												ppp.push(result);
+												Session.set('images', ppp);
+											}
+										});
+										break;
 								}
 								/**
 								* I PUTTED HERE ALL THE PROPERTIES OF THE OBJECT DESCRIBED HERE !! FOR EACH OFFICIAL !!
@@ -268,7 +300,9 @@ function submiting()
 									hasTwitter: hasTwitter,
 									twitter: twitter,
 									hasface: hasface,
-									faceId: faceId
+									faceId: faceId,
+									hastwit : hastwit,
+									twittId : twittId
 								};
 								arr.push( obg );
 
@@ -308,22 +342,52 @@ Template.Search.events({
 		submiting();
 	}
 });
+
+Template.imagesGen.helpers({
+	images: function(){
+		var t = Session.get('images');
+		if(t) {
+			for( var i = 0; i < t.length; i++ )
+			{
+				if(this.officialName==t[i][1])
+					return t[i][0];
+			}
+		}
+	}
+});
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 4
 	DESCRIPTION: I wrote this function so that i can get the facebook image,
-	for the profile of the representives.
+	for the profile of the representatives.
 */
 Template.facebookImage.helpers({
 	fcimage: function(){
 		//console.log("INSIDE the LOG");
 		var t=Session.get('fcimage');
 		if(t) {
-			var f=this;
 			for (var i = 0; i < t.length; i++) {
-				console.log("before if with "+this.faceId+" and "+t[i][1]);
 				if(this.faceId==t[i][1]){
-					console.log("In the loop "+t[i][1]);
+					return t[i][0];
+				}
+			}
+
+		}
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 4
+	DESCRIPTION: I wrote this function so that i can get the twitter image,
+	for the profile of the representatives.
+*/
+Template.twitterImage.helpers({
+	twimage: function(){
+		//console.log("INSIDE the LOG");
+		var t=Session.get('twimage');
+		if(t) {
+			for (var i = 0; i < t.length; i++) {
+				if(this.twittId==t[i][1]){
 					return t[i][0];
 				}
 			}
@@ -334,7 +398,7 @@ Template.facebookImage.helpers({
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
-	DESCRIPTION: this function i wrote mainly because it's provide better scopeing and
+	DESCRIPTION: this function i wrote mainly because it's provide better scoping and
 	template organization.
 */
 Template.Search.helpers({
@@ -346,7 +410,7 @@ Template.Search.helpers({
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 3
 	DESCRIPTION: I wrote this function mainly to get the elections from the google api's
-	it's using two diffrent api's.
+	it's using two different api's.
 */
 Template.Elections.helpers({
 	elections: function() {
@@ -375,7 +439,7 @@ Template.Elections.events({
 				console.log("error occured on receiving data on server. ", error );
 			}
 			else {
-				console.log("print the results");
+				console.log("print the results of voteing");
 				console.log(result);
 				Session.set('voting',result);
 			}

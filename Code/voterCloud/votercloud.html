@@ -63,7 +63,11 @@
                   {{#if hasface}}
                     {{> facebookImage}}
                   {{else}}
-                    <img id="imgSearch" src="http://richard.eriophora.com.au/images/jpg/nopic.jpg" height="150" width="150">
+                    {{#if hastwit}}
+                      {{> twitterImage}}
+                    {{else}}
+                      {{> imagesGen}}
+                    {{/if}}
                   {{/if}} 
                 {{/if}}
               </td>
@@ -87,8 +91,16 @@
   </div>
 </template>
 
+<template name="imagesGen">
+  <img id="imgSearch" src={{images}} height="150" width="150">
+</template>
+
 <template name="facebookImage">
   <img id="imgSearch" src={{fcimage}} height="150" width="150">
+</template>
+
+<template name="twitterImage">
+  <img id="imgSearch" src={{twimage}} height="150" width="150">
 </template>
 
 <template name="Elections">

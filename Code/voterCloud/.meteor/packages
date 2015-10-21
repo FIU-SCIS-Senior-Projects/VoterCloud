@@ -12,3 +12,7 @@ iron:router
 http
 sacha:spin
 mdg:geolocation
+meteorhacks:npm
+
+
+npm-container
