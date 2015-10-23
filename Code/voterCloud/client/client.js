@@ -74,6 +74,13 @@ Meteor.startup(function() {
     	getlocationbyip();
     }
 
+    Accounts.ui.config({
+    	requestPermissions: {
+    		facebook: ['email']
+    	},
+    	passwordSignupFields: 'USERNAME_AND_EMAIL'
+    });
+
 });
 
 /*
