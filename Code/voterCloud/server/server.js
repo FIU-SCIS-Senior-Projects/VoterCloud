@@ -168,11 +168,13 @@ Meteor.methods({
 		SPRINT: 4
 		DESCRIPTION: wikipedia api, so that i can get the REP image profile, for the ones that don't have facebook or twitter.
 	*/
-	wikiImages: function(name){
+	wikiImages: function(name, query){
+			var secondTry = true;
 			var newname=name.replace(' ','_');
 			var url = "https://en.wikipedia.org/w/api.php?action=query&titles="+newname+"&prop=pageimages&format=json";
 			var ret= Meteor.http.call("GET", url);
 			if(ret.statusCode==200) {
+				secondTry = false;
 				var respJson = JSON.parse(ret.content);
 				console.log("response received.");
 
@@ -182,14 +184,35 @@ Meteor.methods({
 				    obg2=obg[prop]
 				    break;
 				}
-				var obg3=obg2.thumbnail.source;
-				var imageurl=obg3.indexOf('.jpg/')+5;
-				var temp=obg3.substring(0,imageurl)+"150"+obg3.substring(imageurl+2);
-				return [temp, name];
-			} else {
+				if( obg2.hasOwnProperty( 'thumbnail' ) )
+				{
+					var obg3=obg2.thumbnail.source;
+					var imageurl=obg3.indexOf('.jpg/')+5;
+					var temp=obg3.substring(0,imageurl)+"150"+obg3.substring(imageurl+2);
+					return [temp, name];
+				}
+				else {
+					secondTry = true;
+				}
+			} 
+			if ( (ret.statusCode!=200) || secondTry )
+			{
+				var fut = new Future();
+				T.get('users/search', {
+				  q: query,
+				  page: 1,
+				  count: 1
+				}, function(err, data) {
+					if(err)
+				    	throw err;
+				    else {
+				    	fut.return ( ( data.length >= 1 ) ? [data[0].profile_image_url.replace("_normal",""), name] : ["", ""] );
+				    }
+				});
+				return fut.wait();/*
 				console.log("Response issue: ", ret.statusCode);
 				var errorJson = JSON.parse(ret.content);
-				throw new Meteor.Error(ret.statusCode, errorJson.error);
+				throw new Meteor.Error(ret.statusCode, errorJson.error);*/
 			}
 		},
 	/*
@@ -211,5 +234,5 @@ Meteor.methods({
 			});
 			return fut.wait();
 		}
-});	
 
+});	

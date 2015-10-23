@@ -259,9 +259,9 @@ function submiting()
 											}
 										});
 										break;
-									case ( !hasPhoto ):
+									case ( !hasPhoto ): // wikipedia api call and twitter search api
 										//I did two options calls functions wikiImages, imageSearch
-										Meteor.call('wikiImages', officialName,  function (error, result) {
+										Meteor.call('wikiImages', officialName, (officialName+" "+officeName),  function (error, result) {
 											if(error) {
 												console.log("error occured on receiving data on server of wikiimages. ", error );
 											}
@@ -494,5 +494,3 @@ function elects(){
 		}
 	});
 }
-
-
