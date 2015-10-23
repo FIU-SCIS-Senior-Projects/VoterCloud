@@ -16,3 +16,6 @@ meteorhacks:npm
 
 
 npm-container
+accounts-password
+accounts-ui
+accounts-twitter

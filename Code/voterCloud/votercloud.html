@@ -23,13 +23,17 @@
 </template>
 
 <template name="header">
-  <div id="toggle-menu2"> <a href="#" id="toggle-menu"> <img id="image" src="/options21.png" width="24" height="24"> </a> </div>
+  <div id="toggle-menu2">
+    <a href="#" id="toggle-menu"><img id="image" src="/options21.png" width="24" height="24"></a>
+    {{> loginButtons}}
+  </div>
   {{> slide}}
 </template>
 
 <template name="slide">
   <ul id="menu">
     <li class="menuitem"><a href="/" class="menu-link">Home</a></li>
+    <li class="menuitem"><a href="/MyProfile" class="menu-link">My Profile</a></li>
     <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
     <li class="menuitem"><a href="#" class="menu-link">Survey</a></li>
     <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
@@ -38,7 +42,9 @@
 </template>
 
 <template name="Home">
-  <div id="check"><h2> HOME Page (Present here login system)</h2></div>
+  <div id="check">
+    <h1> HOME Page</h1>
+  </div>
 </template>
 
 <template name="Search">

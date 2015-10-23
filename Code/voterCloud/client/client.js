@@ -28,6 +28,10 @@ Router.route('/', function () {
   this.render('Home');
 });
 
+Router.route('/MyProfile', function() {
+  this.render('MyProfile');
+});
+
 Router.route('/Search', function () {
   this.render('Search');
 });
