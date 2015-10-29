@@ -233,6 +233,20 @@ Meteor.methods({
 			    }
 			});
 			return fut.wait();
+		},
+	mongoDBUpdate: function(id,text,vote){
+			Polls.update({  
+		        '_id': id,
+		        'choices.text': text
+		        }, {
+		            $set:{ 
+		                'choices.$': {
+		                    'votes': vote,
+		                    'text': text
+		                 }
+		            }
+		        }
+	    	);
+			return true;
 		}
-
 });	

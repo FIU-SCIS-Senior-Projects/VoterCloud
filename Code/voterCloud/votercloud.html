@@ -41,7 +41,7 @@
       <li class="menuitem"><a href="/MyProfile" class="menu-link">My Profile</a></li>
     {{/if}}
     <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
-    <li class="menuitem"><a href="#" class="menu-link">Survey</a></li>
+    <li class="menuitem"><a href="/Survey" class="menu-link">Survey</a></li>
     <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
     <li class="menuitem"><a href="/About" class="menu-link">About</a></li>
   </ul>
@@ -180,3 +180,74 @@
   <h5> <a href="https://github.com/FIU-SCIS-Senior-Projects/VoterCloud">https://github.com/FIU-SCIS-Senior-Projects/VoterCloud</a></h5>
   <h5> FIU-Senior Project</h5>
 </template>
+
+<template name="Survey">
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        {{#if askPoll}}
+          <form name="Poll" id="Poll"> 
+            <div class="form-group" name="question-group" id="question-group">
+              <label>Question</label>
+              <input type="text" name="Question" class="form-control" placeholder={{PollMesg1}}>
+            </div>
+            <div class="form-group">
+              <label>Answer #1</label>
+              <input type="text" name="Answer1" class="form-control" placeholder={{PollMesg2}}>
+            </div>
+            <div class="form-group">
+              <label>Answer #2</label>
+              <input type="text" name="Answer2" class="form-control" placeholder={{PollMesg3}}>
+            </div>
+            <div class="form-group">
+              <label>Answer #3</label>
+              <input type="text" name="Answer3" class="form-control" placeholder="(optional) Answer #3">
+            </div>
+            {{#if plus}}
+              <div class="form-group">
+                <label>Answer #4</label>
+                <input type="text" name="Answer4" class="form-control" placeholder="(optional) Answer #4">
+              </div>
+              <div class="form-group">
+                <label>Answer #5</label>
+                <input type="text" name="Answer5" class="form-control" placeholder="(optional) Answer #5">
+              </div>
+              <div class="form-group">
+                <label>Answer #6</label>
+                <input type="text" name="Answer6" class="form-control" placeholder="(optional) Answer #6">
+              </div>
+            {{else}}
+              <div class="form-group">
+                <label>For more options</label>
+                <a href="#" name="plus" id="plus"><img src="/add121.png" height="24" width="24" id="plus" name="plus"></a>
+              </div>
+            {{/if}}
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Poll">
+          </form>
+        {{else}}
+          <input type="text" class="btn btn-lg btn-primary btn-block" value="Make Poll" id="askPoll" name="askPoll">
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <div class="polls">
+      {{#each polls}}
+          {{> poll}}
+      {{/each}}
+  </div>
+</template>
+
+<template name="poll">
+  <div class="poll well well-lg" data-id="{{_id}}">
+    <h3>{{question}}</h3>
+      {{#each choices}}
+        <a href="#" class="vote btn btn-primary btn-block" data-id="{{index}}" id="choice">
+            <span class="votes pull-right" id="vote" name="vote">{{votes}}</span>
+            <span class="text">{{text}}</span>
+        </a>
+      {{/each}}
+  </div>
+</template>
+
+
