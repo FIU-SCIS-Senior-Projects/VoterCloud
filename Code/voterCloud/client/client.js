@@ -504,4 +504,4 @@ function elects(){
 			Session.set('elects', result.elections.slice( 1 ));
 		}
 	});
-}
+}z
