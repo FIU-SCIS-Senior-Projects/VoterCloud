@@ -17,6 +17,11 @@ Session.setDefault('voting', undefined);
 Session.setDefault('fcimage', []);
 Session.setDefault('twimage', []);
 Session.setDefault('images', []);
+Session.setDefault('PollMesg1', "");
+Session.setDefault('PollMesg2', "");
+Session.setDefault('PollMesg3', "");
+Session.setDefault('plus', false);
+Session.setDefault('askPoll', false);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -41,6 +46,9 @@ Router.route('/Elections', function () {
 });
 Router.route('/About', function () {
   this.render('About');
+});
+Router.route('/Survey', function () {
+  this.render('Survey');
 });
 
 /*
@@ -504,4 +512,100 @@ function elects(){
 			Session.set('elects', result.elections.slice( 1 ));
 		}
 	});
-}z
+}
+
+Template.Survey.helpers({
+	PollMesg1: function(){
+		return Session.get( 'PollMesg1' );
+	},
+	PollMesg2: function(){
+		return Session.get( 'PollMesg2' );
+	},
+	PollMesg3: function(){
+		return Session.get( 'PollMesg3' );
+	},
+	plus: function(){
+		return Session.get('plus');
+	},
+	askPoll: function(){
+		return Session.get('askPoll');
+	},
+	polls: function(){
+		return Polls.find({});
+	}
+});
+
+Template.Survey.events({
+	'submit #Poll': function( event ){
+		event.preventDefault( );
+		var mesg1 = "";
+		var pass = true;
+		if( !event.target.Question.value ) {mesg1 = "*Please type a Question."; pass = false;}
+		Session.set( 'PollMesg1', mesg1 );
+		var mesg2 = "";
+		if( !event.target.Answer1.value ) {mesg2 = "*Please type a Answer1."; pass = false;}
+		Session.set( 'PollMesg2', mesg2 );
+		var mesg3 = "";
+		if( !event.target.Answer2.value ) {mesg3 = "*Please type a Answer2."; pass = false;}
+		Session.set( 'PollMesg3', mesg3 );
+		if(pass)
+		{
+			console.log("inserting new Record!!!!!");
+		    var newPoll = {
+		      question: event.target.Question.value,
+		      choices: [
+		        {  text: event.target.Answer1.value, votes: 0},
+		        {  text: event.target.Answer2.value, votes: 0}
+		      ],
+		      date: new Date().toLocaleString(),
+		      totalClicks: 0
+		    };
+		    if(event.target.Answer3.value)	newPoll.choices.push({text: event.target.Answer3.value, votes: 0});
+		    if(Session.get('plus'))
+		    {
+			    if(event.target.Answer4.value)	newPoll.choices.push({text: event.target.Answer4.value, votes: 0}); 
+			    if(event.target.Answer5.value)	newPoll.choices.push({text: event.target.Answer5.value, votes: 0});   
+			    if(event.target.Answer6.value)	newPoll.choices.push({text: event.target.Answer6.value, votes: 0}); 
+			}
+		     
+		    Polls.insert(newPoll);
+		    Session.set('askPoll', false);
+		}
+	},
+	'click #plus': function(event){
+		event.preventDefault( );
+		Session.set('plus', true);
+	},
+	'click #askPoll': function(event){
+		event.preventDefault( );
+		Session.set('askPoll', true);
+	}
+});
+
+Template.poll.events({
+	'click #choice': function(event){
+		event.preventDefault( );
+
+		var votes = this.votes+1;
+		console.log(votes+" "+this.text);
+		var pollID = $(event.currentTarget).parent('.poll').data('id');
+		console.log(pollID);
+		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
+		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
+		Meteor.call('mongoDBUpdate',pollID,this.text,votes, function (error, result) {
+			if(error) {
+				console.log("error occured on receiving data on server. ", error );
+			}
+			else {
+				console.log('Sucess');
+			}
+		});
+    	console.log("updated sucssefuly");
+		/*Polls.update({_id : pollID},{$set:{username : "Jack"}});
+	    Polls.update(
+	      { _id: pollID },
+	      { $inc: action }
+    	);*/
+	}
+
+});

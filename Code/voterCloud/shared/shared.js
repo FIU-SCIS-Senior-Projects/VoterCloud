@@ -1,1 +1,1 @@
-Civic = new Mongo.Collection(null);
+Polls = new Mongo.Collection('polls');
