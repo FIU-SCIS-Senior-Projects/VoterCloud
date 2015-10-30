@@ -1,2 +1,2 @@
-		VoteeCloud
+		VoterCloud
 VIDEOS SECTION.

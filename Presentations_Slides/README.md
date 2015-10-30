@@ -1,2 +1,2 @@
 		VoterCloud
-HERE WE POST PRESENTETIONs.
+HERE WE POST Presentations.
