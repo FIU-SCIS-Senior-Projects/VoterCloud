@@ -51,6 +51,15 @@ Router.route('/Survey', function () {
   this.render('Survey');
 });
 
+Router.route('/Survey/:_id', {
+    name: 'pollPage',
+    template: 'pollPage',
+    data: function(){
+        var currentPoll = this.params._id;
+        return Polls.findOne({ _id: currentPoll });
+    }
+});
+
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
@@ -89,6 +98,8 @@ Meteor.startup(function() {
     	passwordSignupFields: 'USERNAME_AND_EMAIL'
     });
 
+    Meteor.subscribe('pollsMesg');
+    Meteor.subscribe('messages');
 });
 
 /*
@@ -513,7 +524,12 @@ function elects(){
 		}
 	});
 }
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i send the various messages and conditions
+	for the form input.
+*/
 Template.Survey.helpers({
 	PollMesg1: function(){
 		return Session.get( 'PollMesg1' );
@@ -534,7 +550,11 @@ Template.Survey.helpers({
 		return Polls.find({});
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
 Template.Survey.events({
 	'submit #Poll': function( event ){
 		event.preventDefault( );
@@ -557,7 +577,7 @@ Template.Survey.events({
 		        {  text: event.target.Answer1.value, votes: 0},
 		        {  text: event.target.Answer2.value, votes: 0}
 		      ],
-		      date: new Date().toLocaleString(),
+		      date: new Date(),
 		      totalClicks: 0
 		    };
 		    if(event.target.Answer3.value)	newPoll.choices.push({text: event.target.Answer3.value, votes: 0});
@@ -569,6 +589,7 @@ Template.Survey.events({
 			}
 		     
 		    Polls.insert(newPoll);
+		    console.log(newPoll.date);
 		    Session.set('askPoll', false);
 		}
 	},
@@ -581,7 +602,11 @@ Template.Survey.events({
 		Session.set('askPoll', true);
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
 Template.poll.events({
 	'click #choice': function(event){
 		event.preventDefault( );
@@ -601,11 +626,55 @@ Template.poll.events({
 			}
 		});
     	console.log("updated sucssefuly");
-		/*Polls.update({_id : pollID},{$set:{username : "Jack"}});
-	    Polls.update(
-	      { _id: pollID },
-	      { $inc: action }
-    	);*/
 	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
+Template.pollPage.events({
+	'click #choice': function(event){
+		event.preventDefault( );
 
+		var votes = this.votes+1;
+		console.log(votes+" "+this.text);
+		var pollID = $(event.currentTarget).parent('.poll').data('id');
+		console.log(pollID);
+		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
+		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
+		Meteor.call('mongoDBUpdate',pollID,this.text,votes, function (error, result) {
+			if(error) {
+				console.log("error occured on receiving data on server. ", error );
+			}
+			else {
+				console.log('Sucess');
+			}
+		});
+    	console.log("updated sucssefuly");
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the room chat user story, Here i deal with the events.
+*/
+Template.chat.events({
+	'submit #sendMsg': function( e ){
+		e.preventDefault( );
+		var temp = Meteor.user() || {username: 'guest'};//.username
+		Mesg.insert({user: temp.username, msg: e.target.msg.value, date: new Date()});
+		e.target.msg.value="";
+		console.log("inserted the object");
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the room chat user story, Here i deal with the guide.
+*/
+Template.chat.helpers({
+	messagess: function(){
+		return Mesg.find({});
+	}
 });

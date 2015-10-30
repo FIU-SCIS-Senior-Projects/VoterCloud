@@ -15,11 +15,22 @@ Meteor.startup(function() {
         access_token:         '4005437535-k6bCqYDNKr1w0GRSjvgI4BTT88S6oPExWOBRQrR', 
         access_token_secret:  '5YQXLdoHyc7EurvFZfTdQOnXAUJ6Te3VeeftniV4uLsNr'
     });
+//autopublish
+    Meteor.publish('pollsMesg', function() {
+	  return Polls.find({}, {
+	    sort: { date: -1 }
+	  });
+	});
+	
+	Meteor.publish("messages", function () {
+		return Mesg.find({}, {sort: {date: -1}});
+	});
+
 });
 
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 1, 2, 3, 4
+	SPRINT: 1, 2, 3, 4, 5
 	DESCRIPTION: the different api calls i invoke, with my google api key,
 	so make sure YOU CHANGE THE KEY FOR YOUR OWN KEY.
 */

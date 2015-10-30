@@ -1,6 +1,6 @@
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-  SPRINT: 1, 2, 3,4
+  SPRINT: 1, 2, 3, 4, 5
   DESCRIPTION: Here is the HTML code that describe the content of the page and
   it's layout. based on the meteorJs kind of way.
 
@@ -49,7 +49,28 @@
 
 <template name="Home">
   <div id="check">
-    <h1> HOME Page</h1>
+    <h1> Live Feedback !</h1>
+    {{> chat}}
+  </div>
+</template>
+
+<template name="chat">
+  <div class="row-fluid">
+    <div class="span12 well">
+      <form id="sendMsg" name="sendMsg">
+        <input type="text" id="msg" placeholder="Your message..." style="width: 50%; margin-bottom: 0px">
+        <input type="submit" value="Send message" class="btn btn-primary sendMsg">
+      </form>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span8 well">
+      <div id="messages" style="background-color: #ffffff; border: 1px solid darkgray; max-height: 200px; overflow: auto">
+        {{#each messagess}}
+          <p><strong>{{user}}</strong> <span style="font-size: 0.7em; color: darkgray">({{date}})</span>: <i>{{msg}}</i></p>
+        {{/each}}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -239,6 +260,19 @@
 </template>
 
 <template name="poll">
+  <div class="poll well well-lg" data-id="{{_id}}">
+    <h3>{{question}}</h3> <a href="{{pathFor route='pollPage'}}">Link</a>
+      {{#each choices}}
+        <a href="#" class="vote btn btn-primary btn-block" data-id="{{index}}" id="choice">
+            <span class="votes pull-right" id="vote" name="vote">{{votes}}</span>
+            <span class="text">{{text}}</span>
+        </a>
+      {{/each}}
+  </div>
+</template>
+
+<template name="pollPage">
+  <br>
   <div class="poll well well-lg" data-id="{{_id}}">
     <h3>{{question}}</h3>
       {{#each choices}}

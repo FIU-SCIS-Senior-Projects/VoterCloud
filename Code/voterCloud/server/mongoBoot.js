@@ -1,3 +1,8 @@
+/*
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: This class is responsible to boot and init the different collections.
+*/
 Meteor.startup(function() {
 
   if (Polls.find().count() === 0) {
@@ -10,7 +15,7 @@ Meteor.startup(function() {
           { text: 'I am not satisfy with them', votes: 0 },
           { text: 'No, opinion', votes: 0 }
         ],
-        date: new Date().toLocaleString(),
+        date: new Date(),
         totalClicks: 0
       },
       {
@@ -19,7 +24,7 @@ Meteor.startup(function() {
           { text: 'Yes', votes: 0 },
           { text: 'No', votes: 0 }
         ],
-        date: new Date().toLocaleString(),
+        date: new Date(),
         totalClicks: 0
       }
     ];
@@ -29,6 +34,13 @@ Meteor.startup(function() {
       Polls.insert(poll);
     });
 
+  }
+
+  if (Mesg.find().count() === 0) {
+    var firstMesg= {user:'VoterCloudBot', msg: "Welcome", date: new Date()};
+    Mesg.insert(firstMesg);
+    var secondMesg= {user:'VoterCloudBot', msg: "Please log-in or sign-up", date: new Date()};
+    Mesg.insert(secondMesg);
   }
 
 });
