@@ -22,6 +22,17 @@ Session.setDefault('PollMesg2', "");
 Session.setDefault('PollMesg3', "");
 Session.setDefault('plus', false);
 Session.setDefault('askPoll', false);
+Session.setDefault('PetitionMesg1', "");
+Session.setDefault('PetitionMesg2', "");
+Session.setDefault('PetitionMesg3', "");
+Session.setDefault('PetitionMesg4', "");
+Session.setDefault('PetitionMesg5', "");
+Session.setDefault('askPetition', false);
+Session.setDefault('supportPetition', false);
+Session.setDefault('petiMesg1', "");
+Session.setDefault('petiMesg2', "");
+Session.setDefault('petiMesg3', "");
+Session.setDefault('petiMesg4', "");
 
 Router.configure({
   layoutTemplate: "layout",
@@ -58,6 +69,9 @@ Router.route('/Survey/:_id', {
         var currentPoll = this.params._id;
         return Polls.findOne({ _id: currentPoll });
     }
+});
+Router.route('/Petition', function () {
+  this.render('Petition');
 });
 
 /*
@@ -100,6 +114,7 @@ Meteor.startup(function() {
 
     Meteor.subscribe('pollsMesg');
     Meteor.subscribe('messages');
+    Meteor.subscribe('petit');
 });
 
 /*
@@ -676,5 +691,137 @@ Template.chat.events({
 Template.chat.helpers({
 	messagess: function(){
 		return Mesg.find({});
+	}
+});
+
+Template.Petition.events({
+	'submit #Petition': function( event ){
+		event.preventDefault( );
+		var mesg1 = "";
+		var pass = true;
+		if( !event.target.Subject.value ) {mesg1 = "*Please type a Subject."; pass = false;}
+		Session.set( 'PetitionMesg1', mesg1 );
+		var mesg2 = "";
+		if( !event.target.Description.value ) {mesg2 = "*Please type a Description"; pass = false;}
+		Session.set( 'PetitionMesg2', mesg2 );
+		var mesg3 = "";
+		if( !event.target.Image1.value ) {mesg3 = "*Please type a Image Url !"; pass = false;}
+		Session.set( 'PetitionMesg3', mesg3 );
+		var mesg4 = "";
+		if( !event.target.Email.value ) {mesg4 = "*Please type a Email to send!"; pass = false;}
+		Session.set( 'PetitionMesg4', mesg4 );
+		var mesg5 = "";
+		if( !event.target.Votes.value ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
+		Session.set( 'PetitionMesg5', mesg5 );
+		if(pass)
+		{
+			console.log("inserting new Record for petition!!!!!");
+		    var newPetition = {
+		      subject: event.target.Subject.value, 
+		      description: event.target.Description.value, 
+		      image1: event.target.Image1.value,
+		      email: event.target.Email.value,
+		      Votes: event.target.Votes.value,
+		      date: new Date(),
+		      support: [ ]
+		    };
+    		Petition.insert(newPetition);
+
+		    Session.set('askPetition', false);
+		}
+	},
+	'click #askPetition': function(event){
+		event.preventDefault( );
+		Session.set('askPetition', true);
+	}	
+});
+
+Template.Petition.helpers({
+	askPetition: function(){
+		return Session.get('askPetition');
+	},
+	PetitionMesg1: function(){
+		return Session.get('PetitionMesg1');
+	},
+	PetitionMesg2: function(){
+		return Session.get('PetitionMesg2');
+	},
+	PetitionMesg3: function(){
+		return Session.get('PetitionMesg3');
+	},
+	PetitionMesg4: function(){
+		return Session.get('PetitionMesg4');
+	},
+	PetitionMesg5: function(){
+		return Session.get('PetitionMesg5');
+	},
+	Petitions: function(){
+		return Petition.find({});
+	}
+});
+
+Template.peti.events({
+	'click #supportPetition': function(event){
+		event.preventDefault( );
+		Session.set('supportPetition', true);
+	},
+	'submit #Peti': function( event ){
+		event.preventDefault( );
+		var mesg1 = "";
+		var pass = true;
+		if( !event.target.First.value ) {mesg1 = "*Please type a First Name."; pass = false;}
+		Session.set( 'petiMesg1', mesg1 );
+		var mesg2 = "";
+		if( !event.target.Last.value ) {mesg2 = "*Please type a Last Name"; pass = false;}
+		Session.set( 'petiMesg2', mesg2 );
+		var mesg3 = "";
+		if( !event.target.Address.value ) {mesg3 = "*Please type a Address !"; pass = false;}
+		Session.set( 'petiMesg3', mesg3 );
+		var mesg4 = "";
+		if( !event.target.Signature.value ) {mesg4 = "*Please type a Signature"; pass = false;}
+		Session.set( 'petiMesg4', mesg4 );
+		if(pass)
+		{
+			console.log("inserting new Record for petition!!!!!");
+		    var newSupport = {
+		    	firstName: event.target.First.value,
+		    	lastName: event.target.Last.value,
+		    	address: event.target.Address.value,
+		    	signature: event.target.Signature.value
+		    };
+		    var votesLeft = this.Votes-1;
+		    var tempSupport = this.support;
+		    tempSupport.push( newSupport );
+    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, this.email, votesLeft, tempSupport,  function (error, result) {
+				if(error) {
+					console.log("error occured on receiving data on server. ", error );
+				}
+				else {
+					console.log('Sucess');
+				}
+			});
+		    Session.set('supportPetition', false);
+		}
+	}
+});
+
+Template.peti.helpers({
+	supportPetition: function(){
+		return Session.get('supportPetition');
+	},
+	petiMesg1: function(){
+		return Session.get('petiMesg1');
+	},
+	petiMesg2: function(){
+		return Session.get('petiMesg2');
+	},
+	petiMesg3: function(){
+		return Session.get('petiMesg3');
+	},
+	petiMesg4: function(){
+		return Session.get('petiMesg4');
+	},
+	count: function(){
+		return this.Votes;
 	}
 });

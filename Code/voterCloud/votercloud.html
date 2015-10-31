@@ -3,10 +3,6 @@
   SPRINT: 1, 2, 3, 4, 5
   DESCRIPTION: Here is the HTML code that describe the content of the page and
   it's layout. based on the meteorJs kind of way.
-
-  Raul Garay
-  SPRINT: 4 
-  DESCRIPTION: Login and registration user stories.
 -->
 <head>
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
@@ -43,6 +39,7 @@
     <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
     <li class="menuitem"><a href="/Survey" class="menu-link">Survey</a></li>
     <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
+    <li class="menuitem"><a href="/Petition" class="menu-link">Petition</a></li>
     <li class="menuitem"><a href="/About" class="menu-link">About</a></li>
   </ul>
 </template>
@@ -195,7 +192,7 @@
   <br>
   <br>
   <h3> Main Programmer and documenter: Eldar Feldbeine.</h3>
-  <h3> Main Coordinator and documenter: Raul Garay.</h3>
+  <h3> documenter: Raul Garay.</h3>
   <h3> Mentor and product owner: Gus Monge.</h3>
   <br>
   <h5> <a href="https://github.com/FIU-SCIS-Senior-Projects/VoterCloud">https://github.com/FIU-SCIS-Senior-Projects/VoterCloud</a></h5>
@@ -283,5 +280,93 @@
       {{/each}}
   </div>
 </template>
+
+<template name="Petition">
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        {{#if askPetition}}
+          <form name="Petition" id="Petition"> 
+            <div class="form-group" name="subject-group" id="subject-group">
+              <label>Petition Subject</label>
+              <input type="text" name="Subject" class="form-control" placeholder={{PetitionMesg1}}>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <input type="text" name="Description" class="form-control" placeholder={{PetitionMesg2}}>
+            </div>
+            <div class="form-group">
+              <label>Image</label>
+              <input type="text" name="Image1" class="form-control" placeholder={{PetitionMesg3}}>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="text" name="Email" class="form-control" placeholder={{PetitionMesg4}}>
+            </div>
+            <div class="form-group">
+              <label>Votes needed</label>
+              <input type="text" name="Votes" class="form-control" placeholder={{PetitionMesg5}}>
+            </div>
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Petition">
+          </form>
+        {{else}}
+          <input type="text" class="btn btn-lg btn-primary btn-block" value="Make Petition" id="askPetition" name="askPetition">
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="Petitions">
+      {{#each Petitions}}
+          {{> peti}}
+      {{/each}}
+  </div>
+</template>
+
+<template name="peti">
+  <div class="petitions well well-lg" data-id="{{_id}}">
+    <h3>{{subject}}</h3>
+    <table>
+      <tr>
+        <td>
+          <span class="text"><img src={{image1}} width="200" height="200"></span>
+        </td>
+        <td>
+          <span class="text">{{description}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="text">Votes needed: {{count}}</span>
+        </td>
+      </tr>
+    </table>
+    {{#if supportPetition}}
+      <form name="Peti" id="Peti"> 
+        <div class="form-group" name="First-group" id="First-group">
+          <label>First Name:</label>
+          <input type="text" name="First" class="form-control" placeholder={{petiMesg1}}>
+        </div>
+        <div class="form-group" name="Last-group" id="Last-group">
+          <label>Last Name:</label>
+          <input type="text" name="Last" class="form-control" placeholder={{petiMesg2}}>
+        </div>
+        <div class="form-group" name="Address-group" id="Address-group">
+          <label>Address:</label>
+          <input type="text" name="Address" class="form-control" placeholder={{petiMesg3}}>
+        </div>
+        <div class="form-group" name="signature-group" id="signature-group">
+          <label>Signature:</label>
+          <input type="text" name="Signature" class="form-control" placeholder={{petiMesg4}}>
+        </div>
+        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Support Petition">
+      </form>
+    {{else}}
+      <input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition">
+    {{/if}}
+  </div>
+</template>
+
 
 

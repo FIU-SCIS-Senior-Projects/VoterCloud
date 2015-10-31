@@ -26,6 +26,10 @@ Meteor.startup(function() {
 		return Mesg.find({}, {sort: {date: -1}});
 	});
 
+	Meteor.publish("petit", function () {
+		return Petition.find({}, {sort: {date: -1}});
+	});
+
 });
 
 /*
@@ -255,6 +259,22 @@ Meteor.methods({
 		                    'votes': vote,
 		                    'text': text
 		                 }
+		            }
+		        }
+	    	);
+			return true;
+		},
+	mongoDBUpdatePeti: function(id, subject, description, image1, email, Votes, support2){
+			Petition.update({  
+		        '_id': id,
+		        'subject': subject,
+		        'description': description,
+		        'image1': image1,
+		        'email': email,
+		        }, {
+		            $set:{ 
+		                'support': support2,
+		                'Votes': Votes
 		            }
 		        }
 	    	);

@@ -5,3 +5,4 @@
 */
 Polls = new Mongo.Collection('polls');
 Mesg = new Mongo.Collection('mesg');
+Petition = new Mongo.Collection('petition');
