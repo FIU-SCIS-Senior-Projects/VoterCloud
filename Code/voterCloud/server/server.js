@@ -249,6 +249,11 @@ Meteor.methods({
 			});
 			return fut.wait();
 		},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 5
+		DESCRIPTION: update MongoDB collection of the polls.
+	*/
 	mongoDBUpdate: function(id,text,vote){
 			Polls.update({  
 		        '_id': id,
@@ -264,6 +269,11 @@ Meteor.methods({
 	    	);
 			return true;
 		},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 5
+		DESCRIPTION: update MongoDB collection of the petition.
+	*/
 	mongoDBUpdatePeti: function(id, subject, description, image1, email, Votes, support2){
 			Petition.update({  
 		        '_id': id,

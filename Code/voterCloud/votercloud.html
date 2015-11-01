@@ -13,7 +13,11 @@
 </head>
 <body>
 </body>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2
+  DESCRIPTION: The Template for the Layout, look on the documentation for more details.
+-->
 <template name="layout">
   {{> header}}
   <div id="page">
@@ -21,19 +25,27 @@
   {{> yield}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2
+  DESCRIPTION: The Template for the Header and menu, look on the documentation for more details.
+-->
 <template name="header">
   <div id="toggle-menu2">
     <a href="#" id="toggle-menu"><img id="image" src="/options21.png" width="24" height="24"></a>
-    {{> loginButtons}}
+    {{> loginButtons}} <!--THIS DONE BY: Raul Garay-->
   </div>
   {{> slide}}
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2
+  DESCRIPTION: The Template for the Menu, look on the documentation for more details.
+-->
 <template name="slide">
   <ul id="menu">
     <li class="menuitem"><a href="/" class="menu-link">Home</a></li>
-    {{#if currentUser}}
+    {{#if currentUser}} <!--THIS DONE BY: Raul Garay-->
       <li class="menuitem"><a href="/MyProfile" class="menu-link">My Profile</a></li>
     {{/if}}
     <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
@@ -43,14 +55,22 @@
     <li class="menuitem"><a href="/About" class="menu-link">About</a></li>
   </ul>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4, 5
+  DESCRIPTION: The Template for the Chat room, look on the documentation for more details.
+-->
 <template name="Home">
   <div id="check">
     <h1> Live Feedback !</h1>
     {{> chat}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4, 5
+  DESCRIPTION: The Template for the Chat room, look on the documentation for more details.
+-->
 <template name="chat">
   <div class="row-fluid">
     <div class="span12 well">
@@ -70,7 +90,11 @@
     </div>
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Representative, look on the documentation for more details.
+-->
 <template name="Search">
   <div>
     <h2> Search Representative By Address</h2>
@@ -120,19 +144,35 @@
     </ul>
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Representative Image Profile, look on the documentation for more details.
+-->
 <template name="imagesGen">
   <img id="imgSearch" src={{images}} height="150" width="150">
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Representative Facebook Image Profile, look on the documentation for more details.
+-->
 <template name="facebookImage">
   <img id="imgSearch" src={{fcimage}} height="150" width="150">
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Representative Twitter Image Profile, look on the documentation for more details.
+-->
 <template name="twitterImage">
   <img id="imgSearch" src={{twimage}} height="150" width="150">
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Elections user story, look on the documentation for more details.
+-->
 <template name="Elections">
   <div>
     <h2> Upcoming Elections </h2>
@@ -149,7 +189,11 @@
     </div>
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4
+  DESCRIPTION: The Template for the Elections user story, look on the documentation for more details.
+-->
 <template name="votes">
 {{#each voting}}
   {{#if isthere}}
@@ -175,18 +219,30 @@
   {{/if}}
 {{/each}}
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2
+  DESCRIPTION: The Template for the Loading, look on the documentation for more details.
+-->
 <template name="loading">
   {{> spinner}}
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2
+  DESCRIPTION: The Template for the Page not Found (based on Iron Router), look on the documentation for more details.
+-->
 <template name="notFound">
   <div class="not-found">
     <h2>404</h2>
     <p>Page Not Found !!!</p>
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 1, 2, 3, 4, 5
+  DESCRIPTION: The Template for the About Page, look on the documentation for more details.
+-->
 <template name="About">
   <h1>VoterCloud</h1>
   <br>
@@ -198,7 +254,11 @@
   <h5> <a href="https://github.com/FIU-SCIS-Senior-Projects/VoterCloud">https://github.com/FIU-SCIS-Senior-Projects/VoterCloud</a></h5>
   <h5> FIU-Senior Project</h5>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Survey/Poll user story, look on the documentation for more details.
+-->
 <template name="Survey">
   <br>
   <div class="container">
@@ -255,7 +315,11 @@
       {{/each}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Survey/Poll user story, look on the documentation for more details.
+-->
 <template name="poll">
   <div class="poll well well-lg" data-id="{{_id}}">
     <h3>{{question}}</h3> <a href="{{pathFor route='pollPage'}}">Link</a>
@@ -267,7 +331,11 @@
       {{/each}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Survey/Poll user story, This is the Link of Iron Router, look on the documentation for more details.
+-->
 <template name="pollPage">
   <br>
   <div class="poll well well-lg" data-id="{{_id}}">
@@ -280,7 +348,11 @@
       {{/each}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Petition user story, look on the documentation for more details.
+-->
 <template name="Petition">
   <br>
   <div class="container">
@@ -323,8 +395,47 @@
       {{/each}}
   </div>
 </template>
-
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Petition user story, look on the documentation for more details.
+-->
 <template name="peti">
+  <div class="petitions well well-lg" data-id="{{_id}}">
+    <h3>{{subject}}</h3> <a href="{{pathFor route='PetitionPage'}}">Link</a>
+    <table>
+      <tr>
+        <td>
+          <span class="text"><img src={{image1}} width="200" height="200"></span>
+        </td>
+        <td>
+          <span class="text">{{description}}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="text">Votes needed: {{Votes}}</span>
+        </td>
+      </tr>
+    </table>
+      <a href="{{pathFor route='PetitionPage'}}"><input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition"></a>
+  </div>
+</template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Signature user story, look on the documentation for more details.
+-->
+<template name="Signature">
+  <div id="signature"></div>
+</template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 5
+  DESCRIPTION: The Template for the Petition user story, This is for the link of Iron Router, look on the documentation for more details.
+-->
+<template name="PetitionPage">
+  <br>
   <div class="petitions well well-lg" data-id="{{_id}}">
     <h3>{{subject}}</h3>
     <table>
@@ -338,7 +449,7 @@
       </tr>
       <tr>
         <td>
-          <span class="text">Votes needed: {{count}}</span>
+          <span class="text">Votes needed: {{Votes}}</span>
         </td>
       </tr>
     </table>
@@ -358,7 +469,8 @@
         </div>
         <div class="form-group" name="signature-group" id="signature-group">
           <label>Signature:</label>
-          <input type="text" name="Signature" class="form-control" placeholder={{petiMesg4}}>
+          {{> Signature}}
+          <span class="text">{{petiMesg4}}</span>
         </div>
         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Support Petition">
       </form>

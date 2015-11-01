@@ -33,6 +33,7 @@ Session.setDefault('petiMesg1', "");
 Session.setDefault('petiMesg2', "");
 Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
+Session.setDefault('tempData', "");
 
 Router.configure({
   layoutTemplate: "layout",
@@ -70,8 +71,18 @@ Router.route('/Survey/:_id', {
         return Polls.findOne({ _id: currentPoll });
     }
 });
+
 Router.route('/Petition', function () {
   this.render('Petition');
+});
+
+Router.route('/Petition/:_id', {
+    name: 'PetitionPage',
+    template: 'PetitionPage',
+    data: function(){
+        var currentPetition = this.params._id;
+        return Petition.findOne({ _id: currentPetition });
+    }
 });
 
 /*
@@ -387,7 +398,11 @@ Template.Search.events({
 		submiting();
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: Helper for the image.
+*/
 Template.imagesGen.helpers({
 	images: function(){
 		var t = Session.get('images');
@@ -693,7 +708,11 @@ Template.chat.helpers({
 		return Mesg.find({});
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story.
+*/
 Template.Petition.events({
 	'submit #Petition': function( event ){
 		event.preventDefault( );
@@ -735,7 +754,11 @@ Template.Petition.events({
 		Session.set('askPetition', true);
 	}	
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, here are the helpers.
+*/
 Template.Petition.helpers({
 	askPetition: function(){
 		return Session.get('askPetition');
@@ -760,7 +783,40 @@ Template.Petition.helpers({
 	}
 });
 
+//jSignature
+var $sigdiv; // The signature
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, here it's init the signature canvas.
+*/
+Template.Signature.rendered = function() {
+    if(!this._rendered) {
+		this._rendered = true;
+		$(document).ready(function () {
+			$sigdiv = $('#signature');
+			$sigdiv.jSignature();
+			$sigdiv.jSignature("reset");
+		});
+    }
+}
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, event to change pages.
+*/
 Template.peti.events({
+	'click #supportPetition': function(event){
+		Session.set('supportPetition', true);
+	}
+});
+
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, the main Petition sign user is done here.
+*/
+Template.PetitionPage.events({
 	'click #supportPetition': function(event){
 		event.preventDefault( );
 		Session.set('supportPetition', true);
@@ -777,9 +833,22 @@ Template.peti.events({
 		var mesg3 = "";
 		if( !event.target.Address.value ) {mesg3 = "*Please type a Address !"; pass = false;}
 		Session.set( 'petiMesg3', mesg3 );
+
+		var imageCode;
+		$(document).ready(function () {
+			var datapair = $sigdiv.jSignature("getData", "svgbase64"); 
+			imageCode = "data:" + datapair[0] + "," + datapair[1];
+			console.log(imageCode);
+		});
+
 		var mesg4 = "";
-		if( !event.target.Signature.value ) {mesg4 = "*Please type a Signature"; pass = false;}
+		var empty="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
+		if(imageCode==empty){
+			pass = false;
+			mesg4 = "*Please sign using your signature.";
+		}
 		Session.set( 'petiMesg4', mesg4 );
+
 		if(pass)
 		{
 			console.log("inserting new Record for petition!!!!!");
@@ -787,7 +856,7 @@ Template.peti.events({
 		    	firstName: event.target.First.value,
 		    	lastName: event.target.Last.value,
 		    	address: event.target.Address.value,
-		    	signature: event.target.Signature.value
+		    	signature: imageCode
 		    };
 		    var votesLeft = this.Votes-1;
 		    var tempSupport = this.support;
@@ -801,11 +870,17 @@ Template.peti.events({
 				}
 			});
 		    Session.set('supportPetition', false);
+		    $sigdiv = null;
+		    Router.go('Petition');
 		}
 	}
 });
-
-Template.peti.helpers({
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, the helpers for the sign of user.
+*/
+Template.PetitionPage.helpers({
 	supportPetition: function(){
 		return Session.get('supportPetition');
 	},
@@ -820,8 +895,5 @@ Template.peti.helpers({
 	},
 	petiMesg4: function(){
 		return Session.get('petiMesg4');
-	},
-	count: function(){
-		return this.Votes;
 	}
 });
