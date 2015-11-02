@@ -42,7 +42,7 @@ Router.configure({
   notFoundTemplate: 'notFound'
 });
 
-var subs = new SubsManager();
+var subs = new SubsManager(); // The cache for the collections.
 
 Router.route('/', {
 	waitOn : function(){
@@ -79,6 +79,9 @@ Router.route('/Survey', {
 Router.route('/Survey/:_id', {
     name: 'pollPage',
     template: 'pollPage',
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
     data: function(){
         var currentPoll = this.params._id;
         return Polls.findOne({ _id: currentPoll });
@@ -97,6 +100,9 @@ Router.route('/Petition', {
 Router.route('/Petition/:_id', {
     name: 'PetitionPage',
     template: 'PetitionPage',
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
     data: function(){
         var currentPetition = this.params._id;
         return Petition.findOne({ _id: currentPetition });
