@@ -34,6 +34,7 @@ Session.setDefault('petiMesg2', "");
 Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
+Session.setDefault('showSupport', false);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -41,8 +42,15 @@ Router.configure({
   notFoundTemplate: 'notFound'
 });
 
-Router.route('/', function () {
-  this.render('Home');
+var subs = new SubsManager();
+
+Router.route('/', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function (){
+		if (this.ready()) this.render('Home');
+	}
 });
 
 Router.route('/MyProfile', function() {
@@ -59,8 +67,13 @@ Router.route('/Elections', function () {
 Router.route('/About', function () {
   this.render('About');
 });
-Router.route('/Survey', function () {
-  this.render('Survey');
+Router.route('/Survey', {
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function () {
+		if (this.ready()) this.render('Survey');
+	}
 });
 
 Router.route('/Survey/:_id', {
@@ -72,8 +85,13 @@ Router.route('/Survey/:_id', {
     }
 });
 
-Router.route('/Petition', function () {
-  this.render('Petition');
+Router.route('/Petition', {
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function () {
+		if (this.ready()) this.render('Petition');
+	}
 });
 
 Router.route('/Petition/:_id', {
@@ -123,9 +141,9 @@ Meteor.startup(function() {
     	passwordSignupFields: 'USERNAME_AND_EMAIL'
     });
 
-    Meteor.subscribe('pollsMesg');
-    Meteor.subscribe('messages');
-    Meteor.subscribe('petit');
+    //Meteor.subscribe('pollsMesg');
+    //Meteor.subscribe('messages');
+    //Meteor.subscribe('petit');
 });
 
 /*
@@ -730,7 +748,7 @@ Template.Petition.events({
 		if( !event.target.Email.value ) {mesg4 = "*Please type a Email to send!"; pass = false;}
 		Session.set( 'PetitionMesg4', mesg4 );
 		var mesg5 = "";
-		if( !event.target.Votes.value ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
+		if( !event.target.Votes.value || isNaN(event.target.Votes.value) ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
 		Session.set( 'PetitionMesg5', mesg5 );
 		if(pass)
 		{
@@ -817,6 +835,9 @@ Template.peti.events({
 	DESCRIPTION: This function was written for the Petition user story, the main Petition sign user is done here.
 */
 Template.PetitionPage.events({
+	'click #showPetition' : function(event){
+		Session.set('showSupport',true);
+	},
 	'click #supportPetition': function(event){
 		event.preventDefault( );
 		Session.set('supportPetition', true);
@@ -895,5 +916,8 @@ Template.PetitionPage.helpers({
 	},
 	petiMesg4: function(){
 		return Session.get('petiMesg4');
+	},
+	showSupport: function(){
+		return Session.get('showSupport');
 	}
 });

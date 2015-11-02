@@ -287,7 +287,11 @@ Meteor.methods({
 		                'Votes': Votes
 		            }
 		        }
-	    	);
+	    	);/*
+	    	if( Votes <= 0 ) // Make a PDF and send to the email !!!!!!!!!!!!
+	    	{
+
+	    	}*/
 			return true;
 		}
 });	
