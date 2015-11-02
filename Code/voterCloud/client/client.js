@@ -34,7 +34,7 @@ Session.setDefault('petiMesg2', "");
 Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
-Session.setDefault('showSupport', false);
+Session.setDefault('setMenu', false);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -49,7 +49,10 @@ Router.route('/', {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
 	},
 	action : function (){
-		if (this.ready()) this.render('Home');
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Home');
+		}
 	}
 });
 
@@ -64,28 +67,40 @@ Router.route('/Search', function () {
 Router.route('/Elections', function () {
   this.render('Elections');
 });
+
 Router.route('/About', function () {
   this.render('About');
 });
+
 Router.route('/Survey', {
 	waitOn : function () {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
 	},
 	action : function () {
-		if (this.ready()) this.render('Survey');
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Survey');
+		}
 	}
 });
 
 Router.route('/Survey/:_id', {
     name: 'pollPage',
     template: 'pollPage',
+	path: "/Survey/:_id",
 	waitOn : function () {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
 	},
     data: function(){
         var currentPoll = this.params._id;
         return Polls.findOne({ _id: currentPoll });
-    }
+    },
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render();
+		}
+	}
 });
 
 Router.route('/Petition', {
@@ -93,20 +108,30 @@ Router.route('/Petition', {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
 	},
 	action : function () {
-		if (this.ready()) this.render('Petition');
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Petition');
+		}
 	}
 });
 
 Router.route('/Petition/:_id', {
     name: 'PetitionPage',
     template: 'PetitionPage',
+    path: "/Petition/:_id",
 	waitOn : function () {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
 	},
     data: function(){
         var currentPetition = this.params._id;
         return Petition.findOne({ _id: currentPetition });
-    }
+    },
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render();
+		}
+	}
 });
 
 /*
@@ -140,11 +165,11 @@ Meteor.startup(function() {
     	getlocationbyip();
     }
 
-    Accounts.ui.config({
-    	requestPermissions: {
-    		facebook: ['email']
+    Accounts.ui.config({ // THIS LINE DONE BY: Raul Garay
+    	requestPermissions: { // THIS LINE DONE BY: Raul Garay
+    		facebook: ['email'] // THIS LINE DONE BY: Raul Garay
     	},
-    	passwordSignupFields: 'USERNAME_AND_EMAIL'
+    	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
     });
 
     //Meteor.subscribe('pollsMesg');
@@ -191,6 +216,16 @@ Template.layout.events({
 			$page.off( transitionEnd );
 		} );
 
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: Here is the loading menu, so that  the menu is loaded when ever the site is ready.
+*/
+Template.layout.helpers({
+	setMenu: function(){
+		return Session.get('setMenu');
 	}
 });
 /*
@@ -841,9 +876,6 @@ Template.peti.events({
 	DESCRIPTION: This function was written for the Petition user story, the main Petition sign user is done here.
 */
 Template.PetitionPage.events({
-	'click #showPetition' : function(event){
-		Session.set('showSupport',true);
-	},
 	'click #supportPetition': function(event){
 		event.preventDefault( );
 		Session.set('supportPetition', true);
@@ -886,9 +918,7 @@ Template.PetitionPage.events({
 		    	signature: imageCode
 		    };
 		    var votesLeft = this.Votes-1;
-		    var tempSupport = this.support;
-		    tempSupport.push( newSupport );
-    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, this.email, votesLeft, tempSupport,  function (error, result) {
+    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, votesLeft, newSupport,  function (error, result) {
 				if(error) {
 					console.log("error occured on receiving data on server. ", error );
 				}
@@ -922,8 +952,5 @@ Template.PetitionPage.helpers({
 	},
 	petiMesg4: function(){
 		return Session.get('petiMesg4');
-	},
-	showSupport: function(){
-		return Session.get('showSupport');
 	}
 });

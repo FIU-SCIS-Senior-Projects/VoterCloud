@@ -115,7 +115,7 @@ html, body {
   margin: 0 15px 0 0;
   height: 100px;
   width: 100px;
-  border-radius: 50px;
+  border-radius: 50px; /*THIS LINE DONE BY: Raul Garay*/
 }
 #pSearch {
   font: 200 12px/1.5 Georgia, Times New Roman, serif;
