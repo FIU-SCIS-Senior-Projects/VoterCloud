@@ -5,7 +5,6 @@ accounts-password@1.1.1
 accounts-twitter@1.0.4
 accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
-autopublish@1.0.3
 autoupdate@1.2.1
 base64@1.0.3
 binary-heap@1.0.3
@@ -46,6 +45,7 @@ meteor@1.1.6
 meteor-platform@1.2.2
 meteorhacks:async@1.0.0
 meteorhacks:npm@1.5.0
+meteorhacks:subs-manager@1.6.2
 minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
@@ -70,6 +70,7 @@ sha@1.0.3
 spacebars@1.0.6
 spacebars-compiler@1.0.6
 srp@1.0.3
+steeve:jsignature@0.0.7
 templating@1.1.1
 tracker@1.0.7
 twbs:bootstrap@3.3.5

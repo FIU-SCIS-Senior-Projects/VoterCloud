@@ -22,6 +22,19 @@ Session.setDefault('PollMesg2', "");
 Session.setDefault('PollMesg3', "");
 Session.setDefault('plus', false);
 Session.setDefault('askPoll', false);
+Session.setDefault('PetitionMesg1', "");
+Session.setDefault('PetitionMesg2', "");
+Session.setDefault('PetitionMesg3', "");
+Session.setDefault('PetitionMesg4', "");
+Session.setDefault('PetitionMesg5', "");
+Session.setDefault('askPetition', false);
+Session.setDefault('supportPetition', false);
+Session.setDefault('petiMesg1', "");
+Session.setDefault('petiMesg2', "");
+Session.setDefault('petiMesg3', "");
+Session.setDefault('petiMesg4', "");
+Session.setDefault('tempData', "");
+Session.setDefault('setMenu', false);
 
 Router.configure({
   layoutTemplate: "layout",
@@ -29,8 +42,18 @@ Router.configure({
   notFoundTemplate: 'notFound'
 });
 
-Router.route('/', function () {
-  this.render('Home');
+var subs = new SubsManager(); // The cache for the collections.
+
+Router.route('/', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function (){
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Home');
+		}
+	}
 });
 
 Router.route('/MyProfile', function() {
@@ -44,11 +67,71 @@ Router.route('/Search', function () {
 Router.route('/Elections', function () {
   this.render('Elections');
 });
+
 Router.route('/About', function () {
   this.render('About');
 });
-Router.route('/Survey', function () {
-  this.render('Survey');
+
+Router.route('/Survey', {
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Survey');
+		}
+	}
+});
+
+Router.route('/Survey/:_id', {
+    name: 'pollPage',
+    template: 'pollPage',
+	path: "/Survey/:_id",
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+    data: function(){
+        var currentPoll = this.params._id;
+        return Polls.findOne({ _id: currentPoll });
+    },
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render();
+		}
+	}
+});
+
+Router.route('/Petition', {
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Petition');
+		}
+	}
+});
+
+Router.route('/Petition/:_id', {
+    name: 'PetitionPage',
+    template: 'PetitionPage',
+    path: "/Petition/:_id",
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+    data: function(){
+        var currentPetition = this.params._id;
+        return Petition.findOne({ _id: currentPetition });
+    },
+	action : function () {
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render();
+		}
+	}
 });
 
 /*
@@ -82,13 +165,16 @@ Meteor.startup(function() {
     	getlocationbyip();
     }
 
-    Accounts.ui.config({
-    	requestPermissions: {
-    		facebook: ['email']
+    Accounts.ui.config({ // THIS LINE DONE BY: Raul Garay
+    	requestPermissions: { // THIS LINE DONE BY: Raul Garay
+    		facebook: ['email'] // THIS LINE DONE BY: Raul Garay
     	},
-    	passwordSignupFields: 'USERNAME_AND_EMAIL'
+    	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
     });
 
+    //Meteor.subscribe('pollsMesg');
+    //Meteor.subscribe('messages');
+    //Meteor.subscribe('petit');
 });
 
 /*
@@ -130,6 +216,16 @@ Template.layout.events({
 			$page.off( transitionEnd );
 		} );
 
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: Here is the loading menu, so that  the menu is loaded when ever the site is ready.
+*/
+Template.layout.helpers({
+	setMenu: function(){
+		return Session.get('setMenu');
 	}
 });
 /*
@@ -361,7 +457,11 @@ Template.Search.events({
 		submiting();
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 3
+	DESCRIPTION: Helper for the image.
+*/
 Template.imagesGen.helpers({
 	images: function(){
 		var t = Session.get('images');
@@ -513,7 +613,12 @@ function elects(){
 		}
 	});
 }
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i send the various messages and conditions
+	for the form input.
+*/
 Template.Survey.helpers({
 	PollMesg1: function(){
 		return Session.get( 'PollMesg1' );
@@ -534,7 +639,11 @@ Template.Survey.helpers({
 		return Polls.find({});
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
 Template.Survey.events({
 	'submit #Poll': function( event ){
 		event.preventDefault( );
@@ -557,7 +666,7 @@ Template.Survey.events({
 		        {  text: event.target.Answer1.value, votes: 0},
 		        {  text: event.target.Answer2.value, votes: 0}
 		      ],
-		      date: new Date().toLocaleString(),
+		      date: new Date(),
 		      totalClicks: 0
 		    };
 		    if(event.target.Answer3.value)	newPoll.choices.push({text: event.target.Answer3.value, votes: 0});
@@ -569,6 +678,7 @@ Template.Survey.events({
 			}
 		     
 		    Polls.insert(newPoll);
+		    console.log(newPoll.date);
 		    Session.set('askPoll', false);
 		}
 	},
@@ -581,7 +691,11 @@ Template.Survey.events({
 		Session.set('askPoll', true);
 	}
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
 Template.poll.events({
 	'click #choice': function(event){
 		event.preventDefault( );
@@ -601,11 +715,242 @@ Template.poll.events({
 			}
 		});
     	console.log("updated sucssefuly");
-		/*Polls.update({_id : pollID},{$set:{username : "Jack"}});
-	    Polls.update(
-	      { _id: pollID },
-	      { $inc: action }
-    	);*/
 	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the survey user story, Here i deal with the events.
+*/
+Template.pollPage.events({
+	'click #choice': function(event){
+		event.preventDefault( );
 
+		var votes = this.votes+1;
+		console.log(votes+" "+this.text);
+		var pollID = $(event.currentTarget).parent('.poll').data('id');
+		console.log(pollID);
+		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
+		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
+		Meteor.call('mongoDBUpdate',pollID,this.text,votes, function (error, result) {
+			if(error) {
+				console.log("error occured on receiving data on server. ", error );
+			}
+			else {
+				console.log('Sucess');
+			}
+		});
+    	console.log("updated sucssefuly");
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the room chat user story, Here i deal with the events.
+*/
+Template.chat.events({
+	'submit #sendMsg': function( e ){
+		e.preventDefault( );
+		var temp = Meteor.user() || {username: 'guest'};//.username
+		Mesg.insert({user: temp.username, msg: e.target.msg.value, date: new Date()});
+		e.target.msg.value="";
+		console.log("inserted the object");
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the room chat user story, Here i deal with the guide.
+*/
+Template.chat.helpers({
+	messagess: function(){
+		return Mesg.find({});
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story.
+*/
+Template.Petition.events({
+	'submit #Petition': function( event ){
+		event.preventDefault( );
+		var mesg1 = "";
+		var pass = true;
+		if( !event.target.Subject.value ) {mesg1 = "*Please type a Subject."; pass = false;}
+		Session.set( 'PetitionMesg1', mesg1 );
+		var mesg2 = "";
+		if( !event.target.Description.value ) {mesg2 = "*Please type a Description"; pass = false;}
+		Session.set( 'PetitionMesg2', mesg2 );
+		var mesg3 = "";
+		if( !event.target.Image1.value ) {mesg3 = "*Please type a Image Url !"; pass = false;}
+		Session.set( 'PetitionMesg3', mesg3 );
+		var mesg4 = "";
+		if( !event.target.Email.value ) {mesg4 = "*Please type a Email to send!"; pass = false;}
+		Session.set( 'PetitionMesg4', mesg4 );
+		var mesg5 = "";
+		if( !event.target.Votes.value || isNaN(event.target.Votes.value) ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
+		Session.set( 'PetitionMesg5', mesg5 );
+		if(pass)
+		{
+			console.log("inserting new Record for petition!!!!!");
+		    var newPetition = {
+		      subject: event.target.Subject.value, 
+		      description: event.target.Description.value, 
+		      image1: event.target.Image1.value,
+		      email: event.target.Email.value,
+		      Votes: event.target.Votes.value,
+		      date: new Date(),
+		      support: [ ]
+		    };
+    		Petition.insert(newPetition);
+
+		    Session.set('askPetition', false);
+		}
+	},
+	'click #askPetition': function(event){
+		event.preventDefault( );
+		Session.set('askPetition', true);
+	}	
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, here are the helpers.
+*/
+Template.Petition.helpers({
+	askPetition: function(){
+		return Session.get('askPetition');
+	},
+	PetitionMesg1: function(){
+		return Session.get('PetitionMesg1');
+	},
+	PetitionMesg2: function(){
+		return Session.get('PetitionMesg2');
+	},
+	PetitionMesg3: function(){
+		return Session.get('PetitionMesg3');
+	},
+	PetitionMesg4: function(){
+		return Session.get('PetitionMesg4');
+	},
+	PetitionMesg5: function(){
+		return Session.get('PetitionMesg5');
+	},
+	Petitions: function(){
+		return Petition.find({});
+	}
+});
+
+//jSignature
+var $sigdiv; // The signature
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, here it's init the signature canvas.
+*/
+Template.Signature.rendered = function() {
+    if(!this._rendered) {
+		this._rendered = true;
+		$(document).ready(function () {
+			$sigdiv = $('#signature');
+			$sigdiv.jSignature();
+			$sigdiv.jSignature("reset");
+		});
+    }
+}
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, event to change pages.
+*/
+Template.peti.events({
+	'click #supportPetition': function(event){
+		Session.set('supportPetition', true);
+	}
+});
+
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, the main Petition sign user is done here.
+*/
+Template.PetitionPage.events({
+	'click #supportPetition': function(event){
+		event.preventDefault( );
+		Session.set('supportPetition', true);
+	},
+	'submit #Peti': function( event ){
+		event.preventDefault( );
+		var mesg1 = "";
+		var pass = true;
+		if( !event.target.First.value ) {mesg1 = "*Please type a First Name."; pass = false;}
+		Session.set( 'petiMesg1', mesg1 );
+		var mesg2 = "";
+		if( !event.target.Last.value ) {mesg2 = "*Please type a Last Name"; pass = false;}
+		Session.set( 'petiMesg2', mesg2 );
+		var mesg3 = "";
+		if( !event.target.Address.value ) {mesg3 = "*Please type a Address !"; pass = false;}
+		Session.set( 'petiMesg3', mesg3 );
+
+		var imageCode;
+		$(document).ready(function () {
+			var datapair = $sigdiv.jSignature("getData", "svgbase64"); 
+			imageCode = "data:" + datapair[0] + "," + datapair[1];
+			console.log(imageCode);
+		});
+
+		var mesg4 = "";
+		var empty="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
+		if(imageCode==empty){
+			pass = false;
+			mesg4 = "*Please sign using your signature.";
+		}
+		Session.set( 'petiMesg4', mesg4 );
+
+		if(pass)
+		{
+			console.log("inserting new Record for petition!!!!!");
+		    var newSupport = {
+		    	firstName: event.target.First.value,
+		    	lastName: event.target.Last.value,
+		    	address: event.target.Address.value,
+		    	signature: imageCode
+		    };
+		    var votesLeft = this.Votes-1;
+    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, votesLeft, newSupport,  function (error, result) {
+				if(error) {
+					console.log("error occured on receiving data on server. ", error );
+				}
+				else {
+					console.log('Sucess');
+				}
+			});
+		    Session.set('supportPetition', false);
+		    $sigdiv = null;
+		    Router.go('Petition');
+		}
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function was written for the Petition user story, the helpers for the sign of user.
+*/
+Template.PetitionPage.helpers({
+	supportPetition: function(){
+		return Session.get('supportPetition');
+	},
+	petiMesg1: function(){
+		return Session.get('petiMesg1');
+	},
+	petiMesg2: function(){
+		return Session.get('petiMesg2');
+	},
+	petiMesg3: function(){
+		return Session.get('petiMesg3');
+	},
+	petiMesg4: function(){
+		return Session.get('petiMesg4');
+	}
 });

@@ -1,3 +1,3 @@
 VoterCloud.
 
-HERE WE POSTS OUR posters (eldar and raul)
+HERE WE POSTS OUR POSTERS.
