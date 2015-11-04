@@ -56,20 +56,40 @@ Router.route('/', {
 	}
 });
 
-Router.route('/MyProfile', function() {
-  this.render('MyProfile');
+Router.route('/Search', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function (){
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Search');
+		}
+	}
 });
 
-Router.route('/Search', function () {
-  this.render('Search');
+Router.route('/Elections', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function (){
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('Elections');
+		}
+	}
 });
 
-Router.route('/Elections', function () {
-  this.render('Elections');
-});
-
-Router.route('/About', function () {
-  this.render('About');
+Router.route('/About', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	},
+	action : function (){
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			this.render('About');
+		}
+	}
 });
 
 Router.route('/Survey', {
@@ -79,6 +99,7 @@ Router.route('/Survey', {
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('askPoll', false);
 			this.render('Survey');
 		}
 	}
@@ -110,6 +131,8 @@ Router.route('/Petition', {
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('supportPetition', false);
+			Session.set('askPetition', false);
 			this.render('Petition');
 		}
 	}
@@ -786,10 +809,11 @@ Template.Petition.events({
 		if( !event.target.Image1.value ) {mesg3 = "*Please type a Image Url !"; pass = false;}
 		Session.set( 'PetitionMesg3', mesg3 );
 		var mesg4 = "";
-		if( !event.target.Email.value ) {mesg4 = "*Please type a Email to send!"; pass = false;}
+		var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+		if( !event.target.Email.value || !re.test(event.target.Email.value) ) {mesg4 = "*Please type a Email to send!"; pass = false;}
 		Session.set( 'PetitionMesg4', mesg4 );
 		var mesg5 = "";
-		if( !event.target.Votes.value || isNaN(event.target.Votes.value) ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
+		if( !event.target.Votes.value || isNaN(event.target.Votes.value) || !(event.target.Votes.value>0) ) {mesg5 = "*Please type the number of voters needed"; pass = false;}
 		Session.set( 'PetitionMesg5', mesg5 );
 		if(pass)
 		{
@@ -902,7 +926,7 @@ Template.PetitionPage.events({
 
 		var mesg4 = "";
 		var empty="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMCIgaGVpZ2h0PSIwIj48L3N2Zz4=";
-		if(imageCode==empty){
+		if( imageCode == empty ){
 			pass = false;
 			mesg4 = "*Please sign using your signature.";
 		}

@@ -22,3 +22,5 @@ twbs:bootstrap
 accounts-facebook
 steeve:jsignature
 meteorhacks:subs-manager
+meteorhacks:ssr
+dfischer:phantomjs

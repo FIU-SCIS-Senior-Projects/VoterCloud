@@ -6,9 +6,83 @@
 var Twit;
 var T;
 var Future;
+var webshot;
+PDFGenerator = {};
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function is the function prototype of the pdf generator.
+*/
+PDFGenerator.addTemplates = function(templates) {
+  templates.forEach(function(template) {
+    SSR.compileTemplate(template.name, Assets.getText(template.path));
+  });
+}
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function is the function prototype of the pdf generator.
+*/
+PDFGenerator.generateHtml = function(templateName, data) {
+  var html = null;
+  try {
+    html = SSR.render(templateName, data);
+  }
+  catch (err) {
+    console.log("meteor-template-pdf: Unable to generate html, err:", err);
+  }
+  return html;
+}
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 5
+	DESCRIPTION: This function/route serve the pdf files.
+*/
+Router.route('/pdf/:_id', function() {
+	var tempPeti = Petition.findOne({ _id: this.params._id });
+    var PDFData = {
+      subject: tempPeti.subject,
+      image1: tempPeti.image1,
+      description: tempPeti.description,
+      Votes: tempPeti.Votes,
+      support: tempPeti.support
+    };
+    if( tempPeti.Votes <= 0 ){
+    	var g = tempPeti._id+".pdf";
+	    var body = PDFGenerator.generateHtml("resultTemplate", PDFData);
+	        var options = {
+	        	siteType:'html',
+	            "paperSize": {
+	                "format": "Letter",
+	                "orientation": "portrait",
+	                "margin": "1cm"
+	        }
+	    };
+	    var fs = Meteor.npmRequire('fs');
+        var Future = Npm.require('fibers/future');
+        var fut = new Future();
+		webshot(body, g, options, function(err) {
+            fs.readFile(g, function (err,data) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                fs.unlinkSync(g);
+                fut.return(data);
+            });
+		});
+		var data2 = fut.wait();
+	    this.response.write(data2);
+	    this.response.end();
+	}
+}, {
+    where: 'server'
+});
+
 Meteor.startup(function() {
     Twit = Meteor.npmRequire('twit');
     Future = Npm.require('fibers/future');
+    webshot = Meteor.npmRequire('webshot');
     T = new Twit({
         consumer_key:         'f3QeBKRsyeuef7glItQNm9QYO',
         consumer_secret:      '773SDImHW8N6pgBWazKiyRCXqT9KboWq8Gz49ZpPF8HH1APcUZ',
@@ -32,6 +106,14 @@ Meteor.startup(function() {
 			sort: {date: -1}
 		});
 	});
+	// For the Server side completion.
+	var templates = [];
+	templates.push({
+		name: "resultTemplate",
+		path: "result-template.html" // Check path
+	});
+
+	PDFGenerator.addTemplates(templates);
 
 });
 
@@ -280,6 +362,10 @@ Meteor.methods({
 		var temp = Petition.findOne({ _id: id });
 		var tempSupport = temp.support;
 		tempSupport.push(newSupport);
+    	if( Votes <= 0 )
+    	{
+    		Votes = 0;
+    	}
 		Petition.update({  
 	        '_id': id,
 	        'subject': subject,
@@ -292,11 +378,7 @@ Meteor.methods({
 	                'Votes': Votes
 	            }
 	        }
-    	);/*
-    	if( Votes <= 0 ) // Make a PDF and send to the email !!!!!!!!!!!!
-    	{
-
-    	}*/
+    	);
 		return true;
 	}
 });	
