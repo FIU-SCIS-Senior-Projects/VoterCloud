@@ -36,7 +36,7 @@ PDFGenerator.generateHtml = function(templateName, data) {
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 5
-	DESCRIPTION: This function/route serve the pdf files.
+	DESCRIPTION: This function/route serve and create the pdf files.
 */
 Router.route('/pdf/:_id', function() {
 	var tempPeti = Petition.findOne({ _id: this.params._id });
@@ -49,36 +49,57 @@ Router.route('/pdf/:_id', function() {
     };
     if( tempPeti.Votes <= 0 ){
     	var g = tempPeti._id+".pdf";
-	    var body = PDFGenerator.generateHtml("resultTemplate", PDFData);
-	        var options = {
-	        	siteType:'html',
-	            "paperSize": {
-	                "format": "Letter",
-	                "orientation": "portrait",
-	                "margin": "1cm"
-	        }
-	    };
 	    var fs = Meteor.npmRequire('fs');
         var Future = Npm.require('fibers/future');
-        var fut = new Future();
-		webshot(body, g, options, function(err) {
+
+		if ( fs.existsSync(g) ) 
+		{
+			console.log("HERE FILE exists !!!!");
+            var fut = new Future();
             fs.readFile(g, function (err,data) {
                 if (err) {
                     return console.log(err);
                 }
 
-                fs.unlinkSync(g);
                 fut.return(data);
             });
-		});
-		var data2 = fut.wait();
-	    this.response.write(data2);
-	    this.response.end();
+			var data2 = fut.wait();
+
+		    this.response.write(data2);
+		    this.response.end();
+		}
+		else {
+			console.log("HERE FILE NOTTTTT exists !!!!");
+		    var body = PDFGenerator.generateHtml("resultTemplate", PDFData);
+		        var options = {
+		        	siteType:'html',
+		            "paperSize": {
+		                "format": "Letter",
+		                "orientation": "portrait",
+		                "margin": "1cm"
+		        }
+		    };
+
+	        var fut = new Future();
+			webshot(body, g, options, function(err) {
+	            fs.readFile(g, function (err,data) {
+	                if (err) {
+	                    return console.log(err);
+	                }
+
+	                fut.return(data);
+	            });
+			});
+			var data2 = fut.wait();
+
+		    this.response.write(data2);
+		    this.response.end();
+		}
 	}
 }, {
     where: 'server'
 });
-
+//fs.unlinkSync(filename); <---- In case you need to delete the file, here is the command.
 Meteor.startup(function() {
     Twit = Meteor.npmRequire('twit');
     Future = Npm.require('fibers/future');
