@@ -1,8 +1,7 @@
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 1
-	DESCRIPTION: I set out the Sessions and router configuration to do routing and
-	transitions. It's done during sprint 1.
+	SPRINT: 1, 2, 3, 4, 5
+	DESCRIPTION: I set out the Sessions for the flags and data transfer.
 */
 Session.setDefault('image', 1);
 Session.setDefault('jason', null);
@@ -41,7 +40,12 @@ Router.configure({
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound'
 });
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 1
+	DESCRIPTION: I set out the Sessions and router configuration to do routing and
+	transitions. It's done during sprint 1.
+*/
 var subs = new SubsManager(); // The cache for the collections.
 
 Router.route('/', {
