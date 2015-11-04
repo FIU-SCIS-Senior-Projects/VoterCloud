@@ -100,6 +100,11 @@ Router.route('/pdf/:_id', function() {
     where: 'server'
 });
 //fs.unlinkSync(filename); <---- In case you need to delete the file, here is the command.
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 1, 2, 3, 4, 5
+	DESCRIPTION: Here are all the functions and dependencies and must be loaded before the rest of the code.
+*/
 Meteor.startup(function() {
     Twit = Meteor.npmRequire('twit');
     Future = Npm.require('fibers/future');
