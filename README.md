@@ -9,10 +9,11 @@ Isomorphic JavaScript development.
 
 The Team:
 
-	1. Eldar Feldbeine
+	1. Eldar Feldbeine - The Programmer and Developer.
 	2. Raul Garay
 
-Project Owner and Mentor:	Gus Monge.
+Project Owner and Mentor:
+	Gus Monge.
 	
 
 [FIU]
