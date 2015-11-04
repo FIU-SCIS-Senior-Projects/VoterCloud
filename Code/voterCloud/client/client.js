@@ -1,11 +1,10 @@
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
-	DESCRIPTION: I set out the Sessions for the flags and data transfer.
+	DESCRIPTION: The Session configuration that are used as flags and switch, in order to transfer data and control switches.
 */
 Session.setDefault('image', 1);
 Session.setDefault('jason', null);
-
 Session.setDefault('lat', undefined);
 Session.setDefault('lon', undefined);
 Session.setDefault('ad', undefined);
@@ -34,20 +33,20 @@ Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
 Session.setDefault('setMenu', false);
-
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 1, 2, 3, 4, 5
+	DESCRIPTION: router configuration to do routing and
+	transitions. Here i loaded the collections before they are in use in the client side.
+*/
 Router.configure({
   layoutTemplate: "layout",
   loadingTemplate: 'loading',
   notFoundTemplate: 'notFound'
 });
-/*
-	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 1
-	DESCRIPTION: I set out the Sessions and router configuration to do routing and
-	transitions. It's done during sprint 1.
-*/
-var subs = new SubsManager(); // The cache for the collections.
 
+var subs = new SubsManager(); // The cache for the collections.
+// The route for the Home Page.
 Router.route('/', {
 	waitOn : function(){
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -59,7 +58,7 @@ Router.route('/', {
 		}
 	}
 });
-
+// The route for the representatives.
 Router.route('/Search', {
 	waitOn : function(){
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -71,7 +70,7 @@ Router.route('/Search', {
 		}
 	}
 });
-
+// the route for the elections.
 Router.route('/Elections', {
 	waitOn : function(){
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -83,7 +82,7 @@ Router.route('/Elections', {
 		}
 	}
 });
-
+// the route for the about page.
 Router.route('/About', {
 	waitOn : function(){
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -95,7 +94,7 @@ Router.route('/About', {
 		}
 	}
 });
-
+// the route for the survey.
 Router.route('/Survey', {
 	waitOn : function () {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -108,7 +107,7 @@ Router.route('/Survey', {
 		}
 	}
 });
-
+// the route for each survey (each poll).
 Router.route('/Survey/:_id', {
     name: 'pollPage',
     template: 'pollPage',
@@ -127,7 +126,7 @@ Router.route('/Survey/:_id', {
 		}
 	}
 });
-
+// the route for the Petition.
 Router.route('/Petition', {
 	waitOn : function () {
 	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
@@ -141,7 +140,7 @@ Router.route('/Petition', {
 		}
 	}
 });
-
+// the route for each Petition (each petition page).
 Router.route('/Petition/:_id', {
     name: 'PetitionPage',
     template: 'PetitionPage',
@@ -160,7 +159,6 @@ Router.route('/Petition/:_id', {
 		}
 	}
 });
-
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
@@ -198,12 +196,7 @@ Meteor.startup(function() {
     	},
     	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
     });
-
-    //Meteor.subscribe('pollsMesg');
-    //Meteor.subscribe('messages');
-    //Meteor.subscribe('petit');
 });
-
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 2
@@ -897,7 +890,6 @@ Template.peti.events({
 		Session.set('supportPetition', true);
 	}
 });
-
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 5

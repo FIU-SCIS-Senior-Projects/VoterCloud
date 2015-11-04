@@ -15,8 +15,7 @@ Meteor.startup(function() {
           { text: 'I am not satisfy with them', votes: 0 },
           { text: 'No, opinion', votes: 0 }
         ],
-        date: new Date(),
-        totalClicks: 0
+        date: new Date()
       },
       {
         question: 'Do you think Hillary Clinton will be the next president ?',
@@ -24,8 +23,7 @@ Meteor.startup(function() {
           { text: 'Yes', votes: 0 },
           { text: 'No', votes: 0 }
         ],
-        date: new Date(),
-        totalClicks: 0
+        date: new Date()
       }
     ];
 

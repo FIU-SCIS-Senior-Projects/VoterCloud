@@ -103,7 +103,7 @@ Router.route('/pdf/:_id', function() {
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
-	DESCRIPTION: Here are all the functions and dependencies and must be loaded before the rest of the code.
+	DESCRIPTION: The server statup, all the functions and objects that must start as server load.
 */
 Meteor.startup(function() {
     Twit = Meteor.npmRequire('twit');
