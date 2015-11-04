@@ -411,13 +411,19 @@
           <span class="text">{{description}}</span>
         </td>
       </tr>
-      <tr>
-        <td>
-          <span class="text">Votes needed: {{Votes}}</span>
-        </td>
-      </tr>
+      {{#if Votes}}
+        <tr>
+          <td>
+            <span class="text">Votes needed: {{Votes}}</span>
+          </td>
+        </tr>
+      {{/if}}
     </table>
-      <a href="{{pathFor route='PetitionPage'}}"><input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition"></a>
+      {{#if Votes}}
+        <a href="{{pathFor route='PetitionPage'}}"><input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition"></a>
+      {{else}}
+        <a href="pdf/{{_id}}"><input type="text" class="btn btn-lg btn-primary btn-block" value="See Supportives"></a>
+      {{/if}}
   </div>
 </template>
 <!--
@@ -446,11 +452,13 @@
           <span class="text">{{description}}</span>
         </td>
       </tr>
-      <tr>
-        <td>
-          <span class="text">Votes needed: {{Votes}}</span>
-        </td>
-      </tr>
+      {{#if Votes}}
+        <tr>
+          <td>
+            <span class="text">Votes needed: {{Votes}}</span>
+          </td>
+        </tr>
+      {{/if}}
     </table>
     {{#if supportPetition}}
       <form name="Peti" id="Peti"> 
@@ -474,7 +482,11 @@
         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Support Petition">
       </form>
     {{else}}
-      <input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition">
+      {{#if Votes}}
+        <input type="text" class="btn btn-lg btn-primary btn-block" value="Support Petition" id="supportPetition" name="supportPetition">
+      {{else}}
+        <a href="../pdf/{{_id}}"><input type="text" class="btn btn-lg btn-primary btn-block" value="See Supportives"></a>
+      {{/if}}
     {{/if}}
   </div>
 </template>
