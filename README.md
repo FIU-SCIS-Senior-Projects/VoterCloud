@@ -1,6 +1,6 @@
 # VoterCloud
 
-		WELECOME TO OUR PROJECT- VoterCloud.
+		WELECOME TO MY PROJECT- VoterCloud.
 		http://votercloud-fiu.meteor.com/
 The project is mostly based on JavaScript.
 Using the Framework: Meteor - 
