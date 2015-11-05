@@ -1,3 +1,0 @@
-		VoterCloud
-
-HERE WE POST OUR CODE.
