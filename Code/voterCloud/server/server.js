@@ -123,7 +123,7 @@ Meteor.startup(function() {
 	});
 	
 	Meteor.publish("messages", function () {
-		return Mesg.find({}, {sort: {date: -1}});
+		return Mesg.find({}, {sort: {date: 1}});
 	});
 
 	Meteor.publish("petit", function () {
@@ -131,6 +131,12 @@ Meteor.startup(function() {
 			fields: {subject: 1, description: 1, image1: 1, Votes: 1, date: 1},
 			sort: {date: -1}
 		});
+	});
+
+	Meteor.publish("users", function () {
+  		return Meteor.users.find({}, {
+  			fields: {"username": 1}
+  		});
 	});
 	// For the Server side completion.
 	var templates = [];
@@ -377,7 +383,6 @@ Meteor.methods({
 	            }
 	        }
     	);
-		return true;
 	},
 	/*
 		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -405,6 +410,29 @@ Meteor.methods({
 	            }
 	        }
     	);
-		return true;
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: inser MongoDB collection of the Poll.
+	*/
+	mongoDBinsertPoll: function(newPoll){
+		Polls.insert(newPoll);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: inser MongoDB collection of the Message.
+	*/
+	mongoDBinsertMesg: function(newMesg){
+		Mesg.insert(newMesg);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: inser MongoDB collection of the Petition.
+	*/
+	mongoDBinsertPetit: function(newPetit){
+		Petition.insert(newPetit);
 	}
 });	

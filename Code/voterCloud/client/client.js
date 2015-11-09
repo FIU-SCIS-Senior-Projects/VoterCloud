@@ -49,7 +49,7 @@ var subs = new SubsManager(); // The cache for the collections.
 // The route for the Home Page.
 Router.route('/', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -61,7 +61,7 @@ Router.route('/', {
 // The route for the representatives.
 Router.route('/Search', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -73,7 +73,7 @@ Router.route('/Search', {
 // the route for the elections.
 Router.route('/Elections', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -85,7 +85,7 @@ Router.route('/Elections', {
 // the route for the about page.
 Router.route('/About', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -97,7 +97,7 @@ Router.route('/About', {
 // the route for the survey.
 Router.route('/Survey', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -113,7 +113,7 @@ Router.route('/Survey/:_id', {
     template: 'pollPage',
 	path: "/Survey/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPoll = this.params._id;
@@ -129,7 +129,7 @@ Router.route('/Survey/:_id', {
 // the route for the Petition.
 Router.route('/Petition', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -146,7 +146,7 @@ Router.route('/Petition/:_id', {
     template: 'PetitionPage',
     path: "/Petition/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPetition = this.params._id;
@@ -696,8 +696,7 @@ Template.Survey.events({
 			    if(event.target.Answer5.value)	newPoll.choices.push({text: event.target.Answer5.value, votes: 0});   
 			    if(event.target.Answer6.value)	newPoll.choices.push({text: event.target.Answer6.value, votes: 0}); 
 			}
-		     
-		    Polls.insert(newPoll);
+			Meteor.call('mongoDBinsertPoll', newPoll);
 		    console.log(newPoll.date);
 		    Session.set('askPoll', false);
 		}
@@ -726,14 +725,7 @@ Template.poll.events({
 		console.log(pollID);
 		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
 		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
-		Meteor.call('mongoDBUpdate',pollID,this.text,votes, function (error, result) {
-			if(error) {
-				console.log("error occured on receiving data on server. ", error );
-			}
-			else {
-				console.log('Sucess');
-			}
-		});
+		Meteor.call('mongoDBUpdate',pollID,this.text,votes);
     	console.log("updated sucssefuly");
 	}
 });
@@ -752,14 +744,7 @@ Template.pollPage.events({
 		console.log(pollID);
 		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
 		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
-		Meteor.call('mongoDBUpdate',pollID,this.text,votes, function (error, result) {
-			if(error) {
-				console.log("error occured on receiving data on server. ", error );
-			}
-			else {
-				console.log('Sucess');
-			}
-		});
+		Meteor.call('mongoDBUpdate',pollID,this.text,votes);
     	console.log("updated sucssefuly");
 	}
 });
@@ -772,7 +757,8 @@ Template.chat.events({
 	'submit #sendMsg': function( e ){
 		e.preventDefault( );
 		var temp = Meteor.user() || {username: 'guest'};//.username
-		Mesg.insert({user: temp.username, msg: e.target.msg.value, date: new Date()});
+		var newMesg={user: temp.username, msg: e.target.msg.value, date: new Date()};
+		Meteor.call('mongoDBinsertMesg', newMesg);
 		e.target.msg.value="";
 		console.log("inserted the object");
 	}
@@ -824,7 +810,7 @@ Template.Petition.events({
 		      date: new Date(),
 		      support: [ ]
 		    };
-    		Petition.insert(newPetition);
+		    Meteor.call('mongoDBinsertPetit', newPetition);
 
 		    Session.set('askPetition', false);
 		}
@@ -938,14 +924,7 @@ Template.PetitionPage.events({
 		    	signature: imageCode
 		    };
 		    var votesLeft = this.Votes-1;
-    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, votesLeft, newSupport,  function (error, result) {
-				if(error) {
-					console.log("error occured on receiving data on server. ", error );
-				}
-				else {
-					console.log('Sucess');
-				}
-			});
+    		Meteor.call('mongoDBUpdatePeti', this._id, this.subject, this.description, this.image1, votesLeft, newSupport);
 		    Session.set('supportPetition', false);
 		    $sigdiv = null;
 		    Router.go('Petition');
@@ -973,4 +952,13 @@ Template.PetitionPage.helpers({
 	petiMesg4: function(){
 		return Session.get('petiMesg4');
 	}
+});
+
+//TESTTTTT
+Template.registerHelper("timestampToTime", function (timestamp) {
+    var date = new Date(timestamp);
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    return hours + ':' + minutes.substr(minutes.length-2) + ':' + seconds.substr(seconds.length-2);
 });

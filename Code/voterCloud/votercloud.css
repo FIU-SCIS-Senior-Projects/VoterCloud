@@ -10,7 +10,8 @@ html, body {
   height: 100%; 
   overflow-x: hidden;
   background: #3184a1; 
-
+  position: relative;
+  font-family: 'Lato', sans-serif;
 }
 #page {
   position: relative; 
@@ -40,10 +41,18 @@ html, body {
   background: #3184a1;
   z-index: 10; 
 }
-#menu a {
+#menu #menua {
+  border-bottom: 1px solid rgba( 0, 0, 0, 0.2 );
+  padding: 15px 0;
+}
+#menu a{
   display: block;
   color: #E5E9EA;
-  padding: 15px 0;
+}
+#menu .menun{
+  padding: 7px 0;
+}
+#menu #menuan{
   border-bottom: 1px solid rgba( 0, 0, 0, 0.2 );
 }
 /* Show the menu when animating or visible */
@@ -147,4 +156,96 @@ td, tr {
 }
 .question-group label, #question-group label   {
   font-size:18px;
+}
+.message {
+  position: relative;
+  margin-top: .5rem;
+  padding: .25rem 2rem .1rem 3rem;
+  padding-top: 0.25rem;
+  padding-right: 2rem;
+  padding-bottom: 0.1rem;
+  padding-left: 4rem;
+  min-height: 36px;
+}
+.message-history {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  padding: 0 18px 1rem 1.5rem;
+}
+.message_profile-pic {
+  position: absolute;
+  left: 0;
+  display: block;
+  -moz-border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  border-radius: 0.2rem;
+  width: 36px;
+  height: 36px;
+  background-image: url("http://i.imgur.com/LikUNLc.png");
+  background-size: cover;
+}
+.message_username {
+  font-weight: 900;
+  padding-right: .25rem;
+  color: #3d3c40 !important;
+  margin-left: 0;
+  font-style: normal;
+  text-decoration: none;
+}
+.message_timestamp {
+  text-align: left;
+  display: inline;
+  position: relative;
+  top: 0;
+  left: 0;
+  color: #babbbf;
+  font-size: 12px;
+  line-height: 1.2rem;
+  width: 36px;
+  margin-right: 0;
+  margin-left: 0;
+}
+.message_content {
+  color: #8b898f;
+  font-style: italic;
+  display: block;
+  min-height: 1rem;
+}
+.input-box {
+  height: 100%;
+  margin-left: 220px;
+  overflow-y: hidden;
+}
+.input-box_text {
+  font-size: .95rem;
+  width: 90%;
+  margin-left: 2%;
+  margin-bottom: auto;
+  line-height: 1.2rem;
+  border: 2px solid #e0e0e0;
+  -moz-border-radius: 0.2rem;
+  -webkit-border-radius: 0.2rem;
+  border-radius: 0.2rem;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  color: #3d3c40;
+  -webkit-appearance: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  outline: 0;
+  bottom: 0;
+  min-height: 41px !important;
+  padding: 9px 5px 9px 8px;
+  overflow-y: hidden;
+}
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 64px;
+  width: 100%;
+  overflow-y: hidden;
 }

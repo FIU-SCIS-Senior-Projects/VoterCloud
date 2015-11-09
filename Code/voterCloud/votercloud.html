@@ -46,12 +46,14 @@
 -->
 <template name="slide">
   <ul id="menu">
-    <li class="menuitem"><a href="/" class="menu-link">Home</a></li>
-    <li class="menuitem"><a href="/Search" class="menu-link">Representatives</a></li>
-    <li class="menuitem"><a href="/Survey" class="menu-link">Survey</a></li>
-    <li class="menuitem"><a href="/Elections" class="menu-link">Elections</a></li>
-    <li class="menuitem"><a href="/Petition" class="menu-link">Petition</a></li>
-    <li class="menuitem"><a href="/About" class="menu-link">About</a></li>
+    <li class="menuitem">
+       <a id="menua" href="/" class="menu-link">#general</a>
+    </li>
+    <li class="menuitem"><a id="menua" href="/Search" class="menu-link">Representatives</a></li>
+    <li class="menuitem"><a id="menua" href="/Survey" class="menu-link">Survey</a></li>
+    <li class="menuitem"><a id="menua" href="/Elections" class="menu-link">Elections</a></li>
+    <li class="menuitem"><a id="menua" href="/Petition" class="menu-link">Petition</a></li>
+    <li class="menuitem"><a id="menua" href="/About" class="menu-link">About</a></li>
   </ul>
 </template>
 <!--
@@ -72,21 +74,26 @@
 -->
 <template name="chat">
   <div class="row-fluid">
-    <div class="span12 well">
-      <form id="sendMsg" name="sendMsg">
-        <input type="text" id="msg" placeholder="Your message..." style="width: 50%; margin-bottom: 0px">
-        <input type="submit" value="Send message" class="btn btn-primary sendMsg">
-      </form>
-    </div>
-  </div>
-  <div class="row-fluid">
     <div class="span8 well">
-      <div id="messages" style="background-color: #ffffff; border: 1px solid darkgray; max-height: 200px; overflow: auto">
+      <div class="message-history">
         {{#each messagess}}
-          <p><strong>{{user}}</strong> <span style="font-size: 0.7em; color: darkgray">({{date}})</span>: <i>{{msg}}</i></p>
+          <div class="message" >
+            <a href="" class="message_profile-pic"></a>
+            <a href="" class="message_username">{{user}}</a>
+            <span class="message_timestamp">{{timestampToTime date}}</span>
+            <span class="message_star"></span>
+            <span class="message_content">{{msg}}</span>
+          </div>
         {{/each}}
       </div>
     </div>
+  </div>
+  <div class="footer">
+    <form id="sendMsg" name="sendMsg">
+      <div class="input-box">
+        <input class="input-box_text" type="text" id="msg" placeholder="Your message...">
+      </div>
+    </form>
   </div>
 </template>
 <!--
