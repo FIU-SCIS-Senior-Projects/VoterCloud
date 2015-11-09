@@ -50,9 +50,9 @@
        <a id="menua" href="/" class="menu-link">#general</a>
     </li>
     <li class="menuitem"><a id="menua" href="/Search" class="menu-link">Representatives</a></li>
-    <li class="menuitem"><a id="menua" href="/Survey" class="menu-link">Survey</a></li>
+    <li class="menuitem"><a id="menua" href="/Survey" class="menu-link">Polls</a></li>
     <li class="menuitem"><a id="menua" href="/Elections" class="menu-link">Elections</a></li>
-    <li class="menuitem"><a id="menua" href="/Petition" class="menu-link">Petition</a></li>
+    <li class="menuitem"><a id="menua" href="/Petition" class="menu-link">Petitions</a></li>
     <li class="menuitem"><a id="menua" href="/About" class="menu-link">About</a></li>
   </ul>
 </template>
@@ -63,7 +63,7 @@
 -->
 <template name="Home">
   <div id="check">
-    <h1> Live Feedback !</h1>
+    <h1> #General</h1>
     {{> chat}}
   </div>
 </template>
@@ -73,25 +73,33 @@
   DESCRIPTION: The Template for the Chat room, look on the documentation for more details.
 -->
 <template name="chat">
-  <div class="row-fluid">
-    <div class="span8 well">
-      <div class="message-history">
-        {{#each messagess}}
-          <div class="message" >
-            <a href="" class="message_profile-pic"></a>
-            <a href="" class="message_username">{{user}}</a>
-            <span class="message_timestamp">{{timestampToTime date}}</span>
-            <span class="message_star"></span>
-            <span class="message_content">{{msg}}</span>
-          </div>
-        {{/each}}
+  <div class="message-history">
+    {{#each messagess}}
+      <div class="message" >
+        <a href="" class="message_profile-pic"></a>
+        <a href="" class="message_username">{{user}}</a>
+        <span class="message_timestamp">{{timestampToTime date}}</span>
+        <span class="message_star"></span>
+        <span class="message_content">
+          {{msg}}
+          {{#if link}}
+            <a href="/Survey/{{link}}">#poll</a>
+          {{/if}}
+          {{#if linkp}}
+            <a href="/Petition/{{linkp}}">#petition</a>
+          {{/if}}
+        </span>
       </div>
-    </div>
+    {{/each}}
   </div>
   <div class="footer">
     <form id="sendMsg" name="sendMsg">
       <div class="input-box">
-        <input class="input-box_text" type="text" id="msg" placeholder="Your message...">
+        <div class="row-fluid">
+          <div class="span12 well">
+            <input class="input-box_text" type="text" id="msg" placeholder="Your message...">
+          </div>
+        </div>
       </div>
     </form>
   </div>

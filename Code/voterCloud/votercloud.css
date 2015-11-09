@@ -168,7 +168,7 @@ td, tr {
   min-height: 36px;
 }
 .message-history {
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   height: 100%;
   padding: 0 18px 1rem 1.5rem;
@@ -215,6 +215,7 @@ td, tr {
 .input-box {
   height: 100%;
   margin-left: 220px;
+  margin-bottom: 200px;
   overflow-y: hidden;
 }
 .input-box_text {

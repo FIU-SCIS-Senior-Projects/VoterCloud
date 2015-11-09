@@ -35,6 +35,8 @@ Meteor.methods({
     	if( Votes <= 0 )
     	{
     		Votes = 0;
+    		Meteor.call('mongoDBinsertMesg',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got supported !", date: new Date(), linkp: id});
+    		Meteor.call('mongoDBinsertMesgPeti',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got supported !", date: new Date(), linkp: id});
     	}
 		Petition.update({  
 	        '_id': id,
@@ -56,6 +58,7 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Poll.
 	*/
 	mongoDBinsertPoll: function(newPoll){
+		newPoll.date=new Date();
 		Polls.insert(newPoll);
 	},
 	/*
@@ -64,6 +67,7 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Message.
 	*/
 	mongoDBinsertMesg: function(newMesg){
+		newMesg.date=new Date();
 		Mesg.insert(newMesg);
 	},
 	/*
@@ -72,6 +76,27 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Petition.
 	*/
 	mongoDBinsertPetit: function(newPetit){
+		newPetit.date=new Date();
 		Petition.insert(newPetit);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection of the message poll.
+	*/
+	mongoDBinsertMesgPoll: function(newPetit){
+		newPetit.date=new Date();
+		newPetit.user="VoterCloudBot";
+		MesgPoll.insert(newPetit);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection of the message petition.
+	*/
+	mongoDBinsertMesgPeti: function(newPetit){
+		newPetit.date=new Date();
+		newPetit.user="VoterCloudBot";
+		MesgPeti.insert(newPetit);
 	}
 });
