@@ -1,6 +1,6 @@
 /*
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-  SPRINT: 5
+  SPRINT: 5, 6
   DESCRIPTION: This class is responsible to create and define the different collections.
 */
 Polls = new Mongo.Collection('polls'); // declaration of database
