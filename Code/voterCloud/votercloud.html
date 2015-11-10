@@ -193,11 +193,15 @@
     <div id ="elects">
       <ul id="ilElects">
         {{#each elections}}
-          <li>
-            <span id="voting"><h3><a href="#">{{name}}</a></h3>
-            <h5>{{electionDay}}</h5></span>
-            {{> votes}}
-          </li>
+          <div id="list4">
+            <ul>
+              <li>
+                <span id="voting"><h3><a href="#">{{name}}</a></h3>
+                <h5>{{electionDay}}</h5></span>
+                {{> votes}}
+              </li>
+            </ul>
+          </div>
         {{/each}}
       </ul>
     </div>

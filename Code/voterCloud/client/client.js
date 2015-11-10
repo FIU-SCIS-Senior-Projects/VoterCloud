@@ -33,6 +33,7 @@ Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
 Session.setDefault('setMenu', false);
+Session.setDefault('uuid', undefined);
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
@@ -196,6 +197,7 @@ Meteor.startup(function() {
     	},
     	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
     });
+
 });
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.

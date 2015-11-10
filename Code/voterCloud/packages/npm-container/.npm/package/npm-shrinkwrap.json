@@ -440,23 +440,6 @@
                 "oauth-sign": {
                   "version": "0.4.0"
                 },
-                "hawk": {
-                  "version": "1.1.1",
-                  "dependencies": {
-                    "hoek": {
-                      "version": "0.9.1"
-                    },
-                    "boom": {
-                      "version": "0.4.2"
-                    },
-                    "cryptiles": {
-                      "version": "0.2.2"
-                    },
-                    "sntp": {
-                      "version": "0.2.4"
-                    }
-                  }
-                },
                 "aws-sign2": {
                   "version": "0.5.0"
                 },

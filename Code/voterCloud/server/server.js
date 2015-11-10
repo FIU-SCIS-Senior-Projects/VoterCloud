@@ -8,6 +8,7 @@ var T;
 var Future;
 var webshot;
 PDFGenerator = {};
+var key;
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 5
@@ -115,6 +116,13 @@ Meteor.startup(function() {
         access_token:         '4005437535-k6bCqYDNKr1w0GRSjvgI4BTT88S6oPExWOBRQrR', 
         access_token_secret:  '5YQXLdoHyc7EurvFZfTdQOnXAUJ6Te3VeeftniV4uLsNr'
     });
+	/**
+	*	TYPE YOUR GOOGLE KEY HERE =======================================
+	**/
+	key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
+	/**
+	* YOUR GOOGLE API KEY TYPE HERE =====================================
+	**/
 //autopublish
     Meteor.publish('pollsMesg', function() {
 	  return Polls.find({}, {
@@ -168,13 +176,6 @@ Meteor.methods({
 		DESCRIPTION: the google representatives api.
 	*/
 	civicAddress: function (address) {
-		/**
-		*	TYPE YOUR GOOGLE KEY HERE =======================================
-		**/
-		var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
-		/**
-		* YOUR GOOGLE API KEY TYPE HERE =====================================
-		**/
         var url="https://www.googleapis.com/civicinfo/v2/representatives?address="+address+"&key="+key;
         var ret= Meteor.http.call("GET", url);
 		if(ret.statusCode==200) {
@@ -193,13 +194,6 @@ Meteor.methods({
 		DESCRIPTION: The google map decoding api, so i can translate lat and lon to real address.
 	*/
     address: function(lat,lon) {
-		/**
-		*	TYPE YOUR GOOGLE KEY HERE =======================================
-		**/
-		var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
-		/**
-		* YOUR GOOGLE API KEY TYPE HERE =====================================
-		**/
 		var url="https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&key="+key;
 		var ret= Meteor.http.call("GET", url);
 		if(ret.statusCode==200) {
@@ -219,13 +213,6 @@ Meteor.methods({
 		So that i can get the upcoming elections.
 	*/
     elections: function() {
-		/**
-		*	TYPE YOUR GOOGLE KEY HERE =======================================
-		**/
-		var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
-		/**
-		* YOUR GOOGLE API KEY TYPE HERE =====================================
-		**/
 		var url="https://www.googleapis.com/civicinfo/v2/elections?key="+key;
 		var ret= Meteor.http.call("GET", url);
 		if(ret.statusCode==200) {
@@ -244,13 +231,6 @@ Meteor.methods({
 		DESCRIPTION: the voting info api so that i can get more details of each election.
 	*/
     voteinfo: function(address,electionId) {
-		/**
-		*	TYPE YOUR GOOGLE KEY HERE =======================================
-		**/
-		var key = "AIzaSyAdmDs9YqqhHMh0T_Mr_g895KLvUaLvtd4"; /*<------YOUR KEY-------*/
-		/**
-		* YOUR GOOGLE API KEY TYPE HERE =====================================
-		**/
 		var url="https://www.googleapis.com/civicinfo/v2/voterinfo?address="+address+"&electionId="+electionId+"&key="+key;
 		var ret= Meteor.http.call("GET", url);
 		if(ret.statusCode==200) {
@@ -465,5 +445,13 @@ Meteor.methods({
 		newPetit.date=new Date();
 		newPetit.user="VoterCloudBot";
 		MesgPeti.insert(newPetit);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection..
+	*/
+	mongoDBinsertOnce: function(ipad){
+		if(!Once.findOneOnce({ip:ipad}))	Once.insert({ip: ipad});
 	}
 });	
