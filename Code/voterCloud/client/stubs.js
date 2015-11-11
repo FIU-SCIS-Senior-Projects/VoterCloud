@@ -58,7 +58,6 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Poll.
 	*/
 	mongoDBinsertPoll: function(newPoll){
-		newPoll.date=new Date();
 		Polls.insert(newPoll);
 	},
 	/*
@@ -76,27 +75,6 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Petition.
 	*/
 	mongoDBinsertPetit: function(newPetit){
-		newPetit.date=new Date();
 		Petition.insert(newPetit);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection of the message poll.
-	*/
-	mongoDBinsertMesgPoll: function(newPetit){
-		newPetit.date=new Date();
-		newPetit.user="VoterCloudBot";
-		MesgPoll.insert(newPetit);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection of the message petition.
-	*/
-	mongoDBinsertMesgPeti: function(newPetit){
-		newPetit.date=new Date();
-		newPetit.user="VoterCloudBot";
-		MesgPeti.insert(newPetit);
 	}
 });

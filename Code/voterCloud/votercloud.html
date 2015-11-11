@@ -35,6 +35,7 @@
 <template name="header">
   <div id="toggle-menu2">
     <a href="#" id="toggle-menu"><img id="image" src="/options21.png" width="24" height="24"></a>
+    <span id="middleHeader">{{view}}</span> <!--For the page view/id-->
     {{> loginButtons}} <!--THIS LINE DONE BY: Raul Garay-->
   </div>
   {{> slide}}
@@ -73,7 +74,7 @@
   DESCRIPTION: The Template for the Chat room, look on the documentation for more details.
 -->
 <template name="chat">
-  <div class="message-history">
+  <div class="message-history" id="message-history">
     {{#each messagess}}
       <div class="message" >
         <a href="" class="message_profile-pic"></a>
@@ -103,6 +104,21 @@
       </div>
     </form>
   </div>
+</template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 6
+  DESCRIPTION: Hashtag chat(like twitter hashtag).
+-->
+<template name="select">
+  <select multiple id="selectChat">
+    {{#each polls}}
+      <option value="/Survey/{{_id}}">{{question}}</option>
+    {{/each}}
+    {{#each petitions}}
+      <option value="/Petition/{{_id}}">{{subject}}</option>
+    {{/each}}
+  </select>
 </template>
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -426,7 +442,7 @@
         <td>
           <span class="text"><img src={{image1}} width="200" height="200"></span>
         </td>
-        <td>
+        <td id="petiTable">
           <span class="text">{{description}}</span>
         </td>
       </tr>

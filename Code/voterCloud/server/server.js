@@ -1,7 +1,7 @@
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 4
-	DESCRIPTION: The twitter keys, to initilize the api credential !.
+	SPRINT: 4, 5, 6.
+	DESCRIPTION: The global variables for the init.
 */
 var Twit;
 var T;
@@ -110,6 +110,7 @@ Meteor.startup(function() {
     Twit = Meteor.npmRequire('twit');
     Future = Npm.require('fibers/future');
     webshot = Meteor.npmRequire('webshot');
+
     T = new Twit({
         consumer_key:         'f3QeBKRsyeuef7glItQNm9QYO',
         consumer_secret:      '773SDImHW8N6pgBWazKiyRCXqT9KboWq8Gz49ZpPF8HH1APcUZ',
@@ -132,12 +133,6 @@ Meteor.startup(function() {
 	
 	Meteor.publish("messages", function () {
 		return Mesg.find({}, {sort: {date: 1}});
-	});
-	Meteor.publish("messagespoll", function () {
-		return MesgPoll.find({}, {sort: {date: 1}});
-	});
-	Meteor.publish("messagespeti", function () {
-		return MesgPeti.find({}, {sort: {date: 1}});
 	});
 
 	Meteor.publish("petit", function () {
@@ -382,8 +377,7 @@ Meteor.methods({
     	if( Votes <= 0 )
     	{
     		Votes = 0;
-    		Meteor.call('mongoDBinsertMesg',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got supported !", date: new Date(), linkp: id});
-    		Meteor.call('mongoDBinsertMesgPeti',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got supported !", date: new Date(), linkp: id});
+    		Meteor.call('mongoDBinsertMesg',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got completely supported !", date: new Date(), linkp: id});
     	}
 		Petition.update({  
 	        '_id': id,
@@ -405,7 +399,6 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Poll.
 	*/
 	mongoDBinsertPoll: function(newPoll){
-		newPoll.date=new Date();
 		Polls.insert(newPoll);
 	},
 	/*
@@ -423,35 +416,6 @@ Meteor.methods({
 		DESCRIPTION: inser MongoDB collection of the Petition.
 	*/
 	mongoDBinsertPetit: function(newPetit){
-		newPetit.date=new Date();
 		Petition.insert(newPetit);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection of the message poll.
-	*/
-	mongoDBinsertMesgPoll: function(newPetit){
-		newPetit.date=new Date();
-		newPetit.user="VoterCloudBot";
-		MesgPoll.insert(newPetit);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection of the message petition.
-	*/
-	mongoDBinsertMesgPeti: function(newPetit){
-		newPetit.date=new Date();
-		newPetit.user="VoterCloudBot";
-		MesgPeti.insert(newPetit);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection..
-	*/
-	mongoDBinsertOnce: function(ipad){
-		if(!Once.findOneOnce({ip:ipad}))	Once.insert({ip: ipad});
 	}
 });	

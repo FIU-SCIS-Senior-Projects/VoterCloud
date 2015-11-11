@@ -18,8 +18,9 @@ html, body {
   z-index: 20; 
   padding: 15px;
   min-height: 100vh;
-  /*height: 100%;*/
   background: #fff;
+  overflow-y: hidden;
+  overflow-x: hidden
 }
 #toggle-menu2 {
   position: fixed;
@@ -168,8 +169,7 @@ td, tr {
   min-height: 36px;
 }
 .message-history {
-  position: fixed;
-  /* overflow-y: hidden; */
+  position: relative;
   overflow-x: hidden;
   height: 100%;
   width: 100%;
@@ -209,7 +209,7 @@ td, tr {
   margin-left: 0;
 }
 .message_content {
-  color: #8b898f;
+  color: #333;
   font-style: italic;
   display: block;
   min-height: 1rem;
@@ -270,5 +270,20 @@ td, tr {
 #list4 ul li a:hover { background: #eee; }
 #list4 ul li a strong { margin-right:5px; }
 #voting h3{
-    font-size: 16px;
+  font-size: 16px;
+}
+#list4 ul{
+  padding-left: 0px;
+}
+#selectChat{
+  right:0;
+  bottom: 0;
+}
+#check{
+  position: absolute;
+  height: 100%;
+  width: 99%;
+}
+#petiTable{
+  padding-left: 5px;
 }

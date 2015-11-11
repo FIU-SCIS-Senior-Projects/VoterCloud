@@ -33,7 +33,7 @@ Session.setDefault('petiMesg3', "");
 Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
 Session.setDefault('setMenu', false);
-Session.setDefault('uuid', undefined);
+Session.setDefault('view', "");
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
@@ -50,11 +50,12 @@ var subs = new SubsManager(); // The cache for the collections.
 // The route for the Home Page.
 Router.route('/', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"#General");
 			this.render('Home');
 		}
 	}
@@ -62,11 +63,12 @@ Router.route('/', {
 // The route for the representatives.
 Router.route('/Search', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"Representatives");
 			this.render('Search');
 		}
 	}
@@ -74,11 +76,12 @@ Router.route('/Search', {
 // the route for the elections.
 Router.route('/Elections', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"Upcoming Elections");
 			this.render('Elections');
 		}
 	}
@@ -86,11 +89,12 @@ Router.route('/Elections', {
 // the route for the about page.
 Router.route('/About', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"About");
 			this.render('About');
 		}
 	}
@@ -98,12 +102,13 @@ Router.route('/About', {
 // the route for the survey.
 Router.route('/Survey', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
 			Session.set('askPoll', false);
+			Session.set('view',"Polls");
 			this.render('Survey');
 		}
 	}
@@ -114,7 +119,7 @@ Router.route('/Survey/:_id', {
     template: 'pollPage',
 	path: "/Survey/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPoll = this.params._id;
@@ -123,6 +128,7 @@ Router.route('/Survey/:_id', {
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"Poll");
 			this.render();
 		}
 	}
@@ -130,13 +136,14 @@ Router.route('/Survey/:_id', {
 // the route for the Petition.
 Router.route('/Petition', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
 			Session.set('supportPetition', false);
 			Session.set('askPetition', false);
+			Session.set('view',"Petitions");
 			this.render('Petition');
 		}
 	}
@@ -147,7 +154,7 @@ Router.route('/Petition/:_id', {
     template: 'PetitionPage',
     path: "/Petition/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('messagespoll'),subs.subscribe('messagespeti')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPetition = this.params._id;
@@ -156,6 +163,7 @@ Router.route('/Petition/:_id', {
 	action : function () {
 		if (this.ready()) {
 			Session.set('setMenu', true);
+			Session.set('view',"Petition");
 			this.render();
 		}
 	}
@@ -197,7 +205,6 @@ Meteor.startup(function() {
     	},
     	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
     });
-
 });
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -697,18 +704,16 @@ Template.Survey.events({
 			    if(event.target.Answer5.value)	newPoll.choices.push({text: event.target.Answer5.value, votes: 0});   
 			    if(event.target.Answer6.value)	newPoll.choices.push({text: event.target.Answer6.value, votes: 0}); 
 			}
-			Meteor.call('mongoDBinsertPoll', newPoll);
+			Meteor.call('mongoDBinsertPoll', newPoll, function (error, result){
+				if(!error){
+				    var id=(Polls.findOne({ question: newPoll.question, date: newPoll.date}))._id;
+				    var temp = Meteor.user() || {username: 'guest'};
+					var newMesg2 = {user: "VoterCloudBot", msg: temp.username+", Just added the poll '"+newPoll.question+"'", date: new Date(), link: id};
+					Meteor.call('mongoDBinsertMesg',newMesg2);
+				}
+			});
 		    console.log(newPoll.date);
 		    Session.set('askPoll', false);
-
-		    var id=Polls.findOne({ question: newPoll.question, date: newPoll.date})._id;
-
-    		var temp = Meteor.user() || {username: 'guest'};
-			var newMesg = {user: "", msg: temp.username+" Just added the poll '"+newPoll.question+"'", date: "", link: id};
-			Meteor.call('mongoDBinsertMesgPoll',newMesg);
-
-			var newMesg2 = {user: "VoterCloudBot", msg: temp.username+" Just added the poll '"+newPoll.question+"'", date: new Date(), link: id};
-			Meteor.call('mongoDBinsertMesg',newMesg2);
 		}
 	},
 	'click #plus': function(event){
@@ -736,12 +741,6 @@ Template.poll.events({
 		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
 		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
 		Meteor.call('mongoDBUpdate',pollID,this.text,votes);
-
-	    var id=Polls.findOne({ question: this.question, date: this.date})._id;
-
-		var temp = Meteor.user() || {username: 'guest'};
-		var newMesg = {user: "", msg: temp.username+" Just clicked on the poll '"+this.question+"'("+this.text+")", date: "", link: id};
-		Meteor.call('mongoDBinsertMesgPoll',newMesg);
     	console.log("updated sucssefuly");
 	}
 });
@@ -761,10 +760,6 @@ Template.pollPage.events({
 		console.log($(event.currentTarget).parent('.poll').data('totalClicks'));
 		//Polls.update({_id : pollID, choices.text: this.text }, {$set: {choices: votes}});
 		Meteor.call('mongoDBUpdate',pollID,this.text,votes);
-
-		var temp = Meteor.user() || {username: 'guest'};
-		var newMesg = {user: "", msg: temp.username+" Just clicked on the poll '"+this.question+"'("+this.text+")", date: "", link: id};
-		Meteor.call('mongoDBinsertMesgPoll',newMesg);
 
     	console.log("updated sucssefuly");
 	}
@@ -792,6 +787,19 @@ Template.chat.events({
 Template.chat.helpers({
 	messagess: function(){
 		return Mesg.find({});
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: This function was written for the chat selection of hashtag link.
+*/
+Template.select.helpers({
+	polls: function(){
+		return Polls.find({});
+	},
+	petitions: function(){
+		return Petition.find({});
 	}
 });
 /*
@@ -831,18 +839,16 @@ Template.Petition.events({
 		      date: new Date(),
 		      support: [ ]
 		    };
-		    Meteor.call('mongoDBinsertPetit', newPetition);
+		    Meteor.call('mongoDBinsertPetit', newPetition,function (error, result){
+		    	if(!error){
+				    var id=(Petition.findOne({ subject: newPetition.subject, date: newPetition.date}))._id;
+				    var temp = Meteor.user() || {username: 'guest'};
+					var newMesg2 = {user: "VoterCloudBot", msg: temp.username+", Just added the petition '"+newPetition.subject+"'", date: new Date(), linkp: id};
+					Meteor.call('mongoDBinsertMesg',newMesg2);
+		    	}
+		    });
 
 		    Session.set('askPetition', false);
-
-		    var id=Petition.findOne({ subject: newPetition.subject, date: newPetition.date})._id;
-
-    		var temp = Meteor.user() || {username: 'guest'};
-			var newMesg = {user: "", msg: temp.username+" Just added the petition '"+newPetition.subject+"'", date: "", linkp: id};
-			Meteor.call('mongoDBinsertMesgPeti',newMesg);
-
-			var newMesg2 = {user: "VoterCloudBot", msg: temp.username+" Just added the petition '"+newPetition.subject+"'", date: new Date(), linkp: id};
-			Meteor.call('mongoDBinsertMesg',newMesg2);
 		}
 	},
 	'click #askPetition': function(event){
@@ -959,11 +965,6 @@ Template.PetitionPage.events({
 		    $sigdiv = null;
 
 		    Router.go('Petition');
-
-		    var id=Petition.findOne({ subject: this.subject, date: this.date})._id;
-    		var temp = Meteor.user() || {username: 'guest'};
-			var newMesg = {user: "", msg: temp.username+" Just supported the petition '"+this.subject+"'", date: "", link: id};
-			Meteor.call('mongoDBinsertMesgPeti',newMesg);
 		}
 	}
 });
@@ -1000,4 +1001,14 @@ Template.registerHelper("timestampToTime", function (timestamp) {
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
     return hours + ':' + minutes.substr(minutes.length-2) + ':' + seconds.substr(seconds.length-2);
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: helper template for the screen view page.
+*/
+Template.header.helpers({
+	view: function(){
+		return Session.get('view');
+	}
 });
