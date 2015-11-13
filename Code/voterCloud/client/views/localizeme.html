@@ -1,0 +1,61 @@
+<template name="localizeme">
+  <div class="pure-g-r">
+    {{> mapInfo }}
+    {{> mapCanvas }}
+  </div>
+</template>
+
+<template name="mapCanvas">
+  <div class="pure-u-1-2 well well-lg">
+    <p><div style="width:100%; height:300px;" id="map-canvas"></div></p>
+  </div>
+</template>
+
+<template name="mapInfo">
+  <br>
+  <div class="pure-u-1-2 well well-lg">
+    <p>
+      {{#if session 'default-chat' }}
+        Your current Chat area is: <b>{{ session 'default-chat' }}</b>.<br>
+        Drag the marker if you want to change the place.<br>
+        Click on the marker to create a chat !.
+      {{/if }}
+    </p>
+  </div>
+</template>
+
+<template name="Channel">
+  <div id="check">
+    <h1> #LocalChat</h1>
+    <div class="message-history" id="message-history">
+    {{#each messages}}
+      <div class="message" >
+        <a href="" class="message_profile-pic"></a>
+        <a href="" class="message_username">{{user}}</a>
+        <span class="message_timestamp">{{timestampToTime date}}</span>
+        <span class="message_star"></span>
+        <span class="message_content">
+          {{msg}}
+          {{#if link}}
+            <a href="/Survey/{{link}}">#poll</a>
+          {{/if}}
+          {{#if linkp}}
+            <a href="/Petition/{{linkp}}">#petition</a>
+          {{/if}}
+        </span>
+      </div>
+    {{/each}}
+    </div>
+    <div class="footer">
+      <form id="sendMsg" name="sendMsg">
+        <div class="input-box">
+          <div class="row-fluid">
+            <div id="wellid">
+              <input class="input-box_text" type="text" id="msg" placeholder="Your message...">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

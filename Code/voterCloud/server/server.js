@@ -135,6 +135,10 @@ Meteor.startup(function() {
 		return Mesg.find({}, {sort: {date: 1}});
 	});
 
+	Meteor.publish("chann", function () {
+		return Channels.find({});
+	});
+
 	Meteor.publish("petit", function () {
 		return Petition.find({}, {
 			fields: {subject: 1, description: 1, image1: 1, Votes: 1, date: 1},
@@ -417,5 +421,55 @@ Meteor.methods({
 	*/
 	mongoDBinsertPetit: function(newPetit){
 		Petition.insert(newPetit);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection of the channel chat.
+	*/
+	createChat: function(id){
+		Channels.remove( {$or: [
+            {messages: {$exists: false}},
+            {messages: {$size: 0}}
+        ] });
+		if(!Channels.findOne({_id: id})){
+			Channels.insert({_id: id, messages: []});
+		}
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection of the channel chat.
+	*/
+	mongoDBinsertMesgCH: function(newMesg, id){
+		var temp = Channels.findOne({ _id: id });
+		var tempSupport = temp.messages;
+		tempSupport.push(newMesg);
+		Channels.update({  
+	        '_id': id
+	        }, {
+	            $set:{ 
+	                'messages': tempSupport,
+	            }
+	        }
+    	);
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: insert MongoDB collection of the channel chat.
+	*/
+	activeGeohashes: function(){
+		var arr=[];
+		var objs=Channels.find({$nor: [
+			{messages: {$exists: false}},
+			{messages: {$size: 0}}
+		] }).fetch();
+		_.each(objs, function (obj) {
+			if (obj.messages)
+				arr.push(obj._id);
+		});
+		console.log(arr.length);
+		return arr;
 	}
 });	

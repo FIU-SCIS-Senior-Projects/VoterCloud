@@ -34,6 +34,8 @@ Session.setDefault('petiMesg4', "");
 Session.setDefault('tempData', "");
 Session.setDefault('setMenu', false);
 Session.setDefault('view', "");
+Session.setDefault('default-chat', undefined);
+Session.setDefault('activeGeohashes', undefined);
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
@@ -50,7 +52,7 @@ var subs = new SubsManager(); // The cache for the collections.
 // The route for the Home Page.
 Router.route('/', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -60,10 +62,22 @@ Router.route('/', {
 		}
 	}
 });
+Router.route('/localMap', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	},
+	action : function (){
+		if (this.ready()) {
+			Session.set('setMenu', true);
+			Session.set('view',"Chat Map");
+			this.render('localizeme');
+		}
+	}
+});
 // The route for the representatives.
 Router.route('/Search', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -76,7 +90,7 @@ Router.route('/Search', {
 // the route for the elections.
 Router.route('/Elections', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -89,7 +103,7 @@ Router.route('/Elections', {
 // the route for the about page.
 Router.route('/About', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -102,7 +116,7 @@ Router.route('/About', {
 // the route for the survey.
 Router.route('/Survey', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -119,7 +133,7 @@ Router.route('/Survey/:_id', {
     template: 'pollPage',
 	path: "/Survey/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
     data: function(){
         var currentPoll = this.params._id;
@@ -136,7 +150,7 @@ Router.route('/Survey/:_id', {
 // the route for the Petition.
 Router.route('/Petition', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -154,7 +168,7 @@ Router.route('/Petition/:_id', {
     template: 'PetitionPage',
     path: "/Petition/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
 	},
     data: function(){
         var currentPetition = this.params._id;
@@ -164,6 +178,29 @@ Router.route('/Petition/:_id', {
 		if (this.ready()) {
 			Session.set('setMenu', true);
 			Session.set('view',"Petition");
+			this.render();
+		}
+	}
+});
+
+Router.route('/Channel/:_id', {
+    name: 'Channel',
+    template: 'Channel',
+	path: "/Channel/:_id",
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	},
+    data: function(){
+        var ch = this.params._id;
+        console.log("DATA");
+        return Channels.findOne({ _id: ch });
+    },
+	action : function () {
+		console.log("NReady");
+		if (this.ready()) {
+			console.log("Ready");
+			Session.set('setMenu', true);
+			Session.set('view',"Chat");
 			this.render();
 		}
 	}
@@ -180,6 +217,8 @@ Meteor.startup(function() {
         navigator.geolocation.getCurrentPosition(function(position) {
             Session.set('lat', position.coords.latitude);
             Session.set('lon', position.coords.longitude);
+            em.emit('readylatlon'); // CHECK
+            
         	var lat,lon;
             lat = position.coords.latitude;
             lon = position.coords.longitude;
