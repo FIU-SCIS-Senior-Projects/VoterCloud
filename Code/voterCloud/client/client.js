@@ -52,7 +52,7 @@ var subs = new SubsManager(); // The cache for the collections.
 // The route for the Home Page.
 Router.route('/', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -64,7 +64,7 @@ Router.route('/', {
 });
 Router.route('/localMap', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -77,7 +77,7 @@ Router.route('/localMap', {
 // The route for the representatives.
 Router.route('/Search', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -90,7 +90,7 @@ Router.route('/Search', {
 // the route for the elections.
 Router.route('/Elections', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -103,7 +103,7 @@ Router.route('/Elections', {
 // the route for the about page.
 Router.route('/About', {
 	waitOn : function(){
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function (){
 		if (this.ready()) {
@@ -116,7 +116,7 @@ Router.route('/About', {
 // the route for the survey.
 Router.route('/Survey', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -133,7 +133,7 @@ Router.route('/Survey/:_id', {
     template: 'pollPage',
 	path: "/Survey/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPoll = this.params._id;
@@ -150,7 +150,7 @@ Router.route('/Survey/:_id', {
 // the route for the Petition.
 Router.route('/Petition', {
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
 	action : function () {
 		if (this.ready()) {
@@ -168,7 +168,7 @@ Router.route('/Petition/:_id', {
     template: 'PetitionPage',
     path: "/Petition/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
 	},
     data: function(){
         var currentPetition = this.params._id;
@@ -188,11 +188,12 @@ Router.route('/Channel/:_id', {
     template: 'Channel',
 	path: "/Channel/:_id",
 	waitOn : function () {
-	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann')];
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('chann',this.params._id)];
 	},
     data: function(){
         var ch = this.params._id;
         console.log("DATA");
+        Session.set('default-chat', ch);
         return Channels.findOne({ _id: ch });
     },
 	action : function () {

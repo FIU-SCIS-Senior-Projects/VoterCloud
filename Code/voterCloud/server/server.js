@@ -135,8 +135,8 @@ Meteor.startup(function() {
 		return Mesg.find({}, {sort: {date: 1}});
 	});
 
-	Meteor.publish("chann", function () {
-		return Channels.find({});
+	Meteor.publish("chann", function (id) {
+		return Channels.find({_id: id});
 	});
 
 	Meteor.publish("petit", function () {
