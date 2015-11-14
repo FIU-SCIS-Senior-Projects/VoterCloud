@@ -19,19 +19,20 @@ em.on('new-coords', function(lat, lon) {
 
 em.on('readylatlon', function(){
 	if(!Session.get('lon'))
-		em.emit('map-ready');
+		console.log('Wait');//em.emit('map-ready');
 	else{
 		em.emit('new-coords', Session.get('lat'), Session.get('lon'));
+		em.emit('active');
 	}
 });
 em.on('active',function(){
-      
 	Meteor.call('activeGeohashes', function (error,data) {
-    
-    Session.set('activeGeohashes', data);
-    
-    placeMarkers();
-  });
+    	if(data&&data.length!=0){
+	    	Session.set('activeGeohashes', data);
+		}
+	    
+	    placeMarkers();
+  	});
 });
 
 deleteOverlays = function () {
@@ -63,7 +64,8 @@ placeMarker = function (lat, lon) {
     	var temp=Session.get('default-chat');
     	Router.go(('/Channel/'+temp));
     });
-	map.setCenter(location);
+    if(map&&location)
+		map.setCenter(location);
 }
 
 placeSquare = function (sGeohash) { 
@@ -94,8 +96,8 @@ placeSquare = function (sGeohash) {
 	rectangle.setBounds(new google.maps.LatLngBounds(nwCoord,seCoord) );
 
 	markersArray.push(rectangle);
-
-	map.setCenter(location);
+	if(map&&location)
+		map.setCenter(location);
 }
 
 placeMarkers = function () {
@@ -134,7 +136,6 @@ Template.mapCanvas.rendered = function() {
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
 	em.emit('readylatlon');
-	em.emit('active');
 }
 
 /*
