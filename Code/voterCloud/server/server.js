@@ -461,10 +461,12 @@ Meteor.methods({
 	*/
 	activeGeohashes: function(){
 		var arr=[];
-		var objs=Channels.find({$nor: [
+		var objss=Channels.find({$nor: [
 			{messages: {$exists: false}},
 			{messages: {$size: 0}}
-		] }).fetch();
+		] });
+		var objs;
+		if(objss) objs=objss.fetch();
 		_.each(objs, function (obj) {
 			if (obj.messages)
 				arr.push(obj._id);

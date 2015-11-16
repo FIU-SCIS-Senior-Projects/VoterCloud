@@ -104,7 +104,11 @@ html, body {
 }
 
 #divSearch {
-
+  position: relative;
+  height: 87%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden; 
 }
 
 #ulSearch {
@@ -286,4 +290,7 @@ td, tr {
 }
 #petiTable{
   padding-left: 5px;
+}
+#petiTablee{
+  border-left: thick solid #CCCCCC;
 }

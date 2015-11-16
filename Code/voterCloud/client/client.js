@@ -36,6 +36,7 @@ Session.setDefault('setMenu', false);
 Session.setDefault('view', "");
 Session.setDefault('default-chat', undefined);
 Session.setDefault('activeGeohashes', undefined);
+Session.setDefault('maprendered', false);
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5

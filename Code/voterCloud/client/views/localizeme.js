@@ -18,7 +18,7 @@ em.on('new-coords', function(lat, lon) {
 });
 
 em.on('readylatlon', function(){
-	if(!Session.get('lon'))
+	if(!Session.get('lon')||!Session.get('maprendered'))
 		console.log('Wait');//em.emit('map-ready');
 	else{
 		em.emit('new-coords', Session.get('lat'), Session.get('lon'));
@@ -26,12 +26,12 @@ em.on('readylatlon', function(){
 	}
 });
 em.on('active',function(){
-	Meteor.call('activeGeohashes', function (error,data) {
-    	if(data&&data.length!=0){
+	Meteor.call('activeGeohashes', function (err,data) {
+    	if(!err&&data&&data.length!=0){
 	    	Session.set('activeGeohashes', data);
-		}
 	    
-	    placeMarkers();
+	    	placeMarkers();
+		}
   	});
 });
 
@@ -45,63 +45,67 @@ deleteOverlays = function () {
 }
 
 placeMarker = function (lat, lon) {
+	if(map) {
+		var location = new google.maps.LatLng(lat, lon);
 
-	var location = new google.maps.LatLng(lat, lon);
+		marker = new google.maps.Marker({
+			position: location,
+			draggable: true,
+			map: map
+		});
 
-	marker = new google.maps.Marker({
-		position: location,
-		draggable: true,
-		map: map
-	});
+		markersArray.push(marker);
 
-	markersArray.push(marker);
+		google.maps.event.addListener(marker, 'dragend', function(ev) {
+			em.emit('new-coords', ev.latLng.lat(), ev.latLng.lng());
+		});
 
-	google.maps.event.addListener(marker, 'dragend', function(ev) {
-		em.emit('new-coords', ev.latLng.lat(), ev.latLng.lng());
-	});
-
-    google.maps.event.addListener(marker, 'click', function() {
-    	var temp=Session.get('default-chat');
-    	Router.go(('/Channel/'+temp));
-    });
-    if(map&&location)
-		map.setCenter(location);
+	    google.maps.event.addListener(marker, 'click', function() {
+	    	var temp=Session.get('default-chat');
+	    	Router.go(('/Channel/'+temp));
+	    });
+	    if(map&&location)
+			map.setCenter(location);
+	}
 }
 
 placeSquare = function (sGeohash) { 
-	var cePoint = geohash.decode(geohash.neighbors(sGeohash).c);
-	var nwPoint = geohash.decode(geohash.neighbors(sGeohash).nw);
-	var sePoint = geohash.decode(geohash.neighbors(sGeohash).se);
+	if(map){
+		var cePoint = geohash.decode(geohash.neighbors(sGeohash).c);
+		var nwPoint = geohash.decode(geohash.neighbors(sGeohash).nw);
+		var sePoint = geohash.decode(geohash.neighbors(sGeohash).se);
 
-	deleteOverlays();
+		deleteOverlays();
 
-	placeMarker(cePoint[0],cePoint[1]);
+		placeMarker(cePoint[0],cePoint[1]);
 
-	var location = new google.maps.LatLng(cePoint[0], cePoint[1]);
-	var nwCoord = new google.maps.LatLng( cePoint[0]+(nwPoint[0]-cePoint[0])/2.0, cePoint[1]+(nwPoint[1]-cePoint[1])/2.0 );
-	var seCoord = new google.maps.LatLng( cePoint[0]+(sePoint[0]-cePoint[0])/2.0, cePoint[1]+(sePoint[1]-cePoint[1])/2.0 );
+		var location = new google.maps.LatLng(cePoint[0], cePoint[1]);
+		var nwCoord = new google.maps.LatLng( cePoint[0]+(nwPoint[0]-cePoint[0])/2.0, cePoint[1]+(nwPoint[1]-cePoint[1])/2.0 );
+		var seCoord = new google.maps.LatLng( cePoint[0]+(sePoint[0]-cePoint[0])/2.0, cePoint[1]+(sePoint[1]-cePoint[1])/2.0 );
 
-	var rectangle = new google.maps.Rectangle();
-	var rectOptions = {
-			map: map,
-	    strokeColor : "#FF0000",
-	    fillColor : "#FF0000",
-	    strokeOpacity : 0.8,
-	    strokeWeight : 2,
-	    fillOpacity : 0.2
-	};
-	rectangle.setOptions(rectOptions);
+		var rectangle = new google.maps.Rectangle();
+		var rectOptions = {
+				map: map,
+		    strokeColor : "#FF0000",
+		    fillColor : "#FF0000",
+		    strokeOpacity : 0.8,
+		    strokeWeight : 2,
+		    fillOpacity : 0.2
+		};
+		rectangle.setOptions(rectOptions);
 
-	
-	rectangle.setBounds(new google.maps.LatLngBounds(nwCoord,seCoord) );
+		
+		rectangle.setBounds(new google.maps.LatLngBounds(nwCoord,seCoord) );
 
-	markersArray.push(rectangle);
-	if(map&&location)
-		map.setCenter(location);
+		markersArray.push(rectangle);
+		if(map&&location)
+			map.setCenter(location);
+	}
 }
 
 placeMarkers = function () {
-	if (Session.get('activeGeohashes')) {
+	var t=Session.get('activeGeohashes');
+	if (t&&t.length!=0&&map) {
   		_(Session.get('activeGeohashes')).each(function (gh) {
 		    var geo = geohash.decode(gh);
 		    var el = {
@@ -121,7 +125,7 @@ placeMarkers = function () {
 
 		    markersArrayh.push(marker);
 	  	});
-		var markerCluster = new MarkerClusterer(map, markersArrayh);
+		//var markerCluster = new MarkerClusterer(map, markersArrayh);
 	}
 }
 
@@ -135,6 +139,7 @@ Template.mapCanvas.rendered = function() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+	Session.set('maprendered',true);
 	em.emit('readylatlon');
 }
 

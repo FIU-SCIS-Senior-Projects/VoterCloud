@@ -108,23 +108,5 @@ Meteor.methods({
 	            }
 	        }
     	);
-	},
-	/*
-		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-		SPRINT: 6
-		DESCRIPTION: insert MongoDB collection of the channel chat.
-	*/
-	activeGeohashes: function(){
-		var arr=[];
-		var objs=Channels.find({$nor: [
-			{messages: {$exists: false}},
-			{messages: {$size: 0}}
-		] }).fetch();
-		_.each(objs, function (obj) {
-			if (obj.messages)
-				arr.push(obj._id);
-		});
-		console.log(arr.length);
-		return arr;
 	}
 });

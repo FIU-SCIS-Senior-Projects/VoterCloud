@@ -130,52 +130,60 @@
   DESCRIPTION: The Template for the Representative, look on the documentation for more details.
 -->
 <template name="Search">
-  <div>
-    <h2> Search Representative By Address</h2>
-    <form id="Search">
-      Please Type The Address: <input type="text" name="address">
-    <input type="submit" value="Submit">
-    </form>
-    <button id="but" name="but" value="GPS">Search by GPS</button>
-  </div>
-  <div id="divSearch">
-    <ul id="ulSearch">
-      {{#each officials}}
-        <li id="liSearch">
-          <table>
-            <tr>
-              <td>
-                {{#if hasPhoto}}
-                  <img id="imgSearch" src={{photo}} height="150" width="150">
-                {{else}}
-                  {{#if hasface}}
-                    {{> facebookImage}}
+  <h2> Search Representative By Address</h2>
+  <div id="check">
+    <table>
+      <tr>
+        <td>
+          <form id="Search">
+            <input type="text" name="address" placeholder="please type the address">
+            <input type="submit" value="Submit">
+          </form>
+        </td>
+        <td id="petiTablee">
+          <button id="but" name="but" value="GPS">By GPS</button>
+        </td>
+      </tr>
+    </table>
+    <div id="divSearch">
+      <ul id="ulSearch">
+        {{#each officials}}
+          <li id="liSearch">
+            <table>
+              <tr>
+                <td>
+                  {{#if hasPhoto}}
+                    <img id="imgSearch" src={{photo}} height="150" width="150">
                   {{else}}
-                    {{#if hastwit}}
-                      {{> twitterImage}}
+                    {{#if hasface}}
+                      {{> facebookImage}}
                     {{else}}
-                      {{> imagesGen}}
-                    {{/if}}
-                  {{/if}} 
-                {{/if}}
-              </td>
-              <td>
-                <h3 id="officialName">
-                  {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
-                </h3>
-                <p id="pSearch">
-                Division: {{division}}.<br>
-                {{#if hasPhone}} Contact: {{phone}}.<br>{{/if}}
-                {{#if hasFacebook}}<a href={{facebook}}><img src="/facebook.png" width="32" hight="32"></a>{{/if}}
-                {{#if hasTwitter}}<a href={{twitter}}><img src="/twitter.png" width="32" hight="32"></a>{{/if}}
-                {{#if hasYoutube}}<a href={{youtube}}><img src="/youtube.png" width="32" hight="32"></a>{{/if}}
-                </p>
-              </td>
-            </tr>
-          </table>
-        </li>
-      {{/each}}
-    </ul>
+                      {{#if hastwit}}
+                        {{> twitterImage}}
+                      {{else}}
+                        {{> imagesGen}}
+                      {{/if}}
+                    {{/if}} 
+                  {{/if}}
+                </td>
+                <td>
+                  <h3 id="officialName">
+                    {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
+                  </h3>
+                  <p id="pSearch">
+                  Division: {{division}}.<br>
+                  {{#if hasPhone}} Contact: {{phone}}.<br>{{/if}}
+                  {{#if hasFacebook}}<a href={{facebook}}><img src="/facebook.png" width="32" hight="32"></a>{{/if}}
+                  {{#if hasTwitter}}<a href={{twitter}}><img src="/twitter.png" width="32" hight="32"></a>{{/if}}
+                  {{#if hasYoutube}}<a href={{youtube}}><img src="/youtube.png" width="32" hight="32"></a>{{/if}}
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
 </template>
 <!--
