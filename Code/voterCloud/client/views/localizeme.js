@@ -1,3 +1,8 @@
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 var map = undefined;
 var markersArray = [];
 var markersArrayh = [];

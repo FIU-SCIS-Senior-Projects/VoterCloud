@@ -37,6 +37,8 @@ Session.setDefault('view', "");
 Session.setDefault('default-chat', undefined);
 Session.setDefault('activeGeohashes', undefined);
 Session.setDefault('maprendered', false);
+Session.setDefault('repchannel', undefined);
+Session.setDefault('default-chat2', undefined);
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
@@ -203,6 +205,30 @@ Router.route('/Channel/:_id', {
 			console.log("Ready");
 			Session.set('setMenu', true);
 			Session.set('view',"Chat");
+			this.render();
+		}
+	}
+});
+
+Router.route('/RepChannel/:_id', {
+    name: 'RepChannel',
+    template: 'RepChannel',
+	path: "/RepChannel/:_id",
+	waitOn : function () {
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users'),subs.subscribe('repch',this.params._id)];
+	},
+    data: function(){
+        var ch = this.params._id;
+        console.log("DATA");
+        Session.set('default-chat2', ch);
+        return Repch.findOne({ _id: ch });
+    },
+	action : function () {
+		console.log("NReady");
+		if (this.ready()) {
+			console.log("Ready");
+			Session.set('setMenu', true);
+			Session.set('view',"representative");
 			this.render();
 		}
 	}
@@ -512,7 +538,7 @@ function submiting()
 };
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 3
+	SPRINT: 3, 6
 	DESCRIPTION: event click template, for the gps cordinates.
 */
 Template.Search.events({
@@ -525,6 +551,44 @@ Template.Search.events({
 		event.preventDefault();
 		Session.set('ad', undefined);
 		submiting();
+	},
+	'click #liSearch': function(e){
+		var img=e.currentTarget.children[0].childNodes[1].children[0].children.imgSearch.currentSrc;
+		var obg={
+			hasPhoto:true,
+			hasface:this.hasface,
+			hastwit:this.hastwit,
+			fcimage:img,
+			twimage:img,
+			images:img,
+			officialName:this.officialName,
+			officeName:this.officeName,
+			division:this.division,
+			hasPhone:this.hasPhone,
+			phone:this.phone,
+			hasFacebook:this.hasFacebook,
+			facebook:this.facebook,
+			hasTwitter:this.hasTwitter,
+			twitter:this.twitter,
+			hasYoutube:this.hasYoutube,
+			youtube:this.youtube,
+			partyImg:this.partyImg,
+			photo:img
+		};
+		Session.set('repchannel',obg);
+		var mess=obg.officialName+""+obg.officeName+obg.division;
+		Meteor.call('generateHashMD5', mess, function (error, result) {
+			if(!error) {
+				console.log(result);
+				console.log(Session.get('repchannel'));
+				var url='/RepChannel/'+result;
+				Meteor.call('createRepCh', result, function (error, result) {
+					if(!error) {
+						Router.go(url);
+					}
+				});
+			}
+		});
 	}
 });
 /*
@@ -1051,5 +1115,80 @@ Template.registerHelper("timestampToTime", function (timestamp) {
 Template.header.helpers({
 	view: function(){
 		return Session.get('view');
+	}
+});
+Template.RepChannel.events({
+	'submit #sendMsg': function( e ){
+		e.preventDefault( );
+		console.log("HEYYYYYYYYYYy");
+		console.log(Session.get('default-chat2'));
+		var temp = Meteor.user() || {username: 'guest'};//.username
+		var newMesg={user: temp.username, msg: e.target.msg.value, date: new Date()};
+		Meteor.call('mongoDBinsertMesgRepCH', newMesg, Session.get('default-chat2'));
+		e.target.msg.value="";
+		console.log("inserted the object");
+	}
+});
+Template.RepChannel.helpers({
+	messagess: function(){
+		this.messages.sort();
+		return this.messages;
+	},
+	hasPhoto: function(){
+		return Session.get('repchannel').hasPhoto;
+	},
+	hasface: function(){
+		return Session.get('repchannel').hasface;
+	},
+	hastwit: function(){
+		return Session.get('repchannel').hastwit;
+	},
+	twimage: function(){
+		return Session.get('repchannel').twimage;
+	},
+	fcimage: function(){
+		return Session.get('repchannel').fcimage;
+	},
+	images: function(){
+		return Session.get('repchannel').images;
+	},
+	officialName: function(){
+		return Session.get('repchannel').officialName;
+	},
+	officeName: function(){
+		return Session.get('repchannel').officeName;
+	},
+	division: function(){
+		return Session.get('repchannel').division;
+	},
+	hasPhone: function(){
+		return Session.get('repchannel').hasPhone;
+	},
+	hasFacebook: function(){
+		return Session.get('repchannel').hasFacebook;
+	},
+	facebook: function(){
+		return Session.get('repchannel').facebook;
+	},
+	hasTwitter: function(){
+		return Session.get('repchannel').hasTwitter;
+	},
+	twitter: function(){
+		return Session.get('repchannel').twitter;
+	},
+	hasYoutube: function(){
+		return Session.get('repchannel').hasYoutube;
+	},
+	youtube: function(){
+		return Session.get('repchannel').youtube;
+	},
+	partyImg: function(){
+		return Session.get('repchannel').partyImg;
+	},
+	phone: function(){
+		return Session.get('repchannel').phone;
+	},
+	photo:function(){
+		return Session.get('repchannel').photo;
 	}
 });

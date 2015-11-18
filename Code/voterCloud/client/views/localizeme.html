@@ -1,3 +1,4 @@
+
 <template name="localizeme">
   <div class="pure-g-r">
     {{> mapInfo }}
@@ -36,12 +37,6 @@
         <span class="message_star"></span>
         <span class="message_content">
           {{msg}}
-          {{#if link}}
-            <a href="/Survey/{{link}}">#poll</a>
-          {{/if}}
-          {{#if linkp}}
-            <a href="/Petition/{{linkp}}">#petition</a>
-          {{/if}}
         </span>
       </div>
     {{/each}}

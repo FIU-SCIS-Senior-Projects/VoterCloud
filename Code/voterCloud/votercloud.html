@@ -188,11 +188,79 @@
 </template>
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 6
+  DESCRIPTION: Rep channel.
+-->
+<template name="RepChannel">
+  <div id="check">
+    <div id="divSearchh">
+      <ul id="ulSearch">
+        <li id="liSearchh" class="repchan" name="repchan">
+          <table>
+            <tr>
+              <td>
+                {{#if hasPhoto}}
+                  <img id="imgSearch" src={{photo}} height="150" width="150">
+                {{else}}
+                  {{#if hasface}}
+                    {{> facebookImage}}
+                  {{else}}
+                    {{#if hastwit}}
+                      {{> twitterImage}}
+                    {{else}}
+                      {{> imagesGen}}
+                    {{/if}}
+                  {{/if}} 
+                {{/if}}
+              </td>
+              <td>
+                <h3 id="officialName">
+                  {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
+                </h3>
+                <p id="pSearch">
+                Division: {{division}}.<br>
+                {{#if hasPhone}} Contact: {{phone}}.<br>{{/if}}
+                {{#if hasFacebook}}<a href={{facebook}}><img src="/facebook.png" width="32" hight="32"></a>{{/if}}
+                {{#if hasTwitter}}<a href={{twitter}}><img src="/twitter.png" width="32" hight="32"></a>{{/if}}
+                {{#if hasYoutube}}<a href={{youtube}}><img src="/youtube.png" width="32" hight="32"></a>{{/if}}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+    </div>
+    <div class="message-historyy" id="message-historyy">
+      {{#each messagess}}
+        <div class="message" >
+          <a href="" class="message_profile-pic"></a>
+          <a href="" class="message_username">{{user}}</a>
+          <span class="message_timestamp">{{timestampToTime date}}</span>
+          <span class="message_star"></span>
+          <span class="message_content">{{msg}}</span>
+        </div>
+      {{/each}}
+    </div>
+    <div class="footer">
+      <form id="sendMsg" name="sendMsg">
+        <div class="input-box">
+          <div class="row-fluid">
+            <div id="wellid">
+              <input class="input-box_text" type="text" id="msg" placeholder="Your message...">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
   SPRINT: 1, 2, 3, 4
   DESCRIPTION: The Template for the Representative Image Profile, look on the documentation for more details.
 -->
 <template name="imagesGen">
-  <img id="imgSearch" src={{images}} height="150" width="150">
+  <img id="imgSearch" name="imgSearch" class="imgSearch" src={{images}} height="150" width="150" value="{{images}}">
 </template>
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -200,7 +268,7 @@
   DESCRIPTION: The Template for the Representative Facebook Image Profile, look on the documentation for more details.
 -->
 <template name="facebookImage">
-  <img id="imgSearch" src={{fcimage}} height="150" width="150">
+  <img id="imgSearch" name="imgSearch" class="imgSearch" src={{fcimage}} height="150" width="150" value="{{fcimage}}">
 </template>
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -208,7 +276,7 @@
   DESCRIPTION: The Template for the Representative Twitter Image Profile, look on the documentation for more details.
 -->
 <template name="twitterImage">
-  <img id="imgSearch" src={{twimage}} height="150" width="150">
+  <img id="imgSearch" name="imgSearch" class="imgSearch" src={{twimage}} height="150" width="150" value="{{twimage}}">
 </template>
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.

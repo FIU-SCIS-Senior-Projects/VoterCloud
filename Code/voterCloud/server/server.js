@@ -163,6 +163,9 @@ Meteor.startup(function() {
   			fields: {"username": 1, "participated": 1}
   		});
 	});
+	Meteor.publish("repch", function (id) {
+  		return Repch.find({_id: id});
+	});
 	// For the Server side completion.
 	var templates = [];
 	templates.push({
@@ -495,5 +498,42 @@ Meteor.methods({
 		});
 		console.log(arr.length);
 		return arr;
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: Generate Cryptographic hash code using MD5 algorithim.
+	*/
+	generateHashMD5: function(argument){
+		return CryptoJS.MD5(argument).toString();
+	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: create new ch.
+	*/
+	createRepCh: function(id){
+		Repch.remove( {$or: [
+            {messages: {$exists: false}},
+            {messages: {$size: 0}}
+        ]});
+		if(!Repch.findOne({_id: id})){
+			Repch.insert({_id: id, messages: []});
+		}
+	},
+	mongoDBinsertMesgRepCH: function(newMesg, id){
+		var temp = Repch.findOne({ _id: id });
+		console.log(temp);
+		console.log("heyy");
+		var tempSupport = temp.messages;
+		tempSupport.push(newMesg);
+		Repch.update({  
+	        '_id': id
+	        }, {
+	            $set:{ 
+	                'messages': tempSupport,
+	            }
+	        }
+    	);
 	}
 });	

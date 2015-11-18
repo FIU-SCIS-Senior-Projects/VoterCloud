@@ -110,7 +110,12 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden; 
 }
-
+#divSearchh {
+  height: 20%;
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden; 
+}
 #ulSearch {
   list-style-type: none;
   padding-left: 0;
@@ -143,7 +148,10 @@ html, body {
   background: #eee;
   cursor: pointer;
 }
-
+#liSearchh{
+  padding: 10px;
+  overflow: hidden;
+}
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -175,9 +183,16 @@ td, tr {
 .message-history {
   position: relative;
   overflow-x: hidden;
-  height: 100%;
+  height: 75%;
   width: 100%;
-  padding: 0 18px 15rem 1.5rem;
+  padding: 0 18px 0 1.5rem;
+}
+.message-historyy {
+  position: relative;
+  overflow-x: hidden;
+  height: 65%;
+  width: 100%;
+  padding: 0 18px 0 1.5rem;
 }
 .message_profile-pic {
   position: absolute;
@@ -251,7 +266,7 @@ td, tr {
   position: fixed;
   left: 0;
   bottom: 0;
-  height: 64px;
+  height: 10%;
   width: 100%;
   overflow-y: hidden;
 }
@@ -293,4 +308,7 @@ td, tr {
 }
 #petiTablee{
   border-left: thick solid #CCCCCC;
+}
+.repchan{
+  position: fixed;
 }
