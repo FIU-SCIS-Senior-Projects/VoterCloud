@@ -39,7 +39,11 @@ em.on('active',function(){
 		}
   	});
 });
-
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 deleteOverlays = function () {
 	if (markersArray) {
 		for (i in markersArray) {
@@ -48,7 +52,11 @@ deleteOverlays = function () {
 		markersArray.length = 0;
 	}
 }
-
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 placeMarker = function (lat, lon) {
 	if(map) {
 		var location = new google.maps.LatLng(lat, lon);
@@ -73,7 +81,11 @@ placeMarker = function (lat, lon) {
 			map.setCenter(location);
 	}
 }
-
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 placeSquare = function (sGeohash) { 
 	if(map){
 		var cePoint = geohash.decode(geohash.neighbors(sGeohash).c);
@@ -107,7 +119,11 @@ placeSquare = function (sGeohash) {
 			map.setCenter(location);
 	}
 }
-
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 placeMarkers = function () {
 	var t=Session.get('activeGeohashes');
 	if (t&&t.length!=0&&map) {
@@ -130,10 +146,13 @@ placeMarkers = function () {
 
 		    markersArrayh.push(marker);
 	  	});
-		//var markerCluster = new MarkerClusterer(map, markersArrayh);
 	}
 }
-
+/*
+	MODIFIED BY: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: google map logic and user story, Some of the code here are inspired by othe sources such as the geo decoding to hash.
+*/	
 Template.mapCanvas.rendered = function() {
 	markersArray = [];
 

@@ -521,6 +521,11 @@ Meteor.methods({
 			Repch.insert({_id: id, messages: []});
 		}
 	},
+	/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 6
+		DESCRIPTION: create new ch.
+	*/
 	mongoDBinsertMesgRepCH: function(newMesg, id){
 		var temp = Repch.findOne({ _id: id });
 		console.log(temp);
