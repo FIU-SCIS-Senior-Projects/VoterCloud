@@ -1,6 +1,6 @@
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-	SPRINT: 1, 2, 3, 4, 5
+	SPRINT: 1, 2, 3, 4, 5, 6
 	DESCRIPTION: The Session configuration that are used as flags and switch, in order to transfer data and control switches.
 */
 Session.setDefault('image', 1);
@@ -552,8 +552,10 @@ Template.Search.events({
 		Session.set('ad', undefined);
 		submiting();
 	},
-	'click #liSearch': function(e){
-		var img=e.currentTarget.children[0].childNodes[1].children[0].children.imgSearch.currentSrc;
+	'click #rep-img-container': function(e){
+
+		console.log(e.currentTarget.children[0].currentSrc);
+		var img=e.currentTarget.children[0].currentSrc;
 		var obg={
 			hasPhoto:true,
 			hasface:this.hasface,

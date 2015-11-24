@@ -28,15 +28,15 @@
   </div>
 </template>
 <!--
-  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine, Raul Garay.
   SPRINT: 1, 2
   DESCRIPTION: The Template for the Header and menu, look on the documentation for more details.
 -->
 <template name="header">
   <div id="toggle-menu2">
-    <a href="#" id="toggle-menu"><img id="image" src="/options21.png" width="24" height="24"></a>
-    <span id="middleHeader">{{view}}</span> <!--For the page view/id-->
-    {{> loginButtons}} <!--THIS LINE DONE BY: Raul Garay-->
+    <a href="#" id="toggle-menu"><img id="image" src="/options21.png" width="30" height="30"></a>
+    <span id="login-btns">{{> loginButtons}}</span>
+    <span id="middle-header">{{view}}</span>
   </div>
   {{> slide}}
 </template>
@@ -112,7 +112,7 @@
 <!--
   AUTHOR AND PROGRAMMER: Eldar Feldbeine.
   SPRINT: 6
-  DESCRIPTION: Hashtag chat(like twitter hashtag).
+  DESCRIPTION: Hashtag chat(like twitter hashtag) , NOT IN USE !!! NOT IN USE !!! NOT IN USE !!!.
 -->
 <template name="select">
   <select multiple id="selectChat">
@@ -125,65 +125,58 @@
   </select>
 </template>
 <!--
-  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-  SPRINT: 1, 2, 3, 4
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine
+  SPRINT: 1, 2, 3, 4, 5, 6
+  COMPLETE REWRITE/REDESIGN: Raul Garay
+  SPRINT: 7
   DESCRIPTION: The Template for the Representative, look on the documentation for more details.
 -->
 <template name="Search">
-  <h2> Search Representative By Address</h2>
-  <div id="check">
-    <table>
-      <tr>
-        <td>
-          <form id="Search">
-            <input type="text" name="address" placeholder="please type the address">
-            <input type="submit" value="Submit">
-          </form>
-        </td>
-        <td id="petiTablee">
-          <button id="but" name="but" value="GPS">By GPS</button>
-        </td>
-      </tr>
-    </table>
-    <div id="divSearch">
-      <ul id="ulSearch">
-        {{#each officials}}
-          <li id="liSearch">
-            <table>
-              <tr>
-                <td>
-                  {{#if hasPhoto}}
-                    <img id="imgSearch" src={{photo}} height="150" width="150">
-                  {{else}}
-                    {{#if hasface}}
-                      {{> facebookImage}}
-                    {{else}}
-                      {{#if hastwit}}
-                        {{> twitterImage}}
-                      {{else}}
-                        {{> imagesGen}}
-                      {{/if}}
-                    {{/if}} 
-                  {{/if}}
-                </td>
-                <td>
-                  <h3 id="officialName">
-                    {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
-                  </h3>
-                  <p id="pSearch">
-                  Division: {{division}}.<br>
-                  {{#if hasPhone}} Contact: {{phone}}.<br>{{/if}}
-                  {{#if hasFacebook}}<a href={{facebook}}><img src="/facebook.png" width="32" hight="32"></a>{{/if}}
-                  {{#if hasTwitter}}<a href={{twitter}}><img src="/twitter.png" width="32" hight="32"></a>{{/if}}
-                  {{#if hasYoutube}}<a href={{youtube}}><img src="/youtube.png" width="32" hight="32"></a>{{/if}}
-                  </p>
-                </td>
-              </tr>
-            </table>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
+  <br>
+  <h3 id="hr-text-container"><span id="hr-text">Toggle Search Options</span></h3>
+  <div id="search-container" class="container">
+    <form id="Search" role="form">
+      <div class="row">
+        <div class="col-xs-4">
+          <input type="text" class="form-control" name="address" placeholder="Please type address" maxlength="30">
+        </div>
+        <div class="col-xs-4" style="padding-left:0;">
+          <button type="submit" class="btn btn-default" style="margin-left:0;">Search</button>
+        </div>
+        <div class="col-xs-4 text-center">
+          <button id="but" class="btn btn-default" name="but" value="GPS">GPS</button>
+        </div>
+      </div>
+    </form>
+    <hr style="border-color:orange; width:90%; margin-left: 12px;" />
+  </div>
+  <div class="container">
+    {{#each officials}}
+      <a href="#">
+        <div id="rep-img-container" class="col-xs-4">
+          {{> repImage}}    
+        </div>
+      </a>
+    {{/each}}
+  </div>
+</template>
+
+<template name="repImage">
+  {{#if hasPhoto}}
+    <img id="imgSearch" src={{photo}}>
+  {{else}}
+    {{#if hasface}}
+      {{> facebookImage}}
+    {{else}}
+      {{#if hastwit}}
+        {{> twitterImage}}
+      {{else}}
+        {{> imagesGen}}
+      {{/if}}
+    {{/if}} 
+  {{/if}}
+  <div class="official-name-container">
+    <p class="official-name">{{officialName}}</p>
   </div>
 </template>
 <!--
@@ -200,7 +193,7 @@
             <tr>
               <td>
                 {{#if hasPhoto}}
-                  <img id="imgSearch" src={{photo}} height="150" width="150">
+                  <img id="imgSearchh" src={{photo}} height="150" width="150">
                 {{else}}
                   {{#if hasface}}
                     {{> facebookImage}}
@@ -213,7 +206,7 @@
                   {{/if}} 
                 {{/if}}
               </td>
-              <td>
+              <td id="tabletdImage">
                 <h3 id="officialName">
                   {{officialName}} <img src={{partyImg}} width="20" height="20"><br/><span class="officeName">{{officeName}}</span>
                 </h3>
@@ -230,6 +223,7 @@
         </li>
       </ul>
     </div>
+    <hr id="rephr">
     <div class="message-historyy" id="message-historyy">
       {{#each messagess}}
         <div class="message" >
@@ -279,57 +273,43 @@
   <img id="imgSearch" name="imgSearch" class="imgSearch" src={{twimage}} height="150" width="150" value="{{twimage}}">
 </template>
 <!--
-  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine, Raul Garay.
   SPRINT: 1, 2, 3, 4
   DESCRIPTION: The Template for the Elections user story, look on the documentation for more details.
 -->
 <template name="Elections">
-  <div>
-    <h2> Upcoming Elections </h2>
-    <div id ="elects">
-      <ul id="ilElects">
-        {{#each elections}}
-          <div id="list4">
-            <ul>
-              <li>
-                <span id="voting"><h3><a href="#">{{name}}</a></h3>
-                <h5>{{electionDay}}</h5></span>
-                {{> votes}}
-              </li>
-            </ul>
-          </div>
-        {{/each}}
-      </ul>
+  <br>
+  {{#each elections}}
+    <div id="election-container">
+      <a href="#">
+        <div id="election-header">
+          <span id="voting">{{name}}</span>
+          <img id="elections-arrow" src="/grey_arrow_right.png">
+          <br>
+          <span id="electionDay">{{electionDay}}</span>
+        </div>
+      </a>
+      <div class="election-info">{{> votes}}</div>
     </div>
-  </div>
+  {{/each}}
 </template>
 <!--
-  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
-  SPRINT: 1, 2, 3, 4
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine, Raul Garay.
+  SPRINT: 1, 2, 3, 4, 6, 7.
   DESCRIPTION: The Template for the Elections user story, look on the documentation for more details.
 -->
 <template name="votes">
 {{#each voting}}
   {{#if isthere}}
-    <li id="liSearch">
-      <table>
-        <tr>
-          <td>
-            <h3 id="officialName">
-              {{place}} <br/><span class="officeName">{{forname}}</span>
-            </h3>
-            <p id="pSearch">
-              <a href={{absenteeVotingInfoUrl}}>Absentee voting</a><br>
-              <a href={{electionInfoUrl}}>Info</a><br>
-              <a href={{electionRegistrationConfirmationUrl}}>registration confirmation</a><br>
-              <a href={{electionRegistrationUrl}}>Registration</a><br>
-              <a href={{electionRulesUrl}}>Rules</a><br>
-              <a href={{votingLocationFinderUrl}}>Locations</a><br>
-            </p>
-          </td>
-        </tr>
-      </table>
-    </li>
+    <div id="resource-header">Resources</div>
+    <div id="resources">
+      <a href={{absenteeVotingInfoUrl}}>Absentee voting</a><br>
+      <a href={{electionInfoUrl}}>Info</a><br>
+      <a href={{electionRegistrationConfirmationUrl}}>Registration Confirmation</a><br>
+      <a href={{electionRegistrationUrl}}>Registration</a><br>
+      <a href={{electionRulesUrl}}>Rules</a><br>
+      <a href={{votingLocationFinderUrl}}>Locations</a><br>
+    </div>
   {{/if}}
 {{/each}}
 </template>
