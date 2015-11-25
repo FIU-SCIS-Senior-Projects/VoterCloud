@@ -461,7 +461,7 @@ function getlocationbyip(){
 function gpscordinates()
 {
 
-	Session.set( 'ad', Session.get('add') || Session.get('ip') );	
+	Session.set( 'ad', Session.get('add') || Session.get('ip') || Meteor.user().zipcode );	
 }
 
 /*
@@ -1334,6 +1334,9 @@ Template.login.events({
 		        Router.go("Home");
 		    }
 		});
+    },
+    'click #redirlogin': function(event){
+    	Session.set("accountMesg","");
     }
 });
 /*
@@ -1359,19 +1362,26 @@ Template.register.events({
         var email = $('[name=email]').val();
         var zipcode = $('[name=zipcode]').val();
         var password = $('[name=pass]').val();
-        Accounts.createUser({
-        	username: user,
-            email: email,
-            password: password
-        },function(error){
-		    if(error){
-		        console.log(error.reason);
-		        Session.set("accountMesg",error.reason);
-		    } else {
-		    	Meteor.call('mongoDBUpdateUser',zipcode);
-		        Router.go("Home");
-		    }
-		});
+        if(!(zipcode&&user&&email&&password)){
+        	Session.set("accountMesg","Please type every field");
+        } else {
+	        Accounts.createUser({
+	        	username: user,
+	            email: email,
+	            password: password
+	        },function(error){
+			    if(error){
+			        console.log(error.reason);
+			        Session.set("accountMesg",error.reason);
+			    } else {
+			    	Meteor.call('mongoDBUpdateUser',zipcode);
+			        Router.go("Home");
+			    }
+			});
+    	}
+    },
+    'click #redirlogin': function(event){
+    	Session.set("accountMesg","");
     }
 });
 /*
