@@ -371,23 +371,25 @@ Meteor.methods({
 		DESCRIPTION: update MongoDB collection of the polls.
 	*/
 	mongoDBUpdate: function(id,text,vote){
-		var temp=Meteor.users.findOne({_id:this.userId}).participated;
-		if( temp.indexOf(id) == -1){
-			Polls.update({  
-		        '_id': id,
-		        'choices.text': text
-		        }, {
-		            $set:{ 
-		                'choices.$': {
-		                    'votes': vote,
-		                    'text': text
-		                 }
-		            }
-		        }
-	    	);
-	    	temp.push(id);
-	    	Meteor.users.update(this.userId, {$set: {'participated':temp}});
-		}
+		if(this.userId){
+			var temp=Meteor.users.findOne({_id:this.userId}).participated;
+			if( temp.indexOf(id) == -1){
+				Polls.update({  
+			        '_id': id,
+			        'choices.text': text
+			        }, {
+			            $set:{ 
+			                'choices.$': {
+			                    'votes': vote,
+			                    'text': text
+			                 }
+			            }
+			        }
+		    	);
+		    	temp.push(id);
+		    	Meteor.users.update(this.userId, {$set: {'participated':temp}});
+			}
+		}	
 	},
 	/*
 		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
@@ -395,31 +397,33 @@ Meteor.methods({
 		DESCRIPTION: update MongoDB collection of the petition.
 	*/
 	mongoDBUpdatePeti: function(id, subject, description, image1, Votes, newSupport){
-		var tempuser=Meteor.users.findOne({_id:this.userId}).participated;
-		if( tempuser.indexOf(id) == -1) {
-			var temp = Petition.findOne({ _id: id });
-			var tempSupport = temp.support;
-			tempSupport.push(newSupport);
-	    	if( Votes <= 0 )
-	    	{
-	    		Votes = 0;
-	    		Meteor.call('mongoDBinsertMesg',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got completely supported !", date: new Date(), linkp: id});
-	    	}
-			Petition.update({  
-		        '_id': id,
-		        'subject': subject,
-		        'description': description,
-		        'image1': image1,
-		        'email' : temp.email
-		        }, {
-		            $set:{ 
-		                'support': tempSupport,
-		                'Votes': Votes
-		            }
-		        }
-	    	);
-	    	tempuser.push(id);
-	    	Meteor.users.update(this.userId, {$set: {'participated':tempuser}});
+		if(this.userId){
+			var tempuser=Meteor.users.findOne({_id:this.userId}).participated;
+			if( tempuser.indexOf(id) == -1) {
+				var temp = Petition.findOne({ _id: id });
+				var tempSupport = temp.support;
+				tempSupport.push(newSupport);
+		    	if( Votes <= 0 )
+		    	{
+		    		Votes = 0;
+		    		Meteor.call('mongoDBinsertMesg',{user: "VoterCloudBot", msg: "The petition '"+subject+"' just got completely supported !", date: new Date(), linkp: id});
+		    	}
+				Petition.update({  
+			        '_id': id,
+			        'subject': subject,
+			        'description': description,
+			        'image1': image1,
+			        'email' : temp.email
+			        }, {
+			            $set:{ 
+			                'support': tempSupport,
+			                'Votes': Votes
+			            }
+			        }
+		    	);
+		    	tempuser.push(id);
+		    	Meteor.users.update(this.userId, {$set: {'participated':tempuser}});
+			}
 		}
 	},
 	/*
