@@ -39,6 +39,7 @@ Session.setDefault('activeGeohashes', undefined);
 Session.setDefault('maprendered', false);
 Session.setDefault('repchannel', undefined);
 Session.setDefault('default-chat2', undefined);
+Session.setDefault('accountMesg', "");
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
 	SPRINT: 1, 2, 3, 4, 5
@@ -59,9 +60,69 @@ Router.route('/', {
 	},
 	action : function (){
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"#General");
-			this.render('Home');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			}
+			else {
+				Session.set('setMenu', true);
+				Session.set('view',"#General");
+				this.render('Home');
+			}
+		}
+	}
+});
+Router.route('/Home', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	},
+	action : function (){
+		if (this.ready()) {
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			}
+			else {
+				Session.set('setMenu', true);
+				Session.set('view',"#General");
+				this.render('Home');
+			}
+		}
+	}
+});
+Router.route('/login', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	},
+	action : function (){
+		if (this.ready()) {
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			}
+			else {
+				Session.set('setMenu', true);
+				Session.set('view',"#General");
+				this.render('Home');
+			}
+		}
+	}
+});
+Router.route('/register', {
+	waitOn : function(){
+	    return [subs.subscribe('messages'),subs.subscribe('pollsMesg'),subs.subscribe('petit'),subs.subscribe('users')];
+	},
+	action : function (){
+		if (this.ready()) {
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('register');
+			}
+			else {
+				Session.set('setMenu', true);
+				Session.set('view',"#General");
+				this.render('Home');
+			}
 		}
 	}
 });
@@ -71,9 +132,14 @@ Router.route('/localMap', {
 	},
 	action : function (){
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"Chat Map");
-			this.render('localizeme');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"Chat Map");
+				this.render('localizeme');
+			}
 		}
 	}
 });
@@ -84,9 +150,14 @@ Router.route('/Search', {
 	},
 	action : function (){
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"Representatives");
-			this.render('Search');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"Representatives");
+				this.render('Search');
+			}
 		}
 	}
 });
@@ -97,9 +168,14 @@ Router.route('/Elections', {
 	},
 	action : function (){
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"Upcoming Elections");
-			this.render('Elections');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"Upcoming Elections");
+				this.render('Elections');
+			}
 		}
 	}
 });
@@ -110,9 +186,14 @@ Router.route('/About', {
 	},
 	action : function (){
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"About");
-			this.render('About');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"About");
+				this.render('About');
+			}
 		}
 	}
 });
@@ -123,10 +204,15 @@ Router.route('/Survey', {
 	},
 	action : function () {
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('askPoll', false);
-			Session.set('view',"Polls");
-			this.render('Survey');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('askPoll', false);
+				Session.set('view',"Polls");
+				this.render('Survey');
+			}
 		}
 	}
 });
@@ -144,9 +230,14 @@ Router.route('/Survey/:_id', {
     },
 	action : function () {
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"Poll");
-			this.render();
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"Poll");
+				this.render();
+			}
 		}
 	}
 });
@@ -157,11 +248,16 @@ Router.route('/Petition', {
 	},
 	action : function () {
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('supportPetition', false);
-			Session.set('askPetition', false);
-			Session.set('view',"Petitions");
-			this.render('Petition');
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('supportPetition', false);
+				Session.set('askPetition', false);
+				Session.set('view',"Petitions");
+				this.render('Petition');
+			}
 		}
 	}
 });
@@ -179,9 +275,14 @@ Router.route('/Petition/:_id', {
     },
 	action : function () {
 		if (this.ready()) {
-			Session.set('setMenu', true);
-			Session.set('view',"Petition");
-			this.render();
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				Session.set('setMenu', true);
+				Session.set('view',"Petition");
+				this.render();
+			}
 		}
 	}
 });
@@ -202,10 +303,15 @@ Router.route('/Channel/:_id', {
 	action : function () {
 		console.log("NReady");
 		if (this.ready()) {
-			console.log("Ready");
-			Session.set('setMenu', true);
-			Session.set('view',"Chat");
-			this.render();
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				console.log("Ready");
+				Session.set('setMenu', true);
+				Session.set('view',"Chat");
+				this.render();
+			}
 		}
 	}
 });
@@ -226,10 +332,15 @@ Router.route('/RepChannel/:_id', {
 	action : function () {
 		console.log("NReady");
 		if (this.ready()) {
-			console.log("Ready");
-			Session.set('setMenu', true);
-			Session.set('view',"representative");
-			this.render();
+			if(!Meteor.user()){
+				Session.set('setMenu', false);
+				this.render('login');
+			} else {
+				console.log("Ready");
+				Session.set('setMenu', true);
+				Session.set('view',"representative");
+				this.render();
+			}
 		}
 	}
 });
@@ -1119,6 +1230,11 @@ Template.header.helpers({
 		return Session.get('view');
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: .
+*/
 Template.RepChannel.events({
 	'submit #sendMsg': function( e ){
 		e.preventDefault( );
@@ -1131,6 +1247,11 @@ Template.RepChannel.events({
 		console.log("inserted the object");
 	}
 });
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 6
+	DESCRIPTION: .
+*/
 Template.RepChannel.helpers({
 	messagess: function(){
 		this.messages.sort();
@@ -1192,5 +1313,74 @@ Template.RepChannel.helpers({
 	},
 	photo:function(){
 		return Session.get('repchannel').photo;
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 7
+	DESCRIPTION: .
+*/
+Template.login.events({
+    'submit form': function(event){
+        event.preventDefault();
+        Session.set("accountMesg","");
+        var email = $('[name=email]').val();
+        var password = $('[name=pass]').val();
+        Meteor.loginWithPassword(email, password, function(error){
+		    if(error){
+		        console.log(error.reason);
+		        Session.set("accountMesg",error.reason);
+		    } else {
+		        Router.go("Home");
+		    }
+		});
+    }
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 7
+	DESCRIPTION: .
+*/
+Template.login.helpers({
+	mesg: function(){
+		return Session.get('accountMesg');
+	}
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 7
+	DESCRIPTION: .
+*/
+Template.register.events({
+    'submit form': function(event){
+        event.preventDefault();
+        Session.set("accountMesg","");
+        var user = $('[name=user]').val();
+        var email = $('[name=email]').val();
+        var zipcode = $('[name=zipcode]').val();
+        var password = $('[name=pass]').val();
+        Accounts.createUser({
+        	username: user,
+            email: email,
+            password: password
+        },function(error){
+		    if(error){
+		        console.log(error.reason);
+		        Session.set("accountMesg",error.reason);
+		    } else {
+		    	Meteor.call('mongoDBUpdateUser',zipcode);
+		        Router.go("Home");
+		    }
+		});
+    }
+});
+/*
+	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+	SPRINT: 7
+	DESCRIPTION: .
+*/
+Template.register.helpers({
+	mesg: function(){
+		return Session.get('accountMesg');
 	}
 });

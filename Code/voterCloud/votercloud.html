@@ -585,3 +585,43 @@
     {{/if}}
   </div>
 </template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 7
+  DESCRIPTION:.
+-->
+<template name="login">
+  <div class="login-card">
+      <h1>Log-in</h1><br>
+    <form>
+      <input type="text" name="email" placeholder="Email">
+      <input type="password" name="pass" placeholder="Password">
+      <input type="submit" name="login" class="login login-submit" value="login">
+    </form> 
+    <div>{{mesg}}</div>
+    <div class="login-help">
+      <a href="/register">Register</a>
+    </div>
+  </div>
+</template>
+<!--
+  AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+  SPRINT: 7
+  DESCRIPTION:.
+-->
+<template name="register">
+  <div class="login-card">
+      <h1>Register</h1><br>
+    <form>
+      <input type="text" name="user" placeholder="Username">
+      <input type="text" name="email" placeholder="Email">
+      <input type="text" name="zipcode" placeholder="Zipcode">
+      <input type="password" name="pass" placeholder="Password">
+      <input type="submit" name="login" class="login login-submit" value="register">
+    </form> 
+    <div>{{mesg}}</div>
+    <div class="login-help">
+      <a href="/login">Login</a>
+    </div>
+  </div>
+</template>

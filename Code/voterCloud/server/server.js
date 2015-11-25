@@ -107,7 +107,7 @@ Router.route('/pdf/:_id', function() {
 */
 Accounts.onCreateUser(function(options, user) {
   user.participated = [];
-
+  user.zipcode ="";
   if (options.profile)
     user.profile = options.profile;
   return user;
@@ -160,7 +160,7 @@ Meteor.startup(function() {
 
 	Meteor.publish("users", function () {
   		return Meteor.users.find({_id: this.userId}, {
-  			fields: {"username": 1, "participated": 1}
+  			fields: {"username": 1, "participated": 1, "zipcode" : 1}
   		});
 	});
 	Meteor.publish("repch", function (id) {
@@ -390,6 +390,14 @@ Meteor.methods({
 		    	Meteor.users.update(this.userId, {$set: {'participated':temp}});
 			}
 		}	
+	},
+		/*
+		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
+		SPRINT: 7
+		DESCRIPTION: .
+	*/
+	mongoDBUpdateUser: function(zipcode){
+    	Meteor.users.update(this.userId, {$set: {'zipcode':zipcode}});
 	},
 	/*
 		AUTHOR AND PROGRAMMER: Eldar Feldbeine.
