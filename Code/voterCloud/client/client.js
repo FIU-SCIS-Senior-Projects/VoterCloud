@@ -376,13 +376,6 @@ Meteor.startup(function() {
         });
     	getlocationbyip();
     }
-
-    Accounts.ui.config({ // THIS LINE DONE BY: Raul Garay
-    	requestPermissions: { // THIS LINE DONE BY: Raul Garay
-    		facebook: ['email'] // THIS LINE DONE BY: Raul Garay
-    	},
-    	passwordSignupFields: 'USERNAME_AND_EMAIL' // THIS LINE DONE BY: Raul Garay
-    });
 });
 /*
 	AUTHOR AND PROGRAMMER: Eldar Feldbeine.
