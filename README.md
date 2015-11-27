@@ -1,6 +1,6 @@
 # VoterCloud
 
-		WELECOME TO THE PROJECT- VoterCloud.
+		WELECOME TO MY PROJECT- VoterCloud.
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
 Majority of the code is located at
