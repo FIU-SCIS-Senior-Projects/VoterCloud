@@ -16,9 +16,7 @@ meteorhacks:npm
 npm-container
 accounts-password
 accounts-ui
-accounts-twitter
 twbs:bootstrap
-accounts-facebook
 steeve:jsignature
 meteorhacks:subs-manager
 meteorhacks:ssr
