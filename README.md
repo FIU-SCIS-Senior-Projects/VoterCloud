@@ -1,6 +1,6 @@
 # VoterCloud
 
-		WELECOME TO MY PROJECT- VoterCloud.
+		WELECOME TO THE PROJECT- VoterCloud.
 		(MeteorJS)
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
