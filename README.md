@@ -4,6 +4,8 @@
 		(MeteorJS)
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
+![Alt text](Documents/UMLDiagrams/Drawing.png?raw=true "VoterCloud")
+
 Majority of the code is located at
 The client JS code: [client.js](Code/voterCloud/client/client.js)
 The server JS code: [server.js](Code/voterCloud/server/server.js)
