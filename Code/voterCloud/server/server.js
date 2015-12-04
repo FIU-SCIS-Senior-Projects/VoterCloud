@@ -83,9 +83,13 @@ Router.route('/pdf/:_id', function() {
 
 	        var fut = new Future();
 			webshot(body, g, options, function(err) {
+				if(err)
+				{
+					return console.log(err+" "+g);
+				}
 	            fs.readFile(g, function (err,data) {
 	                if (err) {
-	                    return console.log(err);
+	                    return console.log(err+""+g);
 	                }
 
 	                fut.return(data);
