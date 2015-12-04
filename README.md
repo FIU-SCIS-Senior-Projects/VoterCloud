@@ -1,7 +1,8 @@
 # VoterCloud
 
-		WELECOME TO MY PROJECT- VoterCloud.
+		WELECOME TO THE PROJECT- VoterCloud.
 		(MeteorJS)
+![Alt text](Documents/UMLDiagrams/Drawing.png?raw=true "VoterCloud")
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
 Majority of the code is located at
@@ -16,8 +17,8 @@ Isomorphic JavaScript development.
 
 The Team:
 
-	1. Eldar Feldbeine - The Main Programmer and Developer(Front and Back-end) , Client, Server, Html and Css.
-	2. Raul Garay - Front-end proggrammer, Html and Css.
+	1. Eldar Feldbeine - The Main Programmer and Developer(Front and Back-end) , Client, Server, Html and Css (everything).
+	2. Raul Garay - Front-end proggrammer (just redesigned the UI of the election and rep).
 
 Project Owner and Mentor:
 	Gus Monge.
