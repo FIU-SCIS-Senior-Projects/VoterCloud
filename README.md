@@ -17,8 +17,8 @@ Isomorphic JavaScript development.
 
 The Team:
 
-	1. Eldar Feldbeine - The Main Programmer and Developer(Front and Back-end) , Client, Server, Html and Css (everything).
-	2. Raul Garay - Front-end proggrammer (just redesigned the UI of the election and rep).
+	1. Eldar Feldbeine - The Main Programmer and Developer(Front and Back-end) , Client, Server, Html and Css.
+	2. Raul Garay - Front-end proggrammer, Html and Css.
 
 Project Owner and Mentor:
 	Gus Monge.
