@@ -877,6 +877,9 @@ Template.Survey.helpers({
 	},
 	polls: function(){
 		return Polls.find({});
+	},
+	admin: function(){
+		return Meteor.user().username == "VoterCloudBot";
 	}
 });
 /*

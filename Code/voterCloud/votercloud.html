@@ -355,54 +355,56 @@
 -->
 <template name="Survey">
   <br>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        {{#if askPoll}}
-          <form name="Poll" id="Poll"> 
-            <div class="form-group" name="question-group" id="question-group">
-              <label>Question</label>
-              <input type="text" name="Question" class="form-control" placeholder={{PollMesg1}}>
-            </div>
-            <div class="form-group">
-              <label>Answer #1</label>
-              <input type="text" name="Answer1" class="form-control" placeholder={{PollMesg2}}>
-            </div>
-            <div class="form-group">
-              <label>Answer #2</label>
-              <input type="text" name="Answer2" class="form-control" placeholder={{PollMesg3}}>
-            </div>
-            <div class="form-group">
-              <label>Answer #3</label>
-              <input type="text" name="Answer3" class="form-control" placeholder="(optional) Answer #3">
-            </div>
-            {{#if plus}}
-              <div class="form-group">
-                <label>Answer #4</label>
-                <input type="text" name="Answer4" class="form-control" placeholder="(optional) Answer #4">
+  {{#if admin}}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          {{#if askPoll}}
+            <form name="Poll" id="Poll"> 
+              <div class="form-group" name="question-group" id="question-group">
+                <label>Question</label>
+                <input type="text" name="Question" class="form-control" placeholder={{PollMesg1}}>
               </div>
               <div class="form-group">
-                <label>Answer #5</label>
-                <input type="text" name="Answer5" class="form-control" placeholder="(optional) Answer #5">
+                <label>Answer #1</label>
+                <input type="text" name="Answer1" class="form-control" placeholder={{PollMesg2}}>
               </div>
               <div class="form-group">
-                <label>Answer #6</label>
-                <input type="text" name="Answer6" class="form-control" placeholder="(optional) Answer #6">
+                <label>Answer #2</label>
+                <input type="text" name="Answer2" class="form-control" placeholder={{PollMesg3}}>
               </div>
-            {{else}}
               <div class="form-group">
-                <label>For more options</label>
-                <a href="#" name="plus" id="plus"><img src="/add121.png" height="24" width="24" id="plus" name="plus"></a>
+                <label>Answer #3</label>
+                <input type="text" name="Answer3" class="form-control" placeholder="(optional) Answer #3">
               </div>
-            {{/if}}
-            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Poll">
-          </form>
-        {{else}}
-          <input type="text" class="btn btn-lg btn-primary btn-block" value="Make Poll" id="askPoll" name="askPoll">
-        {{/if}}
+              {{#if plus}}
+                <div class="form-group">
+                  <label>Answer #4</label>
+                  <input type="text" name="Answer4" class="form-control" placeholder="(optional) Answer #4">
+                </div>
+                <div class="form-group">
+                  <label>Answer #5</label>
+                  <input type="text" name="Answer5" class="form-control" placeholder="(optional) Answer #5">
+                </div>
+                <div class="form-group">
+                  <label>Answer #6</label>
+                  <input type="text" name="Answer6" class="form-control" placeholder="(optional) Answer #6">
+                </div>
+              {{else}}
+                <div class="form-group">
+                  <label>For more options</label>
+                  <a href="#" name="plus" id="plus"><img src="/add121.png" height="24" width="24" id="plus" name="plus"></a>
+                </div>
+              {{/if}}
+              <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Poll">
+            </form>
+          {{else}}
+            <input type="text" class="btn btn-lg btn-primary btn-block" value="Make Poll" id="askPoll" name="askPoll">
+          {{/if}}
+        </div>
       </div>
     </div>
-  </div>
+  {{/if}}
   <div class="polls">
       {{#each polls}}
           {{> poll}}
