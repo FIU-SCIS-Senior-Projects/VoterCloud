@@ -38,4 +38,4 @@ votercloud.css - the complete css and desgin for the application.
 
 votercloud.html - the complete view of the logic and presentation.
 
-Please don't touch the other folder and files since they are part of meteor build framework.
+Please don't touch the other folders and files since they are part of meteor built framework.
