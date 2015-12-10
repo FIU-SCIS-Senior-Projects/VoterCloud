@@ -1390,3 +1390,4 @@ Template.register.helpers({
 		return Session.get('accountMesg');
 	}
 });
+//
