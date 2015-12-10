@@ -6,6 +6,7 @@
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
 (please visit code/VoterCloud/README.md for more information), 
+
 Majority of the code is located at
 The client JS code: [client.js](Code/voterCloud/client/client.js)
 The server JS code: [server.js](Code/voterCloud/server/server.js)
