@@ -1,3 +1,0 @@
-VoterCloud
-
-HERE WE POSTS OUR DOCS.

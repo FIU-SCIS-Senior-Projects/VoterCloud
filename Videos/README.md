@@ -1,2 +1,0 @@
-		VoterCloud
-VIDEOS SECTION.
