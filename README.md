@@ -5,7 +5,7 @@
 ![Alt text](Documents/UMLDiagrams/Drawing.png?raw=true "VoterCloud")
 [http://votercloud-fiu.meteor.com/](http://votercloud-fiu.meteor.com/)
 
-(please visit code/VoterCloud/README.md for more information), 
+(please also visit code/VoterCloud/README.md for more information), 
 
 Majority of the code is located at
 The client JS code: [client.js](Code/voterCloud/client/client.js)
