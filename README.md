@@ -20,7 +20,7 @@ Isomorphic JavaScript development.
 The Team:
 
 	1. Eldar Feldbeine - The Main Programmer and Developer(Front and Back-end) , Client, Server, Html and Css.
-	2. Raul Garay - Coordinator and Front-end proggrammer, Html and Css.
+	2. Raul Garay - Coordinator, Architect, Front-end programmer, Secondary Developer, Html and Css.
 
 Project Owner and Mentor:
 	Gus Monge.
