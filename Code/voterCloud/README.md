@@ -1,12 +1,15 @@
 .meteor/
+
 	packages - meteor packages that this projects is using (like bootstrap, geohash ...).
 
 client/ - The files that can be seen by the user
 	
 	vendor/
+	
 		eventemitter2.js - javascript package i am using for event creation
 	
 	views/
+	
 		localizeme.html - map locality user story(view)
 	
 		localizeme.js - map locality user story logic(controller)
@@ -30,6 +33,7 @@ server/ - the server folder, can not be seen by the user.
 	server.js - the second most important file, since it's contains all the logic that done in the server.
 
 shared/ - the shared folder can seen both by the client and the server, its the database directory.
+
 	shared.js - the declaration of the mongoDB collections.
 
 packages.json - nodeJs NPM packages i used in the server.
